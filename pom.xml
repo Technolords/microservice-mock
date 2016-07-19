@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>net.technolords.pom</groupId>
+    <artifactId>microservices</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>Technolords :: Microservices :: Parent POM</name>
+    <description>
+        The root pom for all Technolords microservices related projects
+    </description>
+
+    <!--+
+        | Properties
+        +-->
+    <properties>
+        <!--+
+            | Project properties
+            +-->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!--+
+            | Version properties
+            +-->
+        <ch.qos.logback.version>1.1.2</ch.qos.logback.version>
+        <commons.io.version>2.4</commons.io.version>
+        <maven.compiler.plugin.version>3.3</maven.compiler.plugin.version>
+        <maven.source.plugin.version>2.4</maven.source.plugin.version>
+        <maven.surefire.plugin.version>2.18.1</maven.surefire.plugin.version>
+        <org.testng.version>6.8.5</org.testng.version>
+    </properties>
+
+    <!--+
+        |
+        +-->
+    <scm>
+        <connection>scm:git:https://github.com/Technolords/microservices</connection>
+    </scm>
+
+    <!--+
+        | Modules
+        +-->
+    <modules>
+        <module>mocked-rest-service-camel-jetty</module>
+        <module>mocked-soap-service-core-endpoint</module>
+    </modules>
+
+    <!--+
+        | Dependencies
+        +-->
+    <dependencies>
+
+        <!--+
+            | Default scope
+            +-->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${ch.qos.logback.version}</version>
+        </dependency>
+
+        <!--+
+            | Test scope
+            +-->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${org.testng.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+
+    </dependencies>
+
+    <!--+
+        | Build
+        +-->
+    <build>
+        <!-- Allow placeholders in files in resources folder to be translated -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <defaultGoal>install</defaultGoal>
+
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+
+            <!-- Surefire plugin configuration -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.plugin.version}</version>
+                <configuration>
+                    <!--<childDelegation>false</childDelegation>-->
+                    <useFile>true</useFile>
+                    <!-- Due to memory problems, each test class runs in a separate JVM -->
+                    <!--<forkMode>true</forkMode>-->
+                    <failIfNoTests>false</failIfNoTests>
+                    <includes>
+                        <include>**/*Test.java</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>exec-with-testng</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <testNGArtifactName>none:none</testNGArtifactName>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>test-wish-junit</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <junitArtifactName>none:none</junitArtifactName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Release plugin configuration-->
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <!-- @ : substitute the values after the version transformation has taken place -->
+                    <tagNameFormat>${project.artifactId}-@{project.version}-${maven.build.timestamp}</tagNameFormat>
+                    <tagBase>https://github.com/Technolords/microservices/releases/${project.artifactId}</tagBase>
+                </configuration>
+            </plugin>
+
+            <!-- Source plugin configuration -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven.source.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
+    </build>
+
+</project>

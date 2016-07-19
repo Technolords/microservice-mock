@@ -1,0 +1,15 @@
+The following prototypes are investigated:
+
+1. Using Camel as main, with a camel-jetty9 component to handle REST
+2. Using Camel as main, with a camel-cxf component to handle REST
+3. Using Embedded jetty, with a custom servlet, to handle REST (containing web and jax-rs annotations)
+    https://www.eclipse.org/jetty/documentation/9.3.x/embedding-jetty.html
+4. Using Embedded jetty, with a custom servlet (using jersey), to handle REST
+    http://www.vogella.com/tutorials/REST/article.html
+    http://crunchify.com/how-to-build-restful-service-with-java-using-jax-rs-and-jersey/
+5. Using Embedded jetty, with a custom servlet with XMDA
+
+x. Using SE Endpoint class directly, i.e. javax.xml.ws.Endpoint
+    http://stackoverflow.com/questions/3680600/publishing-a-ws-with-jax-ws-endpoint
+    https://blogs.oracle.com/michaelmcm/entry/http_server_api_in_java
+    jetty server spi?? See: https://gist.github.com/hamnis/6171880
