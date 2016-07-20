@@ -13,3 +13,5 @@ x. Using SE Endpoint class directly, i.e. javax.xml.ws.Endpoint
     http://stackoverflow.com/questions/3680600/publishing-a-ws-with-jax-ws-endpoint
     https://blogs.oracle.com/michaelmcm/entry/http_server_api_in_java
     jetty server spi?? See: https://gist.github.com/hamnis/6171880
+
+http://camel.apache.org/spring-boot-example.html
