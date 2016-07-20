@@ -1,0 +1,11 @@
+<configurations>
+    <!-- Supported GET requests -->
+    <configuration type="GET" url="/mock/get">
+    </configuration>
+
+    <!-- Supported POST requests -->
+    <configuration type="POST" url="/mapng/traxis-structure-service/v1/pl/pl/vodStructure">
+    </configuration>
+    <configuration type="POST" url="/mock/post">
+    </configuration>
+</configurations>
