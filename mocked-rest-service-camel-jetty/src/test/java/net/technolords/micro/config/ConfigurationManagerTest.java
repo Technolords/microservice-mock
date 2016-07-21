@@ -16,6 +16,6 @@ public class ConfigurationManagerTest {
     public void testInitializationOfConfiguration() throws JAXBException {
         ConfigurationManager configurationManager = new ConfigurationManager();
         configurationManager.initializeConfig();
-        LOGGER.info("Test of completed...");
+        LOGGER.debug("Test of initialization of config completed, no errors...");
     }
 }

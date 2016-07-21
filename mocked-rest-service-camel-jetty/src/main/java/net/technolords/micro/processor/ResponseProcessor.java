@@ -12,7 +12,6 @@ import net.technolords.micro.config.ConfigurationManager;
  */
 public class ResponseProcessor implements Processor {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
-    private static final String HTTP_POST = "POST";
     private ConfigurationManager configurationManager = new ConfigurationManager();
 
     /**
@@ -31,7 +30,7 @@ public class ResponseProcessor implements Processor {
         String requestURI = exchange.getIn().getHeader(Exchange.HTTP_URI, String.class);
         String message = exchange.getIn().getBody(String.class);
         String response;
-        if (HTTP_POST.equals(requestType.toUpperCase())) {
+        if (ConfigurationManager.HTTP_POST.equals(requestType.toUpperCase())) {
             response = this.configurationManager.findResponseForPostOperationWithPathAndMessage(requestType, message);
         } else {
             response = this.configurationManager.findResponseForGetOperationWithPath(requestURI);

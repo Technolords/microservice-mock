@@ -1,5 +1,6 @@
 package net.technolords.micro.config.jaxb.resource;
 
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlValue;
 
 /**
@@ -7,6 +8,7 @@ import javax.xml.bind.annotation.XmlValue;
  */
 public class Simple {
     private String resource;
+    private String cachedData;
 
     @XmlValue
     public String getResource() {
@@ -15,5 +17,14 @@ public class Simple {
 
     public void setResource(String resource) {
         this.resource = resource;
+    }
+
+    @XmlTransient
+    public String getCachedData() {
+        return cachedData;
+    }
+
+    public void setCachedData(String cachedData) {
+        this.cachedData = cachedData;
     }
 }

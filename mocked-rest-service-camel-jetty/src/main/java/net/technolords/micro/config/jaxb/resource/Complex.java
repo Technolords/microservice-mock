@@ -27,10 +27,3 @@ public class Complex {
         this.resource = resource;
     }
 }
-
-/*
-    <resource>
-        <xpath>/sample/message[@id = '1']</xpath>
-        <resource>mock/sample-post1.json</resource>
-    </resource>
- */
