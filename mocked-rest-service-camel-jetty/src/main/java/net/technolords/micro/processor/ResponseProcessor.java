@@ -31,7 +31,7 @@ public class ResponseProcessor implements Processor {
         String message = exchange.getIn().getBody(String.class);
         String response;
         if (ConfigurationManager.HTTP_POST.equals(requestType.toUpperCase())) {
-            response = this.configurationManager.findResponseForPostOperationWithPathAndMessage(requestType, message);
+            response = this.configurationManager.findResponseForPostOperationWithPathAndMessage(requestURI, message);
         } else {
             response = this.configurationManager.findResponseForGetOperationWithPath(requestURI);
         }
