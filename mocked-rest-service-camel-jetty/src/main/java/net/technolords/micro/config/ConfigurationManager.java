@@ -18,9 +18,9 @@ import org.slf4j.LoggerFactory;
 
 import net.technolords.micro.config.jaxb.Configuration;
 import net.technolords.micro.config.jaxb.Configurations;
-import net.technolords.micro.config.jaxb.resource.Complex;
-import net.technolords.micro.config.jaxb.resource.Group;
-import net.technolords.micro.config.jaxb.resource.Simple;
+import net.technolords.micro.config.jaxb.resource.ResourceGroup;
+import net.technolords.micro.config.jaxb.resource.ResourceGroups;
+import net.technolords.micro.config.jaxb.resource.SimpleResource;
 
 /**
  * Created by Technolords on 2016-Jul-20.
@@ -28,7 +28,7 @@ import net.technolords.micro.config.jaxb.resource.Simple;
 public class ConfigurationManager {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     public static final String HTTP_POST = "POST";
-    private static final String PATH_TO_CONFIG_FILE = "config/configuration.xml";
+    private static final String PATH_TO_CONFIG_FILE = "xml/configuration.xml";
     private Configurations configurations = null;
     private XpathEvaluator xpathEvaluator = null;
     private Map<String, Configuration> getConfigurations = new HashMap<>();
@@ -51,7 +51,7 @@ public class ConfigurationManager {
         if (this.getConfigurations.containsKey(path)) {
             LOGGER.debug("... found, proceeding to the data part...");
             Configuration configuration = this.getConfigurations.get(path);
-            Simple resource = configuration.getGetResource();
+            SimpleResource resource = configuration.getSimpleResource();
             // Load and update cache
             LOGGER.debug("About to load data from: {}", resource.getResource());
             return this.readResourceCacheOrFile(resource);
@@ -84,18 +84,18 @@ public class ConfigurationManager {
         if (this.postConfigurations.containsKey(path)) {
             LOGGER.debug("... found, proceeding to the data part...");
             Configuration configuration = this.postConfigurations.get(path);
-            // Iterate of the resource, and verify whether the xpath matches with the data
-            Group group = configuration.getPostResources();
-            for (Complex complex : group.getResources()) {
-                if (complex.getXpath() != null) {
-                    LOGGER.debug("... found xpath: {}", complex.getXpath().getXpath());
-                    if (this.xpathEvaluator.evaluateXpathExpression(complex.getXpath().getXpath(), message, configuration)) {
+            // Iterate the resources, and verify whether the xpath matches with the data
+            ResourceGroups resourceGroups = configuration.getResourceGroups();
+            for (ResourceGroup resourceGroup : resourceGroups.getResourceGroup()) {
+                if (resourceGroup.getXpathConfig() != null) {
+                    LOGGER.debug("... found xpath: {}", resourceGroup.getXpathConfig().getXpath());
+                    if (this.xpathEvaluator.evaluateXpathExpression(resourceGroup.getXpathConfig().getXpath(), message, configuration)) {
                         LOGGER.debug("... xpath matched, about to find associated resource");
-                        return this.readResourceCacheOrFile(complex.getResource());
+                        return this.readResourceCacheOrFile(resourceGroup.getSimpleResource());
                     }
                 } else {
-                    LOGGER.debug("No xpath configured, about to load the data from: {}", complex.getResource().getResource());
-                    return this.readResourceCacheOrFile(complex.getResource());
+                    LOGGER.debug("No xpath configured, about to load the data from: {}", resourceGroup.getSimpleResource().getResource());
+                    return this.readResourceCacheOrFile(resourceGroup.getSimpleResource());
                 }
             }
         }
@@ -146,7 +146,7 @@ public class ConfigurationManager {
      * @throws IOException
      *  When reading the resource fails.
      */
-    private String readResourceCacheOrFile(Simple resource) throws IOException, InterruptedException {
+    private String readResourceCacheOrFile(SimpleResource resource) throws IOException, InterruptedException {
         if (resource.getDelay() > 0) {
             LOGGER.debug("About to delay {} ms", resource.getDelay());
             Thread.sleep(resource.getDelay());

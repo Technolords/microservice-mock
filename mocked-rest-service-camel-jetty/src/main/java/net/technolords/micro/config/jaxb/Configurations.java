@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * Created by Technolords on 2016-Jul-20.
  */
-@XmlRootElement(name = "configurations")
+@XmlRootElement(name = "configurations", namespace = "http://xsd.technolords.net")
 public class Configurations {
 
     private List<Configuration> configurations;

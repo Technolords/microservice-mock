@@ -7,8 +7,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import net.technolords.micro.config.jaxb.namespace.NamespaceList;
-import net.technolords.micro.config.jaxb.resource.Group;
-import net.technolords.micro.config.jaxb.resource.Simple;
+import net.technolords.micro.config.jaxb.resource.ResourceGroups;
+import net.technolords.micro.config.jaxb.resource.SimpleResource;
 
 /**
  * Created by Technolords on 2016-Jul-20.
@@ -16,8 +16,8 @@ import net.technolords.micro.config.jaxb.resource.Simple;
 public class Configuration {
     private String type;
     private String url;
-    private Simple getResource;
-    private Group postResources;
+    private SimpleResource simpleResource;
+    private ResourceGroups resourceGroups;
     private NamespaceList namespaceList;
     private Map<String, String> cachedNamespaceMapping;
 
@@ -40,21 +40,21 @@ public class Configuration {
     }
 
     @XmlElement(name = "resource")
-    public Simple getGetResource() {
-        return getResource;
+    public SimpleResource getSimpleResource() {
+        return simpleResource;
     }
 
-    public void setGetResource(Simple getResource) {
-        this.getResource = getResource;
+    public void setSimpleResource(SimpleResource simpleResource) {
+        this.simpleResource = simpleResource;
     }
 
-    @XmlElement(name = "resource-group")
-    public Group getPostResources() {
-        return postResources;
+    @XmlElement(name = "resource-groups")
+    public ResourceGroups getResourceGroups() {
+        return resourceGroups;
     }
 
-    public void setPostResources(Group postResources) {
-        this.postResources = postResources;
+    public void setResourceGroups(ResourceGroups resourceGroups) {
+        this.resourceGroups = resourceGroups;
     }
 
     @XmlElement(name = "namespaces")

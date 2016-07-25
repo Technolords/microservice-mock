@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlValue;
 /**
  * Created by Technolords on 2016-Jul-21.
  */
-public class Xpath {
+public class XpathConfig {
     private String xpath;
 
     @XmlValue

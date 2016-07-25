@@ -19,7 +19,7 @@ import net.technolords.micro.config.jaxb.Configuration;
  */
 public class XpathEvaluator {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
-    private ConfigurationToNamespaceContext configurationToNamespaceContext;
+    private ConfigurationToNamespaceContext configurationToNamespaceContext = null;
     private XPathFactory xPathFactory = null;
 
     /**
@@ -43,7 +43,7 @@ public class XpathEvaluator {
      */
     public boolean evaluateXpathExpression(String xpathExpression, String xmlMessage, Configuration configuration) throws XPathExpressionException {
         XPathExpression xPathExpression = this.obtainXpathExpression(xpathExpression, configuration);
-        LOGGER.debug("Xpath expression compiled, and is ready to be used for evaluation...");
+        LOGGER.debug("XpathConfig expression compiled, and is ready to be used for evaluation...");
         StringReader stringReader = new StringReader(xmlMessage);
         InputSource inputSource = new InputSource(stringReader);
         LOGGER.debug("Xml input source created...");
