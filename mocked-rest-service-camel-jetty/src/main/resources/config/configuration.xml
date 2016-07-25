@@ -1,3 +1,31 @@
+<!--+
+    | The configurations element can have no attributes, and supports a list of the following elements:
+    | - configuration      : optional, which represents either a GET or POST request.
+    |
+    | The configuration element can have the following attributes:
+    | - type               : mandatory, which is either GET or POST and represents the HTTP request type.
+    | - url                : mandatory, which represents the HTTP request uri.
+    | and can have the following elements, note that (G)ET and (P)OST elements are mutually exclusive:
+    | - resource (G)       : optional, represents a resource.
+    | - namespaces (P)     : optional, represents namespaces associated with a POST message.
+    | - resource-group (P) : optional, represents a set of xpath expressions with a resource.
+    |
+    | The resource (G) element represents a path to a resource, and can have the following attributes:
+    | - delay              : optional, which introduces a delay for <n> milli seconds before giving a response.
+    |
+    | The namespaces element does not support attributes and can have the following elements (one or more):
+    | - namespace          : mandatory, which represents a namespace declaration.
+    |
+    | The namespace element represents a URI, and has the following attribute:
+    | - prefix             : mandatory, which represents the prefix of the namespace.
+    |
+    | The resource-group element does not support attributes, and supports a list of the following elements:
+    | - resource (P)       : optional, which is a wrapper element for the elements xpath and resource.
+    |
+    | The resource (P) element does not support attributes, and must contain precisely one of the following elements:
+    | - xpath              : mandatory, which represents a xpath expression.
+    | - resource (G)       : mandatory, represents a resource.
+    +-->
 <configurations>
     <!--+
         | Supported GET requests
@@ -27,12 +55,14 @@
 </configurations>
 
 <!--
-    Sample message:
+    Sample POST message:
 
     <sample xmlns="urn:eventis:traxisweb:1.0">
       <message id="1"/>
     </sample>
 
+    todo: rename resource as it is confusing
     todo: error + error rate
     todo: support externalization of this xml file
+    todo: xsd validation of the xml file
 -->
