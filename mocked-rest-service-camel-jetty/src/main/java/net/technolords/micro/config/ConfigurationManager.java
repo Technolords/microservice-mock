@@ -170,7 +170,6 @@ public class ConfigurationManager {
      */
     protected void initializeConfiguration(InputStream inputStream) throws JAXBException {
         LOGGER.info("About to initialize the configuration...");
-        // TODO: path to config
         Unmarshaller unmarshaller = JAXBContext.newInstance(Configurations.class).createUnmarshaller();
         this.configurations = (Configurations) unmarshaller.unmarshal(inputStream);
         LOGGER.debug("Total loaded resources: {}", this.configurations.getConfigurations().size());
