@@ -5,6 +5,7 @@ import org.apache.camel.Processor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.technolords.micro.ResponseContext;
 import net.technolords.micro.config.ConfigurationManager;
 
 /**
@@ -33,16 +34,16 @@ public class ResponseProcessor implements Processor {
         String requestType = exchange.getIn().getHeader(Exchange.HTTP_METHOD, String.class);
         String requestURI = exchange.getIn().getHeader(Exchange.HTTP_URI, String.class);
         String message = exchange.getIn().getBody(String.class);
-        String response;
+        ResponseContext responseContext;
         if (ConfigurationManager.HTTP_POST.equals(requestType.toUpperCase())) {
-            response = this.configurationManager.findResponseForPostOperationWithPathAndMessage(requestURI, message);
+            responseContext = this.configurationManager.findResponseForPostOperationWithPathAndMessage(requestURI, message);
         } else {
-            response = this.configurationManager.findResponseForGetOperationWithPath(requestURI);
+            responseContext = this.configurationManager.findResponseForGetOperationWithPath(requestURI);
         }
-        if (response != null) {
-            exchange.getIn().setBody(response);
-            exchange.getIn().setHeader(Exchange.HTTP_RESPONSE_CODE, 200);
+        if (responseContext != null) {
+            exchange.getIn().setBody(responseContext.getResponse());
             exchange.getIn().setHeader("Content-Type", "application/json");
+            exchange.getIn().setHeader(Exchange.HTTP_RESPONSE_CODE, (responseContext.getErrorCode() == null ? 200 : responseContext.getErrorCode()));
         } else {
             exchange.getIn().setHeader(Exchange.HTTP_RESPONSE_CODE, 404);
         }

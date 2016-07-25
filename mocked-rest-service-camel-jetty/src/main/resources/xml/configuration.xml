@@ -20,7 +20,7 @@
             </resource-group>
             <resource-group>
                 <xpath>/traxis:sample/traxis:message[@id = '2']</xpath>
-                <resource error-code="206" error-rate="100">mock/sample-post2.json</resource>
+                <resource error-code="206" error-rate="50">mock/sample-post2.json</resource>
             </resource-group>
             <resource-group>
                 <xpath>count(/traxis:Request/traxis:ResourceQuery/traxis:SubQueries/traxis:SubQuery[1][@relationName='Titles']) = 1</xpath>
@@ -37,8 +37,6 @@
       <message id="1"/>
     </sample>
 
-    todo: xsd validation of the xml file
     todo: support externalization of this xml file
-    todo: error + error rate
     todo: xpath nodes support
 -->

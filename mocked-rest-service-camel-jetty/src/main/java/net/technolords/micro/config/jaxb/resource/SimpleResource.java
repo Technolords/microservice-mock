@@ -11,7 +11,7 @@ public class SimpleResource {
     private String resource;
     private String cachedData;
     private int delay;
-    private int errorCode;
+    private String errorCode;
     private int errorRate;
 
     @XmlValue
@@ -42,11 +42,11 @@ public class SimpleResource {
     }
 
     @XmlAttribute(name = "error-code")
-    public int getErrorCode() {
+    public String getErrorCode() {
         return errorCode;
     }
 
-    public void setErrorCode(int errorCode) {
+    public void setErrorCode(String errorCode) {
         this.errorCode = errorCode;
     }
 

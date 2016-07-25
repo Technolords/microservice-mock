@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
+import net.technolords.micro.ResponseContext;
 import net.technolords.micro.config.jaxb.Configuration;
 import net.technolords.micro.config.jaxb.Configurations;
 import net.technolords.micro.config.jaxb.resource.ResourceGroup;
@@ -64,7 +65,7 @@ public class ConfigurationManager {
      * @throws JAXBException
      *  When reading the configuration fails.
      */
-    public String findResponseForGetOperationWithPath(String path) throws JAXBException, IOException, InterruptedException {
+    public ResponseContext findResponseForGetOperationWithPath(String path) throws JAXBException, IOException, InterruptedException {
         LOGGER.debug("About to find response for get operation with path: {}", path);
         if (this.getConfigurations.containsKey(path)) {
             LOGGER.debug("... found, proceeding to the data part...");
@@ -96,7 +97,7 @@ public class ConfigurationManager {
      * @throws JAXBException
      *  When reading the configuration fails.
      */
-    public String findResponseForPostOperationWithPathAndMessage(String path, String message) throws IOException, XPathExpressionException, JAXBException, InterruptedException {
+    public ResponseContext findResponseForPostOperationWithPathAndMessage(String path, String message) throws IOException, XPathExpressionException, JAXBException, InterruptedException {
         LOGGER.debug("About to find response for post operation with path: {}", path);
         if (this.postConfigurations.containsKey(path)) {
             LOGGER.debug("... found, proceeding to the data part...");
@@ -150,6 +151,17 @@ public class ConfigurationManager {
         this.xpathEvaluator = new XpathEvaluator();
     }
 
+    /**
+     * Auxiliary method to validate the configuration file.
+     *
+     * @param pathToConfig
+     *  The path to the configuration file.
+     *
+     * @throws IOException
+     *  When reading the configuration file fails.
+     * @throws SAXException
+     *  When the configuration file is not valid.
+     */
     private void validateConfigurationFile(String pathToConfig) throws IOException, SAXException {
         LOGGER.info("About to validate the configuration...");
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -174,18 +186,37 @@ public class ConfigurationManager {
      * @throws IOException
      *  When reading the resource fails.
      */
-    private String readResourceCacheOrFile(SimpleResource resource) throws IOException, InterruptedException {
+    private ResponseContext readResourceCacheOrFile(SimpleResource resource) throws IOException, InterruptedException {
+        // Add delay (only when applicable)
         if (resource.getDelay() > 0) {
             LOGGER.debug("About to delay {} ms", resource.getDelay());
             Thread.sleep(resource.getDelay());
         }
-        if (resource.getCachedData() != null) {
-            return resource.getCachedData();
+        // Create response
+        ResponseContext responseContext = new ResponseContext();
+        if (resource.getCachedData() == null) {
+            InputStream fileStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resource.getResource());
+            LOGGER.debug("Path to file exists: {}", fileStream.available());
+            resource.setCachedData(new BufferedReader(new InputStreamReader(fileStream)).lines().collect(Collectors.joining("\n")));
         }
-        InputStream fileStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resource.getResource());
-        LOGGER.debug("Path to file exists: {}",  fileStream.available());
-        resource.setCachedData(new BufferedReader(new InputStreamReader(fileStream)).lines().collect(Collectors.joining("\n")));
-        return resource.getCachedData();
+        responseContext.setResponse(resource.getCachedData());
+        // Apply custom error (only when applicable)
+        if (resource.getErrorRate() > 0) {
+            if (resource.getErrorRate() >= this.generateRandom()) {
+                responseContext.setErrorCode(resource.getErrorCode());
+            }
+        }
+        return responseContext;
+    }
+
+    /**
+     * Auxiliary method to generate a random number. This number will be in the range of [1, 100].
+     *
+     * @return
+     *  A random number.
+     */
+    protected int generateRandom() {
+        return (int)(Math.random() * 100 + 1);
     }
 
 }
