@@ -1,20 +1,25 @@
 <configurations>
-    <!-- Supported GET requests -->
+    <!--+
+        | Supported GET requests
+        +-->
     <configuration type="GET" url="/mock/get">
         <resource>mock/sample-get.json</resource>
     </configuration>
 
-    <!-- Supported POST requests -->
-    <configuration type="POST" url="/mapng/traxis-structure-service/v1/pl/pl/vodStructure">
-    </configuration>
+    <!--+
+        | Supported POST requests
+        +-->
     <configuration type="POST" url="/mock/post">
+        <namespaces>
+            <namespace prefix="traxis">urn:eventis:traxisweb:1.0</namespace>
+        </namespaces>
         <resource-group>
             <resource>
-                <xpath>/sample/message[@id = '1']</xpath>
+                <xpath>/traxis:sample/traxis:message[@id = '1']</xpath>
                 <resource>mock/sample-post1.json</resource>
             </resource>
             <resource>
-                <xpath>/sample/message[@id = '2']</xpath>
+                <xpath>/traxis:sample/traxis:message[@id = '2']</xpath>
                 <resource>mock/sample-post2.json</resource>
             </resource>
         </resource-group>
