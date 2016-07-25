@@ -31,14 +31,14 @@ public class ConfigurationToNamespaceContext {
         if (configuration != null) {
             // Namespaces are only relevant for Post messages
             if (ConfigurationManager.HTTP_POST.equals(configuration.getType())) {
-                return new DefaultNamespaceContext(this.createNamespaceMapping(configuration));
+                return new DefaultNamespaceContext(this.obtainNamespaceMapping(configuration));
             }
         }
         return null;
     }
 
     /**
-     * Auxiliary method to create a name space mapping, which holds a prefix and an associated URI, to
+     * Auxiliary method to obtaib a name space mapping, which holds a prefix and an associated URI, to
      * support a look up mechanism (implemented by the NamespaceContext interface). For example:
      *
      * "traxis", "urn:eventis:traxisweb:1.0"
@@ -49,19 +49,25 @@ public class ConfigurationToNamespaceContext {
      * @return
      *  The name space mapping.
      */
-    private Map<String, String> createNamespaceMapping(Configuration configuration) {
+    private Map<String, String> obtainNamespaceMapping(Configuration configuration) {
         Map<String, String> result = new HashMap<>();
         if (configuration != null) {
+            // Check for cached data
+            if (configuration.getCachedNamespaceMapping() != null) {
+                return configuration.getCachedNamespaceMapping();
+            }
             // Namespaces are only relevant for Post messages
             if (ConfigurationManager.HTTP_POST.equals(configuration.getType())) {
                 if (configuration.getNamespaceList() != null) {
                     NamespaceList namespaceList = configuration.getNamespaceList();
                     for (NamespaceConfig namespaceConfig : namespaceList.getNamespaces()) {
                         result.put(namespaceConfig.getPrefix(), namespaceConfig.getNamespaceURI());
-                        LOGGER.info("Added namespace with prefix: {} to collection, now size {}", namespaceConfig.getPrefix(), result.size());
+                        LOGGER.debug("Added namespace with prefix: {} to collection, now size {}", namespaceConfig.getPrefix(), result.size());
                     }
                 }
             }
+            // Update cache
+            configuration.setCachedNamespaceMapping(result);
         }
         return result;
     }

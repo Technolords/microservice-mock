@@ -1,7 +1,10 @@
 package net.technolords.micro.config.jaxb;
 
+import java.util.Map;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import net.technolords.micro.config.jaxb.namespace.NamespaceList;
 import net.technolords.micro.config.jaxb.resource.Group;
@@ -16,6 +19,7 @@ public class Configuration {
     private Simple getResource;
     private Group postResources;
     private NamespaceList namespaceList;
+    private Map<String, String> cachedNamespaceMapping;
 
     @XmlAttribute(name = "type")
     public String getType() {
@@ -60,5 +64,14 @@ public class Configuration {
 
     public void setNamespaceList(NamespaceList namespaceList) {
         this.namespaceList = namespaceList;
+    }
+
+    @XmlTransient
+    public Map<String, String> getCachedNamespaceMapping() {
+        return cachedNamespaceMapping;
+    }
+
+    public void setCachedNamespaceMapping(Map<String, String> cachedNamespaceMapping) {
+        this.cachedNamespaceMapping = cachedNamespaceMapping;
     }
 }
