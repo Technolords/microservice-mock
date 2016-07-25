@@ -18,6 +18,16 @@
     </xs:element>
 
     <!--+
+        | Simple types, sorted by alphabet
+        +-->
+    <xs:simpleType name="httpRequestType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="get"/>
+            <xs:enumeration value="post"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!--+
         | Complex types, sorted by alphabet
         +-->
     <xs:complexType name="configurationType">
@@ -26,7 +36,7 @@
             <xs:element name="namespaces" type="namespacesType" minOccurs="0" maxOccurs="unbounded" />
             <xs:element name="resource-groups" type="resourceGroupsType" minOccurs="0" maxOccurs="unbounded" />
         </xs:sequence>
-        <xs:attribute name="type" type="xs:string" use="required" />
+        <xs:attribute name="type" type="httpRequestType" use="required" />
         <xs:attribute name="url" type="xs:string" use="required" />
     </xs:complexType>
 

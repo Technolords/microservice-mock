@@ -50,7 +50,6 @@ public class ConfigurationManager {
      *  When reading the configuration fails.
      */
     public String findResponseForGetOperationWithPath(String path) throws JAXBException, IOException, InterruptedException {
-//        this.initializeConfig();
         LOGGER.debug("About to find response for get operation with path: {}", path);
         if (this.getConfigurations.containsKey(path)) {
             LOGGER.debug("... found, proceeding to the data part...");
@@ -83,7 +82,6 @@ public class ConfigurationManager {
      *  When reading the configuration fails.
      */
     public String findResponseForPostOperationWithPathAndMessage(String path, String message) throws IOException, XPathExpressionException, JAXBException, InterruptedException {
-//        this.initializeConfig();
         LOGGER.debug("About to find response for post operation with path: {}", path);
         if (this.postConfigurations.containsKey(path)) {
             LOGGER.debug("... found, proceeding to the data part...");
@@ -118,7 +116,7 @@ public class ConfigurationManager {
     protected void initializeConfig() throws JAXBException {
         if (this.configurations == null) {
             LOGGER.info("About to initialize resources from configuration file...");
-            LOGGER.info("System config {}", System.getProperty("config"));
+//            LOGGER.info("TODO: System config {}", System.getProperty("config"));
             Unmarshaller unmarshaller = JAXBContext.newInstance(Configurations.class).createUnmarshaller();
             this.configurations = (Configurations) unmarshaller.unmarshal(this.getClass().getClassLoader().getResourceAsStream(PATH_TO_CONFIG_FILE));
             LOGGER.debug("Total loaded resources: {}", this.configurations.getConfigurations().size());
