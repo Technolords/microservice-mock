@@ -8,13 +8,20 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 
 import net.technolords.micro.config.jaxb.Configuration;
 import net.technolords.micro.config.jaxb.Configurations;
@@ -29,13 +36,21 @@ public class ConfigurationManager {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     public static final String HTTP_POST = "POST";
     private static final String PATH_TO_CONFIG_FILE = "xml/configuration.xml";
+    private static final String PATH_TO_SCHEMA_FILE = "xsd/configurations.xsd";
     private Configurations configurations = null;
     private XpathEvaluator xpathEvaluator = null;
     private Map<String, Configuration> getConfigurations = new HashMap<>();
     private Map<String, Configuration> postConfigurations = new HashMap<>();
 
-    public ConfigurationManager(String pathToConfig) throws JAXBException {
-        this.initializeConfig();
+    public ConfigurationManager(String pathToConfig) throws JAXBException, IOException, SAXException {
+        if (pathToConfig == null || pathToConfig.isEmpty()) {
+            pathToConfig = PATH_TO_CONFIG_FILE;
+        }
+        pathToConfig = PATH_TO_CONFIG_FILE; // TODO: remove later
+        // Validate configuration file
+        this.validateConfigurationFile(pathToConfig);
+        // Initialize configuration
+        this.initializeConfiguration(pathToConfig);
     }
 
     /**
@@ -110,30 +125,40 @@ public class ConfigurationManager {
      * - reading and parsing the xml configuration
      * - instantiating a xpath evaluator
      *
+     * @param pathToConfig
+     *  The path to the configuration file.
+     *
      * @throws JAXBException
      *  When parsing the XML configuration file fails.
      */
-    protected void initializeConfig() throws JAXBException {
-        if (this.configurations == null) {
-            LOGGER.info("About to initialize resources from configuration file...");
-//            LOGGER.info("TODO: System config {}", System.getProperty("config"));
-            Unmarshaller unmarshaller = JAXBContext.newInstance(Configurations.class).createUnmarshaller();
-            this.configurations = (Configurations) unmarshaller.unmarshal(this.getClass().getClassLoader().getResourceAsStream(PATH_TO_CONFIG_FILE));
-            LOGGER.debug("Total loaded resources: {}", this.configurations.getConfigurations().size());
-            for (Configuration configuration : this.configurations.getConfigurations()) {
-                if (HTTP_POST.equals(configuration.getType().toUpperCase())) {
-                    // Add resource to post configuration group
-                    this.postConfigurations.put(configuration.getUrl(), configuration);
-                } else {
-                    // Add resource to get configuration group
-                    this.getConfigurations.put(configuration.getUrl(), configuration);
-                }
+    protected void initializeConfiguration(String pathToConfig) throws JAXBException {
+        LOGGER.info("About to initialize the configuration...");
+        // TODO: path to config
+        Unmarshaller unmarshaller = JAXBContext.newInstance(Configurations.class).createUnmarshaller();
+        this.configurations = (Configurations) unmarshaller.unmarshal(this.getClass().getClassLoader().getResourceAsStream(pathToConfig));
+        LOGGER.debug("Total loaded resources: {}", this.configurations.getConfigurations().size());
+        for (Configuration configuration : this.configurations.getConfigurations()) {
+            if (HTTP_POST.equals(configuration.getType().toUpperCase())) {
+                // Add resource to post configuration group
+                this.postConfigurations.put(configuration.getUrl(), configuration);
+            } else {
+                // Add resource to get configuration group
+                this.getConfigurations.put(configuration.getUrl(), configuration);
             }
-            LOGGER.debug("URL mappings completed [{} for post, {} for get]", this.postConfigurations.size(), this.getConfigurations.size());
         }
-        if (this.xpathEvaluator == null) {
-            this.xpathEvaluator = new XpathEvaluator();
-        }
+        LOGGER.info("... done, URL mappings parsed [{} for POST, {} for GET]", this.postConfigurations.size(), this.getConfigurations.size());
+        this.xpathEvaluator = new XpathEvaluator();
+    }
+
+    private void validateConfigurationFile(String pathToConfig) throws IOException, SAXException {
+        LOGGER.info("About to validate the configuration...");
+        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        Source xsdSource = new StreamSource(this.getClass().getClassLoader().getResourceAsStream(PATH_TO_SCHEMA_FILE));
+        Schema schema = schemaFactory.newSchema(xsdSource);
+        Validator validator = schema.newValidator();
+        Source sourceToConfig = new StreamSource(this.getClass().getClassLoader().getResourceAsStream(pathToConfig));
+        validator.validate(sourceToConfig);
+        LOGGER.info("... valid, proceeding...");
     }
 
     /**

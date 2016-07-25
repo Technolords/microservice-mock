@@ -43,7 +43,7 @@ public class XpathEvaluator {
      */
     public boolean evaluateXpathExpression(String xpathExpression, String xmlMessage, Configuration configuration) throws XPathExpressionException {
         XPathExpression xPathExpression = this.obtainXpathExpression(xpathExpression, configuration);
-        LOGGER.debug("XpathConfig expression compiled, and is ready to be used for evaluation...");
+        LOGGER.debug("Xpath expression compiled, and is ready to be used for evaluation...");
         StringReader stringReader = new StringReader(xmlMessage);
         InputSource inputSource = new InputSource(stringReader);
         LOGGER.debug("Xml input source created...");
@@ -68,6 +68,7 @@ public class XpathEvaluator {
      *  When the compilation fails.
      */
     private XPathExpression obtainXpathExpression(String xpathExpression, Configuration configuration) throws XPathExpressionException {
+        LOGGER.debug("About to compile xpath expression...");
         if (this.xPathFactory == null) {
             this.xPathFactory = XPathFactory.newInstance();
         }
