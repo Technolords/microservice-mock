@@ -24,7 +24,7 @@
             </resource-group>
             <resource-group>
                 <xpath>count(/traxis:Request/traxis:ResourceQuery/traxis:SubQueries/traxis:SubQuery[1][@relationName='Titles']) = 1</xpath>
-                <resource error-code="206" error-rate="100">mock/sample-post2.json</resource>
+                <resource>mock/sample-post2.json</resource>
             </resource-group>
         </resource-groups>
     </configuration>

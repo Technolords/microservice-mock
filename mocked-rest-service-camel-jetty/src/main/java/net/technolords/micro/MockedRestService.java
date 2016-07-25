@@ -11,12 +11,14 @@ import net.technolords.micro.route.RestServiceRoute;
  */
 public class MockedRestService {
     private static final Logger LOGGER = LoggerFactory.getLogger(MockedRestService.class);
-    private static final String PORT = "9090";
+    private static final String PROP_PORT = "port";
+    private static final String PROP_CONFIG = "config";
+    private static final String DEFAULT_PORT = "9090";
     private Main main;
 
-    public void startService() throws Exception {
+    public void startService(String port) throws Exception {
         this.main = new Main();
-        this.main.addRouteBuilder(new RestServiceRoute(PORT));
+        this.main.addRouteBuilder(new RestServiceRoute(port));
         LOGGER.info("Route created, use CTRL-C to terminate JVM");
         this.main.run();
     }
@@ -27,6 +29,11 @@ public class MockedRestService {
     public static void main(String[] args) throws Exception {
         LOGGER.info("About to start the mocked service...");
         MockedRestService mockedRestService = new MockedRestService();
-        mockedRestService.startService();
+        String port = DEFAULT_PORT;
+        if (System.getProperty(PROP_PORT) != null) {
+            LOGGER.debug("Configured Port: {}", System.getProperty("port"));
+            port = System.getProperty(PROP_PORT);
+        }
+        mockedRestService.startService(port);
     }
 }
