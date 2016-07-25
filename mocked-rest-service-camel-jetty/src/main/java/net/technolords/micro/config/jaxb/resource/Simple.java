@@ -1,5 +1,6 @@
 package net.technolords.micro.config.jaxb.resource;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlValue;
 
@@ -8,6 +9,7 @@ import javax.xml.bind.annotation.XmlValue;
  */
 public class Simple {
     private String resource;
+    private int delay;
     private String cachedData;
 
     @XmlValue
@@ -17,6 +19,15 @@ public class Simple {
 
     public void setResource(String resource) {
         this.resource = resource;
+    }
+
+    @XmlAttribute(name = "delay")
+    public int getDelay() {
+        return delay;
+    }
+
+    public void setDelay(int delay) {
+        this.delay = delay;
     }
 
     @XmlTransient

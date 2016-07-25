@@ -38,7 +38,7 @@ public class ConfigurationToNamespaceContext {
     }
 
     /**
-     * Auxiliary method to obtaib a name space mapping, which holds a prefix and an associated URI, to
+     * Auxiliary method to obtain a name space mapping, which holds a prefix and an associated URI, to
      * support a look up mechanism (implemented by the NamespaceContext interface). For example:
      *
      * "traxis", "urn:eventis:traxisweb:1.0"

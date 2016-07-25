@@ -16,7 +16,7 @@
         <resource-group>
             <resource>
                 <xpath>/traxis:sample/traxis:message[@id = '1']</xpath>
-                <resource>mock/sample-post1.json</resource>
+                <resource delay="10000">mock/sample-post1.json</resource>
             </resource>
             <resource>
                 <xpath>/traxis:sample/traxis:message[@id = '2']</xpath>
@@ -27,7 +27,12 @@
 </configurations>
 
 <!--
-    todo: delay
+    Sample message:
+
+    <sample xmlns="urn:eventis:traxisweb:1.0">
+      <message id="1"/>
+    </sample>
+
     todo: error + error rate
     todo: support externalization of this xml file
 -->

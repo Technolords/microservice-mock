@@ -45,20 +45,16 @@ public class ConfigurationManager {
      * @throws JAXBException
      *  When reading the configuration fails.
      */
-    public String findResponseForGetOperationWithPath(String path) throws JAXBException, IOException {
+    public String findResponseForGetOperationWithPath(String path) throws JAXBException, IOException, InterruptedException {
         this.initializeConfig();
         LOGGER.debug("About to find response for get operation with path: {}", path);
         if (this.getConfigurations.containsKey(path)) {
             LOGGER.debug("... found, proceeding to the data part...");
             Configuration configuration = this.getConfigurations.get(path);
             Simple resource = configuration.getGetResource();
-            if (resource.getCachedData() != null) {
-                return resource.getCachedData();
-            } else {
-                // Load and update cache
-                LOGGER.debug("About to load data from: {}", resource.getResource());
-                return this.readResourceAndUpdateCacheData(resource);
-            }
+            // Load and update cache
+            LOGGER.debug("About to load data from: {}", resource.getResource());
+            return this.readResourceCacheOrFile(resource);
         }
         LOGGER.debug("... not found!");
         return null;
@@ -82,7 +78,7 @@ public class ConfigurationManager {
      * @throws JAXBException
      *  When reading the configuration fails.
      */
-    public String findResponseForPostOperationWithPathAndMessage(String path, String message) throws IOException, XPathExpressionException, JAXBException {
+    public String findResponseForPostOperationWithPathAndMessage(String path, String message) throws IOException, XPathExpressionException, JAXBException, InterruptedException {
         this.initializeConfig();
         LOGGER.debug("About to find response for post operation with path: {}", path);
         if (this.postConfigurations.containsKey(path)) {
@@ -95,11 +91,11 @@ public class ConfigurationManager {
                     LOGGER.debug("... found xpath: {}", complex.getXpath().getXpath());
                     if (this.xpathEvaluator.evaluateXpathExpression(complex.getXpath().getXpath(), message, configuration)) {
                         LOGGER.debug("... xpath matched, about to find associated resource");
-                        return this.readResourceAndUpdateCacheData(complex.getResource());
+                        return this.readResourceCacheOrFile(complex.getResource());
                     }
                 } else {
                     LOGGER.debug("No xpath configured, about to load the data from: {}", complex.getResource().getResource());
-                    return this.readResourceAndUpdateCacheData(complex.getResource());
+                    return this.readResourceCacheOrFile(complex.getResource());
                 }
             }
         }
@@ -150,9 +146,16 @@ public class ConfigurationManager {
      * @throws IOException
      *  When reading the resource fails.
      */
-    private String readResourceAndUpdateCacheData(Simple resource) throws IOException {
+    private String readResourceCacheOrFile(Simple resource) throws IOException, InterruptedException {
+        if (resource.getDelay() > 0) {
+            LOGGER.info("About to delay {} ms", resource.getDelay());
+            Thread.sleep(resource.getDelay());
+        }
+        if (resource.getCachedData() != null) {
+            return resource.getCachedData();
+        }
         InputStream fileStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resource.getResource());
-        LOGGER.debug("Path to file exists: {}",  fileStream.available());
+        LOGGER.info("Path to file exists: {}",  fileStream.available());
         resource.setCachedData(new BufferedReader(new InputStreamReader(fileStream)).lines().collect(Collectors.joining("\n")));
         return resource.getCachedData();
     }
