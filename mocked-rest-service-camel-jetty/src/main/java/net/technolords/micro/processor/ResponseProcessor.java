@@ -12,7 +12,11 @@ import net.technolords.micro.config.ConfigurationManager;
  */
 public class ResponseProcessor implements Processor {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
-    private ConfigurationManager configurationManager = new ConfigurationManager();
+    private ConfigurationManager configurationManager = null;
+
+    public ResponseProcessor(ConfigurationManager configurationManager) {
+        this.configurationManager = configurationManager;
+    }
 
     /**
      * Processor that calls the configuration manager to find a response, based URI as well as request type

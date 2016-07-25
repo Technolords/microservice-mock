@@ -8,6 +8,7 @@ import org.apache.camel.builder.RouteBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.technolords.micro.config.ConfigurationManager;
 import net.technolords.micro.processor.ResponseProcessor;
 
 /**
@@ -20,11 +21,12 @@ public class RestServiceRoute extends RouteBuilder {
     private static final String JETTY_BINDING_ADDRESS = "0.0.0.0";
     private static final String JETTY_BINDING_PATH = "/";
     private static final String JETTY_OPTIONS = "?matchOnUriPrefix=true&enableJmx=true";
-    private String port;
-    private Processor responseProcessor = new ResponseProcessor();
+    private String port = null;
+    private Processor responseProcessor = null;
 
-    public RestServiceRoute(String myPort) {
+    public RestServiceRoute(String myPort, ConfigurationManager configurationManager) {
         this.port = myPort;
+        this.responseProcessor = new ResponseProcessor(configurationManager);
         LOGGER.info("Using port: " + this.port);
     }
 
