@@ -4,6 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -44,14 +48,24 @@ public class ConfigurationManager {
     private Map<String, Configuration> postConfigurations = new HashMap<>();
 
     public ConfigurationManager(String pathToConfig) throws JAXBException, IOException, SAXException {
+        InputStream inputStreamForValidation, inputStreamForConfig; // Streams can be read only once
         if (pathToConfig == null || pathToConfig.isEmpty()) {
             pathToConfig = PATH_TO_CONFIG_FILE;
+            // Set input stream to a resource inside this jar file
+            inputStreamForValidation = this.getClass().getClassLoader().getResourceAsStream(pathToConfig);
+            inputStreamForConfig = this.getClass().getClassLoader().getResourceAsStream(pathToConfig);
+        } else {
+            LOGGER.info("Using configuration file: {}", pathToConfig);
+            Path path = FileSystems.getDefault().getPath(pathToConfig);
+            LOGGER.info("File exist: {}", Files.exists(path));
+            // Set input stream to a resource located on file system (read only)
+            inputStreamForValidation = Files.newInputStream(path, StandardOpenOption.READ);
+            inputStreamForConfig = Files.newInputStream(path, StandardOpenOption.READ);
         }
-        pathToConfig = PATH_TO_CONFIG_FILE; // TODO: remove later
         // Validate configuration file
-        this.validateConfigurationFile(pathToConfig);
+        this.validateConfigurationFile(inputStreamForValidation);
         // Initialize configuration
-        this.initializeConfiguration(pathToConfig);
+        this.initializeConfiguration(inputStreamForConfig);
     }
 
     /**
@@ -122,21 +136,43 @@ public class ConfigurationManager {
     }
 
     /**
+     * Auxiliary method to validate the configuration file.
+     *
+     * @param inputStream
+     *  An input stream of the configuration file.
+     *
+     * @throws IOException
+     *  When reading the configuration file fails.
+     * @throws SAXException
+     *  When the configuration file is not valid.
+     */
+    private void validateConfigurationFile(InputStream inputStream) throws IOException, SAXException {
+        LOGGER.info("About to validate the configuration...");
+        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        Source xsdSource = new StreamSource(this.getClass().getClassLoader().getResourceAsStream(PATH_TO_SCHEMA_FILE));
+        Schema schema = schemaFactory.newSchema(xsdSource);
+        Validator validator = schema.newValidator();
+        Source sourceToConfig = new StreamSource(inputStream);
+        validator.validate(sourceToConfig);
+        LOGGER.info("... valid, proceeding...");
+    }
+
+    /**
      * Auxiliary method to initialize the configuration manager, which means:
      * - reading and parsing the xml configuration
      * - instantiating a xpath evaluator
      *
-     * @param pathToConfig
-     *  The path to the configuration file.
+     * @param inputStream
+     *  An input stream of the configuration file.
      *
      * @throws JAXBException
      *  When parsing the XML configuration file fails.
      */
-    protected void initializeConfiguration(String pathToConfig) throws JAXBException {
+    protected void initializeConfiguration(InputStream inputStream) throws JAXBException {
         LOGGER.info("About to initialize the configuration...");
         // TODO: path to config
         Unmarshaller unmarshaller = JAXBContext.newInstance(Configurations.class).createUnmarshaller();
-        this.configurations = (Configurations) unmarshaller.unmarshal(this.getClass().getClassLoader().getResourceAsStream(pathToConfig));
+        this.configurations = (Configurations) unmarshaller.unmarshal(inputStream);
         LOGGER.debug("Total loaded resources: {}", this.configurations.getConfigurations().size());
         for (Configuration configuration : this.configurations.getConfigurations()) {
             if (HTTP_POST.equals(configuration.getType().toUpperCase())) {
@@ -149,28 +185,6 @@ public class ConfigurationManager {
         }
         LOGGER.info("... done, URL mappings parsed [{} for POST, {} for GET]", this.postConfigurations.size(), this.getConfigurations.size());
         this.xpathEvaluator = new XpathEvaluator();
-    }
-
-    /**
-     * Auxiliary method to validate the configuration file.
-     *
-     * @param pathToConfig
-     *  The path to the configuration file.
-     *
-     * @throws IOException
-     *  When reading the configuration file fails.
-     * @throws SAXException
-     *  When the configuration file is not valid.
-     */
-    private void validateConfigurationFile(String pathToConfig) throws IOException, SAXException {
-        LOGGER.info("About to validate the configuration...");
-        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        Source xsdSource = new StreamSource(this.getClass().getClassLoader().getResourceAsStream(PATH_TO_SCHEMA_FILE));
-        Schema schema = schemaFactory.newSchema(xsdSource);
-        Validator validator = schema.newValidator();
-        Source sourceToConfig = new StreamSource(this.getClass().getClassLoader().getResourceAsStream(pathToConfig));
-        validator.validate(sourceToConfig);
-        LOGGER.info("... valid, proceeding...");
     }
 
     /**
