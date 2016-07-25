@@ -148,14 +148,14 @@ public class ConfigurationManager {
      */
     private String readResourceCacheOrFile(Simple resource) throws IOException, InterruptedException {
         if (resource.getDelay() > 0) {
-            LOGGER.info("About to delay {} ms", resource.getDelay());
+            LOGGER.debug("About to delay {} ms", resource.getDelay());
             Thread.sleep(resource.getDelay());
         }
         if (resource.getCachedData() != null) {
             return resource.getCachedData();
         }
         InputStream fileStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resource.getResource());
-        LOGGER.info("Path to file exists: {}",  fileStream.available());
+        LOGGER.debug("Path to file exists: {}",  fileStream.available());
         resource.setCachedData(new BufferedReader(new InputStreamReader(fileStream)).lines().collect(Collectors.joining("\n")));
         return resource.getCachedData();
     }
