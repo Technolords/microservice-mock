@@ -213,6 +213,9 @@ public class ConfigurationManager {
             resource.setCachedData(new BufferedReader(new InputStreamReader(fileStream)).lines().collect(Collectors.joining("\n")));
         }
         responseContext.setResponse(resource.getCachedData());
+        if (resource.getResource().endsWith(".xml")) {
+            responseContext.setContentType(ResponseContext.XML_CONTENT_TYPE);
+        }
         // Apply custom error (only when applicable)
         if (resource.getErrorRate() > 0) {
             if (resource.getErrorRate() >= this.generateRandom()) {

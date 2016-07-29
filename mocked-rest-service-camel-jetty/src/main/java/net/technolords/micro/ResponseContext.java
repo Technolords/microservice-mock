@@ -4,8 +4,12 @@ package net.technolords.micro;
  * Created by Technolords on 2016-Jul-25.
  */
 public class ResponseContext {
+    public static final String JSON_CONTENT_TYPE = "application/json";
+    public static final String XML_CONTENT_TYPE = "application/xml";
+    public static final String DEFAULT_CONTENT_TYPE = JSON_CONTENT_TYPE;
     private String response;
     private String errorCode;
+    private String contentType = DEFAULT_CONTENT_TYPE;
 
     public String getResponse() {
         return response;
@@ -21,5 +25,13 @@ public class ResponseContext {
 
     public void setErrorCode(String errorCode) {
         this.errorCode = errorCode;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
     }
 }

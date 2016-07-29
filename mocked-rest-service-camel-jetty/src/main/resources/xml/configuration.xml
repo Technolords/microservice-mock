@@ -37,5 +37,8 @@
       <message id="1"/>
     </sample>
 
+    todo: externalize resources
     todo: xpath nodes support
+    todo: breaks when log level is debug?
+    todo: customize runtime logging
 -->

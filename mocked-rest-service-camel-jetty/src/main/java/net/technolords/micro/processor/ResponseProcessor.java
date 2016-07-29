@@ -13,6 +13,7 @@ import net.technolords.micro.config.ConfigurationManager;
  */
 public class ResponseProcessor implements Processor {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
+    private static final String CONTENT_TYPE = "Content-Type";
     private ConfigurationManager configurationManager = null;
 
     public ResponseProcessor(ConfigurationManager configurationManager) {
@@ -42,7 +43,7 @@ public class ResponseProcessor implements Processor {
         }
         if (responseContext != null) {
             exchange.getIn().setBody(responseContext.getResponse());
-            exchange.getIn().setHeader("Content-Type", "application/json");
+            exchange.getIn().setHeader(CONTENT_TYPE, responseContext.getContentType());
             exchange.getIn().setHeader(Exchange.HTTP_RESPONSE_CODE, (responseContext.getErrorCode() == null ? 200 : responseContext.getErrorCode()));
         } else {
             exchange.getIn().setHeader(Exchange.HTTP_RESPONSE_CODE, 404);
