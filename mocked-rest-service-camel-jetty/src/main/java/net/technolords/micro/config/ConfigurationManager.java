@@ -44,10 +44,11 @@ public class ConfigurationManager {
     private static final String PATH_TO_SCHEMA_FILE = "xsd/configurations.xsd";
     private Configurations configurations = null;
     private XpathEvaluator xpathEvaluator = null;
+    private Path pathToDataFolder = null;
     private Map<String, Configuration> getConfigurations = new HashMap<>();
     private Map<String, Configuration> postConfigurations = new HashMap<>();
 
-    public ConfigurationManager(String pathToConfig) throws JAXBException, IOException, SAXException {
+    public ConfigurationManager(String pathToConfig, String pathToData) throws JAXBException, IOException, SAXException {
         InputStream inputStreamForValidation, inputStreamForConfig; // Streams can be read only once
         if (pathToConfig == null || pathToConfig.isEmpty()) {
             pathToConfig = PATH_TO_CONFIG_FILE;
@@ -61,6 +62,11 @@ public class ConfigurationManager {
             // Set input stream to a resource located on file system (read only)
             inputStreamForValidation = Files.newInputStream(path, StandardOpenOption.READ);
             inputStreamForConfig = Files.newInputStream(path, StandardOpenOption.READ);
+        }
+        if (pathToData != null) {
+            LOGGER.info("Using data folder: {}", pathToData);
+            this.pathToDataFolder = FileSystems.getDefault().getPath(pathToData);
+            LOGGER.info("Folder exist: {}, and is folder: {}", Files.exists(this.pathToDataFolder), Files.isDirectory(this.pathToDataFolder));
         }
         // Validate configuration file
         this.validateConfigurationFile(inputStreamForValidation);
@@ -208,12 +214,15 @@ public class ConfigurationManager {
         // Create response
         ResponseContext responseContext = new ResponseContext();
         if (resource.getCachedData() == null) {
-            InputStream fileStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resource.getResource());
-            LOGGER.debug("Path to file exists: {}", fileStream.available());
-            resource.setCachedData(new BufferedReader(new InputStreamReader(fileStream)).lines().collect(Collectors.joining("\n")));
+            if (this.pathToDataFolder == null) {
+                resource.setCachedData(this.readFromPackagedFile(resource.getResource()));
+            } else {
+                resource.setCachedData(this.readFromReferencedPath(resource.getResource()));
+            }
         }
         responseContext.setResponse(resource.getCachedData());
         if (resource.getResource().endsWith(".xml")) {
+            // TODO: refactor using proper mime-types in config
             responseContext.setContentType(ResponseContext.XML_CONTENT_TYPE);
         }
         // Apply custom error (only when applicable)
@@ -223,6 +232,18 @@ public class ConfigurationManager {
             }
         }
         return responseContext;
+    }
+
+    private String readFromPackagedFile(String resourceReference) throws IOException {
+        InputStream fileStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceReference);
+        LOGGER.debug("Path to file exists: {}", fileStream.available());
+        return new BufferedReader(new InputStreamReader(fileStream)).lines().collect(Collectors.joining("\n"));
+    }
+
+    private String readFromReferencedPath(String resourceReference) throws IOException {
+        Path pathToResource = this.pathToDataFolder.resolve(resourceReference);
+        LOGGER.debug("Path to file exists: {}", Files.exists(pathToResource));
+        return Files.lines(pathToResource).collect(Collectors.joining("\n"));
     }
 
     /**

@@ -14,6 +14,7 @@ public class MockedRestService {
     private static final Logger LOGGER = LoggerFactory.getLogger(MockedRestService.class);
     private static final String PROP_PORT = "port";
     private static final String PROP_CONFIG = "config";
+    private static final String PROP_DATA = "data";
     private static final String DEFAULT_PORT = "9090";
     private Main main;
 
@@ -27,7 +28,7 @@ public class MockedRestService {
      *  When the micro service fails.
      */
     public void startService(String port) throws Exception {
-        ConfigurationManager configurationManager = new ConfigurationManager(System.getProperty(PROP_CONFIG));
+        ConfigurationManager configurationManager = new ConfigurationManager(System.getProperty(PROP_CONFIG), System.getProperty(PROP_DATA));
         this.main = new Main();
         this.main.addRouteBuilder(new RestServiceRoute(port, configurationManager));
         LOGGER.info("Route created, use CTRL-C to terminate JVM");
@@ -56,6 +57,9 @@ public class MockedRestService {
         }
         if (System.getProperty(PROP_CONFIG) != null) {
             LOGGER.debug("Configured Config: {}", System.getProperty(PROP_CONFIG));
+        }
+        if (System.getProperty(PROP_DATA) != null) {
+            LOGGER.debug("Configured data: {}", System.getProperty(PROP_DATA));
         }
         mockedRestService.startService(port);
     }

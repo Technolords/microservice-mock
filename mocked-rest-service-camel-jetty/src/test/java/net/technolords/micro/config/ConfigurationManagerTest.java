@@ -18,14 +18,14 @@ public class ConfigurationManagerTest {
 
     @Test
     public void testInitializationOfConfiguration() throws JAXBException, IOException, SAXException {
-        ConfigurationManager configurationManager = new ConfigurationManager(null);
+        ConfigurationManager configurationManager = new ConfigurationManager(null, null);
         Assert.assertNotNull(configurationManager, "Expected the configuration manager to be initialized...");
         LOGGER.debug("Test of initialization of config completed, no errors...");
     }
 
     @Test (enabled = false)
     public void testRandom() throws JAXBException, IOException, SAXException {
-        ConfigurationManager configurationManager = new ConfigurationManager(null);
+        ConfigurationManager configurationManager = new ConfigurationManager(null, null);
         for (int i = 0; i < 100; i++) {
             LOGGER.info("Generated random: {}", configurationManager.generateRandom());
         }
