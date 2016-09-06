@@ -1,10 +1,38 @@
 # Microservice mock
 This micro service represents a configurable webservice that can mock any other web service, by means of configuration.
 When a request is made to the mock service, it checks the configuration for a matching URI. When a match is found,
-the associated respond from the configuration is returned.
+the associated response from the configuration is returned.
+
+## Usage
+The java jar is executable, and looks like this (depending on the version):
+
+    java -jar target/microservice-mock-1.0.0-SNAPSHOT.jar
+
+Most of the logging is suppressed, however that is fully configurable as well. For more details see [here](https://github.com/Technolords/microservice-mock#log-configuration).
+Out of the box, the log is emitted to the standard output, and there is no log file per default. Snippets of the log output:
+
+    2016-09-06 21:38:09,317 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] INFO  About to validate the configuration...
+    2016-09-06 21:38:09,345 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] INFO  ... valid, proceeding...
+    2016-09-06 21:38:09,345 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] INFO  About to initialize the configuration...
+    2016-09-06 21:38:09,450 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] INFO  ... done, URL mappings parsed [1 for POST, 1 for GET]
+
+The log shows how many mappings (URI with response config) has been recognized. Note that it makes a distinction between POST and GET.
+
+    2016-09-06 21:38:09,969 [INFO] [main] [org.apache.camel.impl.DefaultCamelContext] INFO  Apache Camel 2.17.1 (CamelContext: camel-1) started in 0.342 seconds
+
+The log shows the final log statement which means the mock service is started and ready to receive requests.
 
 ## Mock Configuration
-The configuration is XML based, and must be compliant against a XSD. See for the schema [here](https://github.com/Technolords/microservice-mock#xsd-schema)
+The configuration is XML based, and must be compliant against a XSD. See for the schema [here](https://github.com/Technolords/microservice-mock#xsd-schema).
+### Usage
+Provide a java system property to the command line as follow:
+
+    java -Dconfig=/var/data/mock-configuration.xml -jar target/microservice-mock-1.0.0-SNAPSHOT.jar
+
+During startup, the log shows something like this:
+
+    2016-09-06 21:52:10,945 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] INFO  Using configuration file: /var/data/mock-configuration.xml
+    2016-09-06 21:52:10,948 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] INFO  File exist: true
 
 Todo, delay etc
 
