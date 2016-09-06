@@ -34,7 +34,58 @@ During startup, the log shows something like this:
     2016-09-06 21:52:10,945 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] INFO  Using configuration file: /var/data/mock-configuration.xml
     2016-09-06 21:52:10,948 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] INFO  File exist: true
 
-Todo, delay etc
+### Example of a configuration
+The XML configuration must have the namespace according to the [XSD](https://github.com/Technolords/microservice-mock#xsd-schema).
+
+    <configurations xmlns="http://xsd.technolords.net">
+
+        <configuration type="GET" url="/mock/sample1">
+            <resource>sample1.json</resource>
+        </configuration>
+        <configuration type="GET" url="/mock/sample2">
+            <resource>sample2.xml</resource>
+        </configuration>
+
+        <configuration type="POST" url="/mock/post">
+            <namespaces>
+                <namespace prefix="technolords">urn:some:reference:1.0</namespace>
+            </namespaces>
+            <resource-groups>
+                <resource-group>
+                    <xpath>/technolords:sample/technolords:message[@id = '1']</xpath>
+                    <resource>mock/sample-post1.json</resource>
+                </resource-group>
+                <resource-group>
+                    <xpath>/technolords:sample/technolords:message[@id = '2']</xpath>
+                    <resource delay="10000">mock/sample-post2.json</resource>
+                </resource-group>
+                <resource-group>
+                    <xpath>/technolords:sample/technolords:message[@id = '3']</xpath>
+                    <resource error-code="206" error-rate="50">mock/sample-post3.json</resource>
+                </resource-group>
+            </resource-groups>
+        </configuration>
+    </configurations>
+
+The configuration above lists two configurations for a GET requests, and one for a POST request. However, since
+the POST is about the body, in this case XML, associated xpath expressions are present for finer grained configuration.
+
+Example POST message:
+
+    <sample xmlns="urn:some:reference:1.0">
+        <message id="1"/>
+    </sample>
+
+When the message above is posted, the content of the file 'sample-post1.json' is cached and then returned. Repeated
+requests will then return the cached result (to enhance performance). This makes the mock service an ideal tool to
+support load testing as well.
+
+If a request is made which does not match any url's (mappings) a 404 is returned.
+
+### Optional attributes
+The XML configuration mentions some optional attributes, which are:
+* delay: which is exactly what it means, it adds a delay in the response measured in milli seconds.
+* error: which allows simulation of erroneous responses, based on a percentage (error rate) and the alternative responde code (error-code).
 
 ## Log Configuration
 
