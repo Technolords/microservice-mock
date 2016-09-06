@@ -39,6 +39,7 @@
 
     todo: xpath nodes support
     todo: breaks when log level is debug?
-    todo: customize runtime logging
+    todo: customize runtime logging                             -> http://logback.qos.ch/manual/configuration.html
+                                                                -> possible to provide external config
     todo: refactor the way reponse content-types are set
 -->
