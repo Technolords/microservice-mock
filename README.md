@@ -1,14 +1,14 @@
 # Microservice mock
-This micro service represents a configurable webservice that can mock any other web service, by means of configuration.
+This micro service represents a configurable webservice that can mock any other web service by means of configuration.
 When a request is made to the mock service, it checks the configuration for a matching URI. When a match is found,
 the associated response from the configuration is returned.
 
 ## Usage
-The java jar is executable, and looks like this (depending on the version):
+The java jar is executable (required java version is 1.8), and looks like this (depending on the version):
 
     java -jar target/microservice-mock-1.0.0-SNAPSHOT.jar
 
-Most of the logging is suppressed, however that is fully configurable as well. For more details see [here](https://github.com/Technolords/microservice-mock#log-configuration).
+Most of the logging is suppressed by design, however it is fully configurable as well. For more details see [here](https://github.com/Technolords/microservice-mock#log-configuration).
 Out of the box, the log is emitted to the standard output, and there is no log file per default. Snippets of the log output:
 
     2016-09-06 21:38:09,317 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] INFO  About to validate the configuration...
@@ -22,10 +22,19 @@ The log shows how many mappings (URI with response config) has been recognized. 
 
 The log shows the final log statement which means the mock service is started and ready to receive requests.
 
+### Port Configuration
+Provide a Java system property to the command line as follow:
+
+    java -Dport=9999 -jar target/microservice-mock-1.0.0-SNAPSHOT.jar
+
+The log confirms the port with:
+
+    2016-09-06 22:31:58,235 [INFO] [main] [net.technolords.micro.route.RestServiceRoute] INFO  Using port: 9999
+
 ## Mock Configuration
 The configuration is XML based, and must be compliant against a XSD. See for the schema [here](https://github.com/Technolords/microservice-mock#xsd-schema).
 ### Usage
-Provide a java system property to the command line as follow:
+Provide a Java system property to the command line as follow:
 
     java -Dconfig=/var/data/mock-configuration.xml -jar target/microservice-mock-1.0.0-SNAPSHOT.jar
 
@@ -34,8 +43,8 @@ During startup, the log shows something like this:
     2016-09-06 21:52:10,945 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] INFO  Using configuration file: /var/data/mock-configuration.xml
     2016-09-06 21:52:10,948 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] INFO  File exist: true
 
-### Example of a configuration
-The XML configuration must have the namespace according to the [XSD](https://github.com/Technolords/microservice-mock#xsd-schema).
+### Example of a configuration file
+The XML configuration file must have a namespace according to the [schema](https://github.com/Technolords/microservice-mock#xsd-schema).
 
     <configurations xmlns="http://xsd.technolords.net">
 
@@ -81,6 +90,17 @@ requests will then return the cached result (to enhance performance). This makes
 support load testing as well.
 
 If a request is made which does not match any url's (mappings) a 404 is returned.
+
+### Data configuration
+The resource files, associated with the responses, are relative from the data folder. To configure the data folder, a
+Java system property to the command line as follow must submitted:
+
+    java -Ddata=/var/data/mock -Dconfig=/var/data/mock-configuration.xml -jar target/microservice-mock-1.0.0-SNAPSHOT.jar
+
+The log confirms with:
+
+    2016-09-06 22:34:42,274 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] INFO  Using data folder: /var/data/mock
+    2016-09-06 22:34:42,275 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] INFO  Folder exist: true, and is folder: true
 
 ### Optional attributes
 The XML configuration mentions some optional attributes, which are:
