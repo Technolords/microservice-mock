@@ -84,6 +84,10 @@ public class ConfigurationManager {
      *
      * @throws JAXBException
      *  When reading the configuration fails.
+     * @throws IOException
+     *  When reading the response fails.
+     * @throws InterruptedException
+     *  When delaying the response fails.
      */
     public ResponseContext findResponseForGetOperationWithPath(String path) throws JAXBException, IOException, InterruptedException {
         LOGGER.debug("About to find response for get operation with path: {}", path);
@@ -116,6 +120,8 @@ public class ConfigurationManager {
      *  When evaluation the xpath expression fails.
      * @throws JAXBException
      *  When reading the configuration fails.
+     * @throws InterruptedException
+     *  When delaying the response fails.
      */
     public ResponseContext findResponseForPostOperationWithPathAndMessage(String path, String message) throws IOException, XPathExpressionException, JAXBException, InterruptedException {
         LOGGER.debug("About to find response for post operation with path: {}", path);

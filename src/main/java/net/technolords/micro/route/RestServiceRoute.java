@@ -53,15 +53,14 @@ public class RestServiceRoute extends RouteBuilder {
     }
 
     /**
-     * Generates a Camel Jetty endpoint that looks like this:
-     *
-     *  "jetty:http://0.0.0.0:9090/?matchOnUriPrefix=true&enableJmx=true
+     * Generates a Camel Jetty endpoint.
      *
      * @return
      *  A Camel Jetty endpoint
      */
     protected String generateJettyEndpoint() {
         StringBuilder buffer = new StringBuilder();
+        // jetty:http://0.0.0.0:9090/?matchOnUriPrefix=true&enableJmx=true
         buffer.append(JETTY_MAIN).append(JETTY_BINDING_ADDRESS).append(":").append(this.port);
         buffer.append(JETTY_BINDING_PATH).append(JETTY_OPTIONS);
         return buffer.toString();
