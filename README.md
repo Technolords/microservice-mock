@@ -105,15 +105,21 @@ The log confirms with:
 ### Optional attributes
 The XML configuration mentions some optional attributes, which are:
 * delay: which is exactly what it means, it adds a delay in the response measured in milli seconds.
-* error: which allows simulation of erroneous responses, based on a percentage (error rate) and the alternative responde code (error-code).
+* error: which allows simulation of erroneous responses, based on a percentage (error rate) and the alternative response code (error-code).
 
 ## Log Configuration
+The code uses a logging library called 'logback' and has an embedded (default) configuration. To use a custom log configuration a Java system property must be provided:
 
-Todo, usage, example, ref
+    java -Dlogback.configurationFile=/path/to/config.xml -jar target/microservice-mock-1.0.0-SNAPSHOT.jar
+
+To understand the options of the configuration file, see the remote documentation [here](http://logback.qos.ch/manual/configuration.html).
 
 ## Roadmap
 
-Todo
+The following improvements are planned:
+
+* Add dynamic support for mime-types/content-types. Currently, 'application/json' and 'application/xml' are generated based on the extension of the resource files.
+* Add support for other Xpath expressions. Currently, the Xpath expression must resolve into a boolean value in order to have a successful match.
 
 ## XSD Schema
 
