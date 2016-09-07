@@ -6,7 +6,7 @@ the associated response from the configuration is returned.
 ## Usage
 The java jar is executable (required java version is 1.8), and looks like this (depending on the version):
 
-    java -jar target/microservice-mock-1.0.0-SNAPSHOT.jar
+    java -jar target/microservice-mock-1.0.0.jar
 
 Most of the logging is suppressed by design, however it is fully configurable as well. For more details see [here](https://github.com/Technolords/microservice-mock#log-configuration).
 Out of the box, the log is emitted to the standard output, and there is no log file per default. Snippets of the log output:
@@ -25,7 +25,7 @@ The log shows the final log statement which means the mock service is started an
 ### Port Configuration
 Provide a Java system property to the command line as follow:
 
-    java -Dport=9999 -jar target/microservice-mock-1.0.0-SNAPSHOT.jar
+    java -Dport=9999 -jar target/microservice-mock-1.0.0.jar
 
 The log confirms the port with:
 
@@ -36,7 +36,7 @@ The configuration is XML based, and must be compliant against a XSD. See for the
 ### Usage
 Provide a Java system property to the command line as follow:
 
-    java -Dconfig=/var/data/mock-configuration.xml -jar target/microservice-mock-1.0.0-SNAPSHOT.jar
+    java -Dconfig=/var/data/mock-configuration.xml -jar target/microservice-mock-1.0.0.jar
 
 During startup, the log shows something like this:
 
@@ -95,7 +95,7 @@ If a request is made which does not match any url's (mappings) a 404 is returned
 The resource files, associated with the responses, are relative from the data folder. To configure the data folder, a
 Java system property to the command line as follow must submitted:
 
-    java -Ddata=/var/data/mock -Dconfig=/var/data/mock-configuration.xml -jar target/microservice-mock-1.0.0-SNAPSHOT.jar
+    java -Ddata=/var/data/mock -Dconfig=/var/data/mock-configuration.xml -jar target/microservice-mock-1.0.0.jar
 
 The log confirms with:
 
@@ -110,7 +110,7 @@ The XML configuration mentions some optional attributes, which are:
 ## Log Configuration
 The code uses a logging library called 'logback' and has an embedded (default) configuration. To use a custom log configuration a Java system property must be provided:
 
-    java -Dlogback.configurationFile=/path/to/config.xml -jar target/microservice-mock-1.0.0-SNAPSHOT.jar
+    java -Dlogback.configurationFile=/path/to/config.xml -jar target/microservice-mock-1.0.0.jar
 
 To understand the options of the configuration file, see the remote documentation [here](http://logback.qos.ch/manual/configuration.html).
 
