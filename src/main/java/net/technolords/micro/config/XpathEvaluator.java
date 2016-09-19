@@ -1,5 +1,6 @@
 package net.technolords.micro.config;
 
+import java.io.IOException;
 import java.io.StringReader;
 
 import javax.xml.xpath.XPath;
@@ -41,12 +42,13 @@ public class XpathEvaluator {
      * @throws XPathExpressionException
      *  When evaluation the xpath expression fails.
      */
-    public boolean evaluateXpathExpression(String xpathExpression, String xmlMessage, Configuration configuration) throws XPathExpressionException {
+    public boolean evaluateXpathExpression(String xpathExpression, String xmlMessage, Configuration configuration) throws XPathExpressionException, IOException {
         XPathExpression xPathExpression = this.obtainXpathExpression(xpathExpression, configuration);
         LOGGER.debug("Xpath expression compiled, and is ready to be used for evaluation...");
         StringReader stringReader = new StringReader(xmlMessage);
         InputSource inputSource = new InputSource(stringReader);
-        LOGGER.debug("Xml input source created...");
+        LOGGER.debug("Xml input source created, size: {}...", xmlMessage.length());
+        stringReader.reset();
         Boolean result = (Boolean) xPathExpression.evaluate(inputSource, XPathConstants.BOOLEAN);
         LOGGER.debug("... xpath evaluated: {}", result);
         return result;
