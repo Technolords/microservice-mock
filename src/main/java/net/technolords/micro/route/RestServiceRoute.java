@@ -48,7 +48,6 @@ public class RestServiceRoute extends RouteBuilder {
 
         from(DIRECT_MAIN)
             .log(LoggingLevel.DEBUG, LOGGER, "Current headers: ${headers}")
-            .log(LoggingLevel.DEBUG, LOGGER, "Current body: ${body}")
             .process(this.responseProcessor);
     }
 
