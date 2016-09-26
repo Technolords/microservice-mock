@@ -217,7 +217,7 @@ public class ConfigurationManager {
             LOGGER.debug("About to delay {} ms", resource.getDelay());
             Thread.sleep(resource.getDelay());
         }
-        // Create response
+        // Apply response
         ResponseContext responseContext = new ResponseContext();
         if (resource.getCachedData() == null) {
             if (this.pathToDataFolder == null) {
@@ -226,10 +226,12 @@ public class ConfigurationManager {
                 resource.setCachedData(this.readFromReferencedPath(resource.getResource()));
             }
         }
+        // Apply content type
         responseContext.setResponse(resource.getCachedData());
-        if (resource.getResource().endsWith(".xml")) {
-            // TODO: refactor using proper mime-types in config
-            responseContext.setContentType(ResponseContext.XML_CONTENT_TYPE);
+        if (resource.getContentType() != null) {
+            responseContext.setContentType(resource.getContentType());
+        } else {
+            responseContext.setContentType(this.fallbackLogicForContentType(resource));
         }
         // Apply custom error (only when applicable)
         if (resource.getErrorRate() > 0) {
@@ -238,6 +240,14 @@ public class ConfigurationManager {
             }
         }
         return responseContext;
+    }
+
+    private String fallbackLogicForContentType(SimpleResource resource) {
+        if (resource.getResource().endsWith(".xml")) {
+            return ResponseContext.XML_CONTENT_TYPE;
+        } else {
+            return ResponseContext.DEFAULT_CONTENT_TYPE;
+        }
     }
 
     private String readFromPackagedFile(String resourceReference) throws IOException {
