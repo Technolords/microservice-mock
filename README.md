@@ -72,6 +72,10 @@ The XML configuration file must have a namespace according to the [schema](https
                     <xpath>/technolords:sample/technolords:message[@id = '3']</xpath>
                     <resource error-code="206" error-rate="50">mock/sample-post3.json</resource>
                 </resource-group>
+                <resource-group>
+                    <xpath>/technolords:sample/technolords:message[@id = '4']</xpath>
+                    <resource content-type="text/plain">mock/sample-post4.txt</resource>
+                </resource-group>
             </resource-groups>
         </configuration>
     </configurations>
@@ -104,6 +108,7 @@ The log confirms with:
 
 ### Optional attributes
 The XML configuration mentions some optional attributes, which are:
+* content-type: which is similar to the mime-type, it defines the data type of the response. This defaults to 'application/json'.
 * delay: which is exactly what it means, it adds a delay in the response measured in milli seconds.
 * error: which allows simulation of erroneous responses, based on a percentage (error rate) and the alternative response code (error-code).
 
