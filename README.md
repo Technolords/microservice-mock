@@ -116,11 +116,7 @@ To understand the options of the configuration file, see the remote documentatio
 
 ## Roadmap
 
-The following improvements are planned:
-
-* Add dynamic support for mime-types/content-types. Currently, 'application/json' and 'application/xml' are generated based on the extension of the resource files.
-* Add support for other Xpath expressions. Currently, the Xpath expression must resolve into a boolean value in order to have a successful match.
-* Add support for jsonpath, so POST with Json messages are possible. Currently, only XML is.
+The following improvements are planned. See [this roadmap](https://github.com/Technolords/microservice-mock/projects/1)
 
 ## XSD Schema
 
