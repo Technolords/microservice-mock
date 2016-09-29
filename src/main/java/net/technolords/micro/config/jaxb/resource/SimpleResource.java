@@ -13,6 +13,7 @@ public class SimpleResource {
     private int delay;
     private String errorCode;
     private int errorRate;
+    private String contentType;
 
     @XmlValue
     public String getResource() {
@@ -57,5 +58,14 @@ public class SimpleResource {
 
     public void setErrorRate(int errorRate) {
         this.errorRate = errorRate;
+    }
+
+    @XmlAttribute(name = "content-type")
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
     }
 }

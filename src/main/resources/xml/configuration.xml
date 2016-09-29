@@ -11,20 +11,24 @@
         +-->
     <configuration type="POST" url="/mock/post">
         <namespaces>
-            <namespace prefix="traxis">urn:eventis:traxisweb:1.0</namespace>
+            <namespace prefix="technolords">urn:some:reference:1.0</namespace>
         </namespaces>
         <resource-groups>
             <resource-group>
-                <xpath>/traxis:sample/traxis:message[@id = '1']</xpath>
-                <resource delay="10000">mock/sample-post1.json</resource>
+                <xpath>/technolords:sample/technolords:message[@id = '1']</xpath>
+                <resource>mock/sample-post1.json</resource>
             </resource-group>
             <resource-group>
-                <xpath>/traxis:sample/traxis:message[@id = '2']</xpath>
-                <resource error-code="206" error-rate="50">mock/sample-post2.json</resource>
+                <xpath>/technolords:sample/technolords:message[@id = '2']</xpath>
+                <resource delay="10000">mock/sample-post2.json</resource>
             </resource-group>
             <resource-group>
-                <xpath>count(/traxis:Request/traxis:ResourceQuery/traxis:SubQueries/traxis:SubQuery[1][@relationName='Titles']) = 1</xpath>
-                <resource>mock/sample-post2.json</resource>
+                <xpath>/technolords:sample/technolords:message[@id = '3']</xpath>
+                <resource error-code="206" error-rate="50">mock/sample-post3.json</resource>
+            </resource-group>
+            <resource-group>
+                <xpath>/technolords:sample/technolords:message[@id = '4']</xpath>
+                <resource content-type="text/plain">mock/sample-post4.txt</resource>
             </resource-group>
         </resource-groups>
     </configuration>
@@ -33,7 +37,7 @@
 <!--
     Sample POST message:
 
-    <sample xmlns="urn:eventis:traxisweb:1.0">
+    <sample xmlns="urn:some:reference:1.0">
       <message id="1"/>
     </sample>
 -->

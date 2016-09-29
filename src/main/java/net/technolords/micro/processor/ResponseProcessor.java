@@ -34,9 +34,12 @@ public class ResponseProcessor implements Processor {
         LOGGER.debug("About to generate response...");
         String requestType = exchange.getIn().getHeader(Exchange.HTTP_METHOD, String.class);
         String requestURI = exchange.getIn().getHeader(Exchange.HTTP_URI, String.class);
-        String message = exchange.getIn().getBody(String.class);
         ResponseContext responseContext;
         if (ConfigurationManager.HTTP_POST.equals(requestType.toUpperCase())) {
+            String message = exchange.getIn().getBody(String.class);
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Current body: {}", message);
+            }
             responseContext = this.configurationManager.findResponseForPostOperationWithPathAndMessage(requestURI, message);
         } else {
             responseContext = this.configurationManager.findResponseForGetOperationWithPath(requestURI);

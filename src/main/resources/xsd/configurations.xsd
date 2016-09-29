@@ -70,6 +70,7 @@
     <xs:complexType name="resourceType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
+                <xs:attribute name="content-type" type="xs:string" use="optional" />
                 <xs:attribute name="delay" type="xs:string" use="optional" />
                 <xs:attribute name="error-code" type="xs:string" use="optional" />
                 <xs:attribute name="error-rate" type="xs:integer" use="optional" />
