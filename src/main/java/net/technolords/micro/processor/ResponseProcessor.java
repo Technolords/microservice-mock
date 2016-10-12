@@ -8,9 +8,6 @@ import org.slf4j.LoggerFactory;
 import net.technolords.micro.ResponseContext;
 import net.technolords.micro.config.ConfigurationManager;
 
-/**
- * Created by Technolords on 2016-Jul-20.
- */
 public class ResponseProcessor implements Processor {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private static final String CONTENT_TYPE = "Content-Type";

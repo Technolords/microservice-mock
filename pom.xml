@@ -33,7 +33,7 @@
         <maven.compiler.plugin.version>3.3</maven.compiler.plugin.version>
         <maven.source.plugin.version>2.4</maven.source.plugin.version>
         <maven.surefire.plugin.version>2.18.1</maven.surefire.plugin.version>
-        <org.testng.version>6.8.5</org.testng.version>
+        <org.testng.version>6.9.4</org.testng.version>
     </properties>
 
     <!--+
@@ -86,12 +86,6 @@
             <version>${org.testng.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>6.9.4</version>
-        </dependency>
-
 
     </dependencies>
 

@@ -9,9 +9,6 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-/**
- * Created by Technolords on 2015-Dec-04.
- */
 public class TestSupport {
     private static final Logger LOGGER = LoggerFactory.getLogger(TestSupport.class);
     private Path pathToClassFolder;
