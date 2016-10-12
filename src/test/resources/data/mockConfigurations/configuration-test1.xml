@@ -1,0 +1,27 @@
+<configurations xmlns="http://xsd.technolords.net">
+    <!--+
+        | Supported GET requests
+        +-->
+    <configuration type="GET" url="/mock/get">
+        <resource>data/mockResponses/sample-get.txt</resource>
+    </configuration>
+
+    <!--+
+        | Supported POST requests
+        +-->
+    <configuration type="POST" url="/mock/post">
+        <namespaces>
+            <namespace prefix="anyMock">urn:eventis:testMock:1.0</namespace>
+        </namespaces>
+        <resource-groups>
+            <resource-group>
+                <xpath>/anyMock:sample/anyMock:message[@id = '1']</xpath>
+                <resource delay="10000">data/mockResponses/sample-post1.txt</resource>
+            </resource-group>
+            <resource-group>
+                <xpath>/anyMock:sample/anyMock:message[@id = '2']</xpath>
+                <resource error-code="206" error-rate="50">data/mockResponses/sample-post2.txt</resource>
+            </resource-group>            
+        </resource-groups>
+    </configuration>
+</configurations>
