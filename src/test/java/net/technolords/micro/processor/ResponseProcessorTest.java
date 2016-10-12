@@ -23,7 +23,7 @@ public class ResponseProcessorTest extends TestSupport{
     @DataProvider(name = "dataSetMockExpectation")
     public Object[][] dataSetMock(){
         return new Object[][] {
-                {"configuration-test1.xml","POST", "/mock/post", "sample-post1-request.xml", "sample-post1.txt."},
+                {"configuration-test1.xml","POST", "/mock/post", "sample-post1-request.xml", "sample-post1.txt"},
                 {"configuration-test1.xml","GET", "/mock/get",null, "sample-get.txt"}
         };
     }
