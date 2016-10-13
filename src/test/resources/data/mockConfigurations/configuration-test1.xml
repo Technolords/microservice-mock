@@ -16,7 +16,7 @@
         <resource-groups>
             <resource-group>
                 <xpath>/anyMock:sample/anyMock:message[@id = '1']</xpath>
-                <resource delay="10000">data/mockResponses/sample-post1.txt</resource>
+                <resource>data/mockResponses/sample-post1.txt</resource>
             </resource-group>
             <resource-group>
                 <xpath>/anyMock:sample/anyMock:message[@id = '2']</xpath>

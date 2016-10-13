@@ -7,9 +7,6 @@ import org.slf4j.LoggerFactory;
 import net.technolords.micro.config.ConfigurationManager;
 import net.technolords.micro.route.RestServiceRoute;
 
-/**
- * Created by Technolords on 2016-Jun-23.
- */
 public class MockedRestService {
     private static final Logger LOGGER = LoggerFactory.getLogger(MockedRestService.class);
     private static final String PROP_PORT = "port";

@@ -9,9 +9,6 @@ import javax.xml.namespace.NamespaceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by Technolords on 2016-Jul-25.
- */
 public class DefaultNamespaceContext implements NamespaceContext {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private Map<String, String> namespaceConfig;

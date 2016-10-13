@@ -10,9 +10,6 @@ import net.technolords.micro.config.jaxb.namespace.NamespaceList;
 import net.technolords.micro.config.jaxb.resource.ResourceGroups;
 import net.technolords.micro.config.jaxb.resource.SimpleResource;
 
-/**
- * Created by Technolords on 2016-Jul-20.
- */
 public class Configuration {
     private String type;
     private String url;

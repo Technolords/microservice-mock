@@ -12,9 +12,6 @@ import net.technolords.micro.config.jaxb.Configuration;
 import net.technolords.micro.config.jaxb.namespace.NamespaceConfig;
 import net.technolords.micro.config.jaxb.namespace.NamespaceList;
 
-/**
- * Created by Technolords on 2016-Jul-25.
- */
 public class ConfigurationToNamespaceContext {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 

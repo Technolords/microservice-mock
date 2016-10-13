@@ -1,8 +1,5 @@
 package net.technolords.micro;
 
-/**
- * Created by Technolords on 2016-Jul-25.
- */
 public class ResponseContext {
     public static final String JSON_CONTENT_TYPE = "application/json";
     public static final String XML_CONTENT_TYPE = "application/xml";

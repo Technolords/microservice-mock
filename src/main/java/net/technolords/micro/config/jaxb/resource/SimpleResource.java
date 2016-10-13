@@ -4,9 +4,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlValue;
 
-/**
- * Created by Technolords on 2016-Jul-21.
- */
 public class SimpleResource {
     private String resource;
     private String cachedData;

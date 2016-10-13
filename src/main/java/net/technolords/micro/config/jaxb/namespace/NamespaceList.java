@@ -4,9 +4,6 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 
-/**
- * Created by Technolords on 2016-Jul-25.
- */
 public class NamespaceList {
     private List<NamespaceConfig> namespaces;
 

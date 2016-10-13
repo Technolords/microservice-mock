@@ -2,9 +2,6 @@ package net.technolords.micro.config.jaxb.resource;
 
 import javax.xml.bind.annotation.XmlElement;
 
-/**
- * Created by Technolords on 2016-Jul-21.
- */
 public class ResourceGroup {
     private XpathConfig xpathConfig;
     private SimpleResource simpleResource;

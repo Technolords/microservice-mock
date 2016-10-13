@@ -11,9 +11,6 @@ import org.slf4j.LoggerFactory;
 import net.technolords.micro.config.ConfigurationManager;
 import net.technolords.micro.processor.ResponseProcessor;
 
-/**
- * Created by Technolords on 2016-Jun-23.
- */
 public class RestServiceRoute extends RouteBuilder {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private static final String DIRECT_MAIN = "direct:main";

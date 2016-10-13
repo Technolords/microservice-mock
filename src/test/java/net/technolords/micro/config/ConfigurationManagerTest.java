@@ -10,9 +10,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.xml.sax.SAXException;
 
-/**
- * Created by Technolords on 2016-Jul-21.
- */
 public class ConfigurationManagerTest {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
@@ -27,7 +24,7 @@ public class ConfigurationManagerTest {
     public void testRandom() throws JAXBException, IOException, SAXException {
         ConfigurationManager configurationManager = new ConfigurationManager(null, null);
         for (int i = 0; i < 100; i++) {
-            LOGGER.info("Generated random: {}", configurationManager.generateRandom());
+            LOGGER.debug("Generated random: {}", configurationManager.generateRandom());
         }
     }
 }

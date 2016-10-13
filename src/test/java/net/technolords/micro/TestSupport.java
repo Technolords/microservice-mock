@@ -16,12 +16,6 @@ public class TestSupport {
     private Path pathToTargetFolder;
 
     /**
-     * Since the artificer project is part of a multi module Maven build, the start point of executing the test
-     * can differ. I.e. from 'root pom' or from 'artificer pom' which means there are different path's to the
-     * test resources. This method fixes the correct location of the test resources by calculating the path.
-     */
-
-    /**
      * Depending on the execution of the test files, whether from IDE or from multi module maven project (CLI),
      * the target and data folders are relative. In order to overcome this, the folders are calculated.
      */
@@ -35,19 +29,11 @@ public class TestSupport {
 
         // Set path to folder containing the data, i.e. src/test/resources/data
         Path pathToData = FileSystems.getDefault().getPath(buffer.toString());
-        if(!pathToData.toAbsolutePath().toString().contains("microservice-mock")) {
-            StringBuilder pathWithPrefix = new StringBuilder();
-            pathWithPrefix.append("artificer").append(File.separator).append(buffer.toString());
-            pathToData = FileSystems.getDefault().getPath(pathWithPrefix.toString());
-        }
         this.pathToDataFolder = pathToData.toAbsolutePath();
         LOGGER.debug("Data folder set: {} and exists: {}", this.pathToDataFolder.toString(), Files.exists(this.pathToDataFolder));
 
         // Set path to Target folder to create Output, i.e. target
         Path pathToTarget = FileSystems.getDefault().getPath("target");
-        if(!pathToTarget.toAbsolutePath().endsWith("artificer" + File.separator + "target")) {
-            pathToTarget = FileSystems.getDefault().getPath("artificer" + File.separator + "target");
-        }
         this.pathToTargetFolder = pathToTarget.toAbsolutePath();
         LOGGER.debug("Target folder set: {} and exists: {}", this.pathToTargetFolder.toString(), Files.exists(this.pathToTargetFolder));
 

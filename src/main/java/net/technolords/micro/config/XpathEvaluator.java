@@ -15,9 +15,6 @@ import org.xml.sax.InputSource;
 
 import net.technolords.micro.config.jaxb.Configuration;
 
-/**
- * Created by Technolords on 2016-Jul-25.
- */
 public class XpathEvaluator {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private ConfigurationToNamespaceContext configurationToNamespaceContext = null;

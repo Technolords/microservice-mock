@@ -34,12 +34,10 @@ import net.technolords.micro.config.jaxb.resource.ResourceGroup;
 import net.technolords.micro.config.jaxb.resource.ResourceGroups;
 import net.technolords.micro.config.jaxb.resource.SimpleResource;
 
-/**
- * Created by Technolords on 2016-Jul-20.
- */
 public class ConfigurationManager {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     public static final String HTTP_POST = "POST";
+    public static final String HTTP_GET = "GET";
     private static final String PATH_TO_CONFIG_FILE = "xml/configuration.xml";
     private static final String PATH_TO_SCHEMA_FILE = "xsd/configurations.xsd";
     private Configurations configurations = null;
