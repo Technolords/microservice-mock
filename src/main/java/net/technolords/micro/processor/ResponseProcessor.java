@@ -69,7 +69,7 @@ public class ResponseProcessor implements Processor {
         String requestURI = exchange.getIn().getHeader(Exchange.HTTP_URI, String.class);
         if (requestURI.equals("/mock/cmd")) {
             // exchange.getContext().stop();
-            return this.commandManager.executeCommand(exchange.getIn().getHeaders());
+            return this.commandManager.executeCommand(exchange);
         } else {
             return this.configurationManager.findResponseForGetOperationWithPath(requestURI);
         }
@@ -125,11 +125,11 @@ public class ResponseProcessor implements Processor {
      */
     private void updateExchange(Exchange exchange, ResponseContext responseContext) {
         if (responseContext != null) {
-            exchange.getIn().setBody(responseContext.getResponse());
-            exchange.getIn().setHeader(CONTENT_TYPE, responseContext.getContentType());
-            exchange.getIn().setHeader(Exchange.HTTP_RESPONSE_CODE, (responseContext.getErrorCode() == null ? 200 : responseContext.getErrorCode()));
+            exchange.getOut().setBody(responseContext.getResponse());
+            exchange.getOut().setHeader(CONTENT_TYPE, responseContext.getContentType());
+            exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, (responseContext.getErrorCode() == null ? 200 : responseContext.getErrorCode()));
         } else {
-            exchange.getIn().setHeader(Exchange.HTTP_RESPONSE_CODE, 404);
+            exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 404);
         }
     }
 
