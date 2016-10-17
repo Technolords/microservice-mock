@@ -1,10 +1,13 @@
 package net.technolords.micro.route;
 
+import java.util.concurrent.TimeUnit;
+
 import org.apache.camel.Exchange;
 import org.apache.camel.ExchangePattern;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.spi.ShutdownStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +36,8 @@ public class RestServiceRoute extends RouteBuilder {
      */
     @Override
     public void configure() throws Exception {
+        this.updateShutdownStrategy();
+
         onException(Exception.class)
             .handled(true)
             .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(500))
@@ -46,6 +51,14 @@ public class RestServiceRoute extends RouteBuilder {
         from(DIRECT_MAIN)
             .log(LoggingLevel.DEBUG, LOGGER, "Current headers: ${headers}")
             .process(this.responseProcessor);
+    }
+
+    private void updateShutdownStrategy() {
+        ShutdownStrategy shutdownStrategy = super.getContext().getShutdownStrategy();
+        shutdownStrategy.setTimeUnit(TimeUnit.SECONDS);
+        shutdownStrategy.setTimeout(1L);
+        shutdownStrategy.setShutdownNowOnTimeout(true);
+        shutdownStrategy.setSuppressLoggingOnTimeout(true);
     }
 
     /**

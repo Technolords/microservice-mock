@@ -44,7 +44,7 @@ public class ResponseProcessorTest extends TestSupport{
         responseProcessor.process(exchange);
 
         //Assertions
-        String actualResponse = exchange.getIn().getBody(String.class);
+        String actualResponse = exchange.getOut().getBody(String.class);
         Assert.assertEquals(actualResponse, responseContent);
     }
 
