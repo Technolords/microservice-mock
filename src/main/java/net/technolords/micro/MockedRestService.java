@@ -32,9 +32,6 @@ public class MockedRestService {
         this.main.run();
     }
 
-    // TODO: extend from main, and provide @Beforestart and @Afterstart
-    // see also: http://www.javadoc.io/doc/org.apache.camel/camel-core/2.17.1
-
     /**
      * The main executable.
      *

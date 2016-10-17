@@ -87,7 +87,7 @@ public class ConfigurationManager {
      * @throws InterruptedException
      *  When delaying the response fails.
      */
-    public ResponseContext findResponseForGetOperationWithPath(String path) throws JAXBException, IOException, InterruptedException {
+    public ResponseContext findResponseForGetOperationWithPath(String path) throws IOException, InterruptedException {
         LOGGER.debug("About to find response for get operation with path: {}", path);
         if (this.getConfigurations.containsKey(path)) {
             LOGGER.debug("... found, proceeding to the data part...");
@@ -121,7 +121,7 @@ public class ConfigurationManager {
      * @throws InterruptedException
      *  When delaying the response fails.
      */
-    public ResponseContext findResponseForPostOperationWithPathAndMessage(String path, String message) throws IOException, XPathExpressionException, JAXBException, InterruptedException {
+    public ResponseContext findResponseForPostOperationWithPathAndMessage(String path, String message) throws IOException, XPathExpressionException, InterruptedException {
         LOGGER.debug("About to find response for post operation with path: {}", path);
         if (this.postConfigurations.containsKey(path)) {
             LOGGER.debug("... found, proceeding to the data part...");
