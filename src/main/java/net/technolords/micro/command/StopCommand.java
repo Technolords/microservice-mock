@@ -14,7 +14,6 @@ public class StopCommand {
         try {
             exchange.getContext().stop();
             responseContext.setResponse("Stopping the mock..");
-            responseContext.setErrorCode(String.valueOf(HttpURLConnection.HTTP_OK));
         } catch (Exception e) {
             responseContext.setResponse(e.getMessage());
             responseContext.setErrorCode(String.valueOf(HttpURLConnection.HTTP_INTERNAL_ERROR));

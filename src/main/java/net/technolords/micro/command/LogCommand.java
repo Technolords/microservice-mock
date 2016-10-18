@@ -39,7 +39,6 @@ public class LogCommand {
                 default:
                     responseContext.setResponse("Log level unchanged, unsupported level: " + logLevel);
             }
-            responseContext.setErrorCode(String.valueOf(HttpURLConnection.HTTP_OK));
         } else {
             responseContext.setResponse("Unable to change log level, no ROOT logger found...");
             responseContext.setErrorCode(String.valueOf(HttpURLConnection.HTTP_INTERNAL_ERROR));
