@@ -15,6 +15,7 @@ public class StatsCommand {
     private static StatisticsHandler statisticsHandler;
 
     public static ResponseContext executeCommand(String type) {
+        LOGGER.debug("Stats command called...");
         ResponseContext responseContext = new ResponseContext();
         responseContext.setContentType(ResponseContext.PLAIN_TEXT_CONTENT_TYPE);
         if (statisticsHandler == null) {

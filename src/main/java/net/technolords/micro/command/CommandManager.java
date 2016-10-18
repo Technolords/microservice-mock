@@ -30,6 +30,9 @@ public class CommandManager {
         if (commands.containsKey(STATS)) {
             return StatsCommand.executeCommand((String) commands.get(STATS));
         }
+        if (commands.containsKey(RESET)) {
+            return ResetCommand.executeCommand();
+        }
         return this.createUnsupportedResponse();
     }
 
