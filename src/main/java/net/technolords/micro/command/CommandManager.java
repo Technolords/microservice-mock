@@ -27,6 +27,12 @@ public class CommandManager {
         if (commands.containsKey(STOP)) {
             return StopCommand.executeCommand(exchange);
         }
+        if (commands.containsKey(STATS)) {
+            return StatsCommand.executeCommand((String) commands.get(STATS));
+        }
+        if (commands.containsKey(RESET)) {
+            return ResetCommand.executeCommand();
+        }
         return this.createUnsupportedResponse();
     }
 
@@ -37,4 +43,5 @@ public class CommandManager {
         responseContext.setResponse("Currently not supported");
         return responseContext;
     }
+
 }

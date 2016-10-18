@@ -68,7 +68,6 @@ public class ResponseProcessor implements Processor {
     private ResponseContext handleGetRequest(Exchange exchange) throws InterruptedException, IOException {
         String requestURI = exchange.getIn().getHeader(Exchange.HTTP_URI, String.class);
         if (requestURI.equals("/mock/cmd")) {
-            // exchange.getContext().stop();
             return this.commandManager.executeCommand(exchange);
         } else {
             return this.configurationManager.findResponseForGetOperationWithPath(requestURI);

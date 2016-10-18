@@ -13,7 +13,7 @@ public class LogCommand {
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCommand.class);
 
     public static ResponseContext executeCommand(String logLevel) {
-        LOGGER.debug("Got log level {}", logLevel);
+        LOGGER.debug("Log command called, with log level {}", logLevel);
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
         ch.qos.logback.classic.Logger rootLogger = loggerContext.getLogger("ROOT");
         ResponseContext responseContext = new ResponseContext();
@@ -36,10 +36,13 @@ public class LogCommand {
                     rootLogger.setLevel(Level.INFO);
                     responseContext.setResponse("Log level changed to INFO");
                     break;
+                case Level.OFF_INT:
+                    rootLogger.setLevel(Level.OFF);
+                    responseContext.setResponse("Logging switched off");
+                    break;
                 default:
                     responseContext.setResponse("Log level unchanged, unsupported level: " + logLevel);
             }
-            responseContext.setErrorCode(String.valueOf(HttpURLConnection.HTTP_OK));
         } else {
             responseContext.setResponse("Unable to change log level, no ROOT logger found...");
             responseContext.setErrorCode(String.valueOf(HttpURLConnection.HTTP_INTERNAL_ERROR));

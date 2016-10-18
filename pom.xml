@@ -41,8 +41,8 @@
         +-->
     <scm>
         <connection>scm:git:https://github.com/Technolords/microservice-mock</connection>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 
     <!--+
         | Dependencies
