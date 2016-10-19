@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.ThreadContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,10 +30,20 @@ public class InfoFilter implements Filter {
         long startTime = System.currentTimeMillis();
         filterChain.doFilter(servletRequest, servletResponse);
         long endTime = System.currentTimeMillis() - startTime;
-        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
-        // epoch, uri, response code and elapsed time
-        LOGGER.info("elapsed time: {}, return code: {}, uri: {}", endTime, httpServletResponse.getStatus(), httpServletRequest.getRequestURI());
+        // Update logging thread with meta data
+        this.updateThreadContextWithHttpUri((HttpServletRequest) servletRequest);
+        this.updateThreadContextWithHttpStatus((HttpServletResponse) servletResponse);
+        // <PatternLayout pattern="%d{UNIX_MILLIS} %X{httpUri} %X{httpStatus} %m%n"/>
+        // Log: epoch, uri, response code and elapsed time
+        LOGGER.info("{}", endTime);
+    }
+
+    private void updateThreadContextWithHttpUri(HttpServletRequest httpServletRequest) {
+        ThreadContext.put("httpUri", String.valueOf(httpServletRequest.getRequestURI()));
+    }
+
+    private void updateThreadContextWithHttpStatus(HttpServletResponse httpServletResponse) {
+        ThreadContext.put("httpStatus", String.valueOf(httpServletResponse.getStatus()));
     }
 
     @Override

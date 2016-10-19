@@ -2,15 +2,10 @@
 <Configuration status="info">
     <Appenders>
         <Console name="console" target="SYSTEM_OUT">
-            <!--<PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>-->
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %class{36} %L %M - %msg%xEx%n"/>
-            <!--
-                2016-10-19 22:50:16,344 main DEBUG PluginManager 'Core' found 107 plugins
-                22:50:16.538 [main] INFO  net.technolords.micro.route.RestServiceRoute 30 <init> - Using port: 9090
-            -->
         </Console>
         <Console name="filterAppender" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{HH:mm:ss.SSS} %m%n"/>
+            <PatternLayout pattern="%d{UNIX_MILLIS} %X{httpUri} %X{httpStatus} %m%n"/>
         </Console>
     </Appenders>
     <Loggers>
