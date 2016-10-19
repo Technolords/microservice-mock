@@ -20,7 +20,7 @@ public class RestServiceRoute extends RouteBuilder {
     private static final String JETTY_MAIN = "jetty:http://";
     private static final String JETTY_BINDING_ADDRESS = "0.0.0.0";
     private static final String JETTY_BINDING_PATH = "/";
-    private static final String JETTY_OPTIONS = "?matchOnUriPrefix=true&enableJmx=true&handlers=metrics";
+    private static final String JETTY_OPTIONS = "?matchOnUriPrefix=true&enableJmx=true&handlers=metrics&filtersRef=infoFilter";
     private String port = null;
     private Processor responseProcessor = null;
 

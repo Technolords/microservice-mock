@@ -25,6 +25,18 @@
             | Version properties
             +-->
         <camel.version>2.18.0</camel.version>
+        <!--
+            TODO: update version
+            http://articles.qos.ch/patternLayout.html
+            https://github.com/qos-ch/logback/blob/master/logback-examples/src/main/java/chapters/layouts/PatternSample.java
+
+            versus
+
+            TODO: update library
+            http://logging.apache.org/log4j/2.x/performance.html
+            http://logging.apache.org/log4j/2.x/log4j-nosql/index.html
+            http://logging.apache.org/log4j/2.x/log4j-api/apidocs/index.html
+        -->
         <ch.qos.logback.version>1.1.2</ch.qos.logback.version>
         <commons.io.version>2.4</commons.io.version>
         <jetty.port>9090</jetty.port>
