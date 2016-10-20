@@ -2,18 +2,16 @@
 <Configuration status="info">
     <Appenders>
         <Console name="console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %class{36} %L %M - %msg%xEx%n"/>
-        </Console>
-        <Console name="filterAppender" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{UNIX_MILLIS} %X{httpUri} %X{httpStatus} %m%n"/>
+            <PatternLayout pattern="%date{DEFAULT} [%level] [%thread] [%class{36}] %message%n"/>
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="net.technolords.micro.filter" level="trace" additivity="false">
-            <AppenderRef ref="filterAppender"/>
+        <Logger name="net.technolords.micro.filter" level="error" additivity="false">
+            <AppenderRef ref="console"/>
         </Logger>
         <Root level="info">
             <AppenderRef ref="console"/>
         </Root>
     </Loggers>
 </Configuration>
+

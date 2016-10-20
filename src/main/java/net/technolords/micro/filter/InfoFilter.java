@@ -1,5 +1,8 @@
 package net.technolords.micro.filter;
 
+import static net.technolords.micro.filter.InfoFilter.FILTER_ID;
+import static net.technolords.micro.filter.InfoFilter.URL_PATTERNS;
+
 import java.io.IOException;
 
 import javax.servlet.Filter;
@@ -16,8 +19,12 @@ import org.apache.logging.log4j.ThreadContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@WebFilter (filterName = "infoFilter", urlPatterns = { "/*" })
+@WebFilter (filterName = FILTER_ID, urlPatterns = { URL_PATTERNS })
 public class InfoFilter implements Filter {
+    public static final String FILTER_ID = "infoFilter";
+    public static final String URL_PATTERNS = "\"/*\"";
+    private static final String LOG_CONTEXT_HTTP_URI = "httpUri";
+    private static final String LOG_CONTEXT_HTTP_STATUS = "httpStatus";
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     @Override
@@ -33,17 +40,16 @@ public class InfoFilter implements Filter {
         // Update logging thread with meta data
         this.updateThreadContextWithHttpUri((HttpServletRequest) servletRequest);
         this.updateThreadContextWithHttpStatus((HttpServletResponse) servletResponse);
-        // <PatternLayout pattern="%d{UNIX_MILLIS} %X{httpUri} %X{httpStatus} %m%n"/>
-        // Log: epoch, uri, response code and elapsed time
+        // Log: epoch, uri, response code and elapsed time, using: pattern="%d{UNIX_MILLIS} %X{httpUri} %X{httpStatus} %m%n"
         LOGGER.info("{}", endTime);
     }
 
     private void updateThreadContextWithHttpUri(HttpServletRequest httpServletRequest) {
-        ThreadContext.put("httpUri", String.valueOf(httpServletRequest.getRequestURI()));
+        ThreadContext.put(LOG_CONTEXT_HTTP_URI, String.valueOf(httpServletRequest.getRequestURI()));
     }
 
     private void updateThreadContextWithHttpStatus(HttpServletResponse httpServletResponse) {
-        ThreadContext.put("httpStatus", String.valueOf(httpServletResponse.getStatus()));
+        ThreadContext.put(LOG_CONTEXT_HTTP_STATUS, String.valueOf(httpServletResponse.getStatus()));
     }
 
     @Override

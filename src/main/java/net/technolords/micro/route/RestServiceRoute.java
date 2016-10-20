@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.technolords.micro.config.ConfigurationManager;
+import net.technolords.micro.filter.InfoFilter;
 import net.technolords.micro.processor.ResponseProcessor;
 
 public class RestServiceRoute extends RouteBuilder {
@@ -20,7 +21,10 @@ public class RestServiceRoute extends RouteBuilder {
     private static final String JETTY_MAIN = "jetty:http://";
     private static final String JETTY_BINDING_ADDRESS = "0.0.0.0";
     private static final String JETTY_BINDING_PATH = "/";
-    private static final String JETTY_OPTIONS = "?matchOnUriPrefix=true&enableJmx=true&handlers=metrics&filtersRef=infoFilter";
+    private static final String QUESTION_SIGN = "?";
+    private static final String AND_SIGN = "&";
+    private static final String EQUAL_SIGN = "=";
+    private static final String TRUE_VALUE = "true";
     private String port = null;
     private Processor responseProcessor = null;
 
@@ -71,7 +75,11 @@ public class RestServiceRoute extends RouteBuilder {
         StringBuilder buffer = new StringBuilder();
         // jetty:http://0.0.0.0:9090/?matchOnUriPrefix=true&enableJmx=true
         buffer.append(JETTY_MAIN).append(JETTY_BINDING_ADDRESS).append(":").append(this.port);
-        buffer.append(JETTY_BINDING_PATH).append(JETTY_OPTIONS);
+        buffer.append(JETTY_BINDING_PATH);
+        buffer.append(QUESTION_SIGN).append("matchOnUriPrefix").append(EQUAL_SIGN).append(TRUE_VALUE);
+        buffer.append(AND_SIGN).append("enableJmx").append(EQUAL_SIGN).append(TRUE_VALUE);
+        buffer.append(AND_SIGN).append("handlers").append(EQUAL_SIGN).append("metrics");
+        buffer.append(AND_SIGN).append("filtersRef").append(EQUAL_SIGN).append(InfoFilter.FILTER_ID);
         return buffer.toString();
     }
 

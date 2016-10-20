@@ -112,12 +112,8 @@ The XML configuration mentions some optional attributes, which are:
 * delay: which is exactly what it means, it adds a delay in the response measured in milli seconds.
 * error: which allows simulation of erroneous responses, based on a percentage (error rate) and the alternative response code (error-code).
 
-## Log Configuration
-The code uses a logging library called 'logback' and has an embedded (default) configuration. To use a custom log configuration a Java system property must be provided:
-
-    java -Dlogback.configurationFile=/path/to/config.xml -jar target/microservice-mock-1.0.0.jar
-
-To understand the options of the configuration file, see the remote documentation [here](http://logback.qos.ch/manual/configuration.html).
+## Logging
+[Logging](doc/logging.md)
 
 ## Roadmap
 
