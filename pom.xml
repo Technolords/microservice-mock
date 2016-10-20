@@ -25,11 +25,11 @@
             | Version properties
             +-->
         <camel.version>2.18.0</camel.version>
-        <ch.qos.logback.version>1.1.2</ch.qos.logback.version>
         <commons.io.version>2.4</commons.io.version>
         <jetty.port>9090</jetty.port>
         <jetty.util.version>9.2.19.v20160908</jetty.util.version>
         <jetty.maven.plugin.version>9.4.0.M0</jetty.maven.plugin.version>
+        <log4j.version>2.7</log4j.version>
         <maven.compiler.plugin.version>3.3</maven.compiler.plugin.version>
         <maven.source.plugin.version>2.4</maven.source.plugin.version>
         <maven.surefire.plugin.version>2.18.1</maven.surefire.plugin.version>
@@ -53,17 +53,34 @@
             | Default scope
             +-->
         <dependency>
-            <!-- Required for logging -->
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>${ch.qos.logback.version}</version>
-        </dependency>
-
-        <dependency>
             <!-- Required to use jetty:http endpoints -->
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-jetty9</artifactId>
             <version>${camel.version}</version>
+        </dependency>
+        <dependency>
+            <!-- Required to use logging -->
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <!-- Required to use logging -->
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <!-- Required to bridge slf4j over log4j -->
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <!-- Required to use log4j correctly from jetty -->
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-web</artifactId>
+            <version>${log4j.version}</version>
         </dependency>
         <dependency>
             <!-- Required to use the queued thread pool -->
@@ -72,7 +89,7 @@
             <version>${jetty.util.version}</version>
         </dependency>
         <dependency>
-            <!-- Allows mvn run:jetty -->
+            <!-- Required to support: mvn run:jetty -->
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-maven-plugin</artifactId>
             <version>${jetty.maven.plugin.version}</version>

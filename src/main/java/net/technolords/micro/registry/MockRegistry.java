@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import net.technolords.micro.config.ConfigurationManager;
+import net.technolords.micro.filter.InfoFilter;
 
 /**
  * This class 'isolates' all the Registry interfacing with Camel, and basically serves as a centralized
@@ -23,6 +24,7 @@ public class MockRegistry {
     private static final Logger LOGGER = LoggerFactory.getLogger(MockRegistry.class);
     private static final String METRICS = "metrics";
     private static final String CONFIG = "config";
+    private static final String FILTER_INFO = "infoFilter";
     private static Main main;
 
     /**
@@ -44,6 +46,7 @@ public class MockRegistry {
         main = mainReference;
         main.bind(METRICS, new StatisticsHandler());
         main.bind(CONFIG, new ConfigurationManager(System.getProperty(PROP_CONFIG), System.getProperty(PROP_DATA)));
+        main.bind(FILTER_INFO, new InfoFilter());
         LOGGER.info("Beans added to the registry...");
     }
 

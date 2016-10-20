@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info">
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%date{DEFAULT} [%level] [%thread] [%class{36}] %message%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="net.technolords.micro.filter" level="error" additivity="false">
+            <AppenderRef ref="console"/>
+        </Logger>
+        <Root level="info">
+            <AppenderRef ref="console"/>
+        </Root>
+    </Loggers>
+</Configuration>
+
