@@ -10,7 +10,7 @@ import org.apache.logging.log4j.spi.StandardLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.technolords.micro.ResponseContext;
+import net.technolords.micro.processor.ResponseContext;
 
 public class LogCommand {
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCommand.class);

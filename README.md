@@ -113,7 +113,7 @@ The XML configuration mentions some optional attributes, which are:
 * error: which allows simulation of erroneous responses, based on a percentage (error rate) and the alternative response code (error-code).
 
 ## Logging
-[Logging](doc/logging.md)
+[Log configuration](doc/logging.md)
 
 ## Roadmap
 

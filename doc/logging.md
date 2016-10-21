@@ -4,7 +4,7 @@ Every tool needs logging and this tool is no exception. Back to [main](../README
 ## History
 Initially, the implementation of this mock was using the [logback](http://logback.qos.ch/) library. This library is dubbed successor of the log4j framework. However, after research I have switched back to log4j again. Or more specifically the next generation called [log4j2](http://logging.apache.org/log4j/2.x/).
 
-Especially after reading that their implementation uses async log appenders, and optimized garbage collection it seems tailor made for high performance, high volume logging. See also: http://logging.apache.org/log4j/2.x/performance.html
+After reading that their implementation uses async log appenders, and optimized garbage collection it seems tailor made for high performance, high volume logging. See also: http://logging.apache.org/log4j/2.x/performance.html
  
 ## Usage
 There is a default logging configuration embedded in the jar file. For many this is good enough, supporting almost all use cases.
@@ -28,10 +28,10 @@ There is a default logging configuration embedded in the jar file. For many this
         </Loggers>
     </Configuration>
 
-Note that the default configuration will log from the filter only on error level.
+Note that the default configuration will only log from the filter on error level.
 
-It is possible to have your own log configuration, where you dictate fully the format and levels. See also: https://logging.apache.org/log4j/2.x/manual/layouts.html
-In order to achieve this a system property needs to be specific on the command like:
+It is possible to have your own log configuration, where you have full control over the format and levels. See also: https://logging.apache.org/log4j/2.x/manual/layouts.html
+In order to achieve this a system property must be specified on the command like:
 
     -Dlog4j.configurationFile=log4j2.xml
 
