@@ -3,12 +3,22 @@ This micro service represents a configurable webservice that can mock any other 
 When a request is made to the mock service, it checks the configuration for a matching URI. When a match is found,
 the associated response from the configuration is returned.
 
+* [Usage](#usage)
+* [Port configuration](#port-configuration)
+* [Mock configuration](#mock-configuration)
+  * [Resource management](#data-configuration)
+  * [Special behaviour](#optional-attributes)
+* [Logging](/github/doc/logging.md)
+* [Commands](/github/doc/commands.md)
+* [Releases](/github/doc/releases.md)
+* [Roadmap](https://github.com/Technolords/microservice-mock/projects/1)
+
 ## Usage
 The java jar is executable (required java version is 1.8), and looks like this (depending on the version):
 
     java -jar target/microservice-mock-1.0.0.jar
 
-Most of the logging is suppressed by design, however it is fully configurable as well. For more details see [here](https://github.com/Technolords/microservice-mock#log-configuration).
+Most of the logging is suppressed by design, however it is fully configurable as well. For more details see [here](/github/doc/logging.md).
 Out of the box, the log is emitted to the standard output, and there is no log file per default. Snippets of the log output:
 
     2016-09-06 21:38:09,317 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] INFO  About to validate the configuration...
@@ -111,13 +121,6 @@ The XML configuration mentions some optional attributes, which are:
 * content-type: which is similar to the mime-type, it defines the data type of the response. This defaults to 'application/json'.
 * delay: which is exactly what it means, it adds a delay in the response measured in milli seconds.
 * error: which allows simulation of erroneous responses, based on a percentage (error rate) and the alternative response code (error-code).
-
-## Logging
-[Log configuration](doc/logging.md)
-
-## Roadmap
-
-The following improvements are planned. See [this roadmap](https://github.com/Technolords/microservice-mock/projects/1)
 
 ## XSD Schema
 
