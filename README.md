@@ -3,8 +3,8 @@ This micro service represents a configurable webservice that can mock any other 
 When a request is made to the mock service, it checks the configuration for a matching URI. When a match is found,
 the associated response from the configuration is returned.
 
-* [Usage](#Usage)
-* [Port configuration](#Port-Configuration)
+* [Usage](#usage)
+* [Port configuration](#port-configuration)
 * [Logging](/github/doc/logging.md)
 * [Commands](/github/doc/commands.md)
 * [Releases](/github/doc/releases.md)
@@ -15,7 +15,7 @@ The java jar is executable (required java version is 1.8), and looks like this (
 
     java -jar target/microservice-mock-1.0.0.jar
 
-Most of the logging is suppressed by design, however it is fully configurable as well. For more details see [here](https://github.com/Technolords/microservice-mock#log-configuration).
+Most of the logging is suppressed by design, however it is fully configurable as well. For more details see [here](/github/doc/logging.md).
 Out of the box, the log is emitted to the standard output, and there is no log file per default. Snippets of the log output:
 
     2016-09-06 21:38:09,317 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] INFO  About to validate the configuration...
