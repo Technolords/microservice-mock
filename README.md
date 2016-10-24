@@ -5,9 +5,9 @@ the associated response from the configuration is returned.
 
 * [Usage](#Usage)
 * [Port configuration](#Port-Configuration)
-* [Logging](github/doc/logging.md)
-* [Commands](github/doc/commands.md)
-* [Releases](github/doc/releases.md)
+* [Logging](/github/doc/logging.md)
+* [Commands](/github/doc/commands.md)
+* [Releases](/github/doc/releases.md)
 * [Roadmap](https://github.com/Technolords/microservice-mock/projects/1)
 
 ## Usage

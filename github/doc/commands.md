@@ -3,10 +3,10 @@ Back to [main](https://github.com/Technolords/microservice-mock).
 # Commands
 This following commands are supported:
 
-* [stop](https://github.com/Technolords/microservice-mock/blob/master/github/doc/commands.md#Stop)
-* [log](https://github.com/Technolords/microservice-mock/blob/master/github/doc/commands.md#Log)
-* [stats](https://github.com/Technolords/microservice-mock/blob/master/github/doc/commands.md#Stats)
-* [reset](https://github.com/Technolords/microservice-mock/blob/master/github/doc/commands.md#Reset)
+* [stop](https://github.com/Technolords/microservice-mock/blob/master/github/doc/commands.md#stop)
+* [log](https://github.com/Technolords/microservice-mock/blob/master/github/doc/commands.md#log)
+* [stats](https://github.com/Technolords/microservice-mock/blob/master/github/doc/commands.md#stats)
+* [reset](https://github.com/Technolords/microservice-mock/blob/master/github/doc/commands.md#reset)
 
 ## Stop
 This command will stop the mock service, like:
@@ -39,3 +39,5 @@ At this moment the value can be html or anything else. The latter will return a 
 This command will reset the statistics, like
 
     http://localhost:9090/mock/cmd?reset=now
+    
+At this moment the value is irrelevant and can be anything.
