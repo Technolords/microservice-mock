@@ -5,6 +5,9 @@ the associated response from the configuration is returned.
 
 * [Usage](#usage)
 * [Port configuration](#port-configuration)
+* [Mock configuration](#mock-configuration)
+** [Resource management](#data-configuration)
+** [Special behaviour](#optional-attributes)
 * [Logging](/github/doc/logging.md)
 * [Commands](/github/doc/commands.md)
 * [Releases](/github/doc/releases.md)
