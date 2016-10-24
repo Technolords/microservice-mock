@@ -1,4 +1,4 @@
-Back to [main](../README.md).
+Back to [main](https://github.com/Technolords/microservice-mock).
 
 # Releases
 This page highlights the features of the releases. For details check the links.

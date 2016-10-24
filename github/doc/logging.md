@@ -1,4 +1,4 @@
-Back to [main](../README.md).
+Back to [main](https://github.com/Technolords/microservice-mock).
 
 # Logging
 Every tool needs logging and this tool is no exception.
