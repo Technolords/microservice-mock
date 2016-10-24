@@ -8,7 +8,7 @@ the associated response from the configuration is returned.
 * [Logging](github/doc/logging.md)
 * [Commands](github/doc/commands.md)
 * [Releases](github/doc/releases.md)
-* [this roadmap](https://github.com/Technolords/microservice-mock/projects/1)
+* [Roadmap](https://github.com/Technolords/microservice-mock/projects/1)
 
 ## Usage
 The java jar is executable (required java version is 1.8), and looks like this (depending on the version):
