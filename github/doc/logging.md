@@ -1,5 +1,7 @@
+Back to [main](../README.md).
+
 # Logging
-Every tool needs logging and this tool is no exception. Back to [main](../README.md).
+Every tool needs logging and this tool is no exception.
 
 ## History
 Initially, the implementation of this mock was using the [logback](http://logback.qos.ch/) library. This library is dubbed successor of the log4j framework. However, after research I have switched back to log4j again. Or more specifically the next generation called [log4j2](http://logging.apache.org/log4j/2.x/).
