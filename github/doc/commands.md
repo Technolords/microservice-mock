@@ -5,8 +5,8 @@ This following commands are supported:
 
 * [stop](https://github.com/Technolords/microservice-mock/blob/master/github/doc/commands.md#Stop)
 * [log](https://github.com/Technolords/microservice-mock/blob/master/github/doc/commands.md#Log)
-* [stats](https://github.com/Technolords/microservice-mock/blob/master/github/doc/commands#Stats)
-* [reset](https://github.com/Technolords/microservice-mock/blob/master/github/doc/commands#Reset)
+* [stats](https://github.com/Technolords/microservice-mock/blob/master/github/doc/commands.md#Stats)
+* [reset](https://github.com/Technolords/microservice-mock/blob/master/github/doc/commands.md#Reset)
 
 ## Stop
 This command will stop the mock service, like:
