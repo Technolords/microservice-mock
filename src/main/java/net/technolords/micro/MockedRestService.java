@@ -14,14 +14,12 @@ import net.technolords.micro.route.RestServiceRoute;
 
 public class MockedRestService extends Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(MockedRestService.class);
-    public static final String PROP_PORT = "port";
-    public static final String PROP_CONFIG = "config";
-    public static final String PROP_DATA = "data";
-    private static final String DEFAULT_PORT = "9090";
-    private String port;
 
-    public MockedRestService(String port) {
-        this.port = port;
+    /**
+     * Default constructor which registers the start up properties.
+     */
+    public MockedRestService() {
+        MockRegistry.registerPropertiesInRegistry(this);
     }
 
     /**
@@ -40,8 +38,8 @@ public class MockedRestService extends Main {
      */
     @Override
     public void beforeStart() throws JAXBException, IOException, SAXException {
-        MockRegistry.registerBeansInRegistry(this);
-        super.addRouteBuilder(new RestServiceRoute(this.port, MockRegistry.findConfigurationManager()));
+        MockRegistry.registerBeansInRegistry();
+        super.addRouteBuilder(new RestServiceRoute());
     }
 
     /**
@@ -73,18 +71,7 @@ public class MockedRestService extends Main {
      */
     public static void main(String[] args) throws Exception {
         LOGGER.info("About to start the mocked service...");
-        String port = DEFAULT_PORT;
-        if (System.getProperty(PROP_PORT) != null) {
-            LOGGER.debug("Configured Port: {}", System.getProperty(PROP_PORT));
-            port = System.getProperty(PROP_PORT);
-        }
-        if (System.getProperty(PROP_CONFIG) != null) {
-            LOGGER.debug("Configured Config: {}", System.getProperty(PROP_CONFIG));
-        }
-        if (System.getProperty(PROP_DATA) != null) {
-            LOGGER.debug("Configured data: {}", System.getProperty(PROP_DATA));
-        }
-        MockedRestService mockedRestService = new MockedRestService(port);
+        MockedRestService mockedRestService = new MockedRestService();
         mockedRestService.startService();
     }
 }
