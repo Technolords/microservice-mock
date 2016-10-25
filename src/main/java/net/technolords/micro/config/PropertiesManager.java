@@ -30,6 +30,7 @@ public class PropertiesManager {
      * provided system properties only.
      *
      * @return
+     *  The properties.
      */
     public static Properties extractProperties() {
         Properties properties = loadProperties(System.getProperty(PROP_PROPS));
@@ -46,7 +47,7 @@ public class PropertiesManager {
             properties.put(PROP_DATA, System.getProperty(PROP_DATA));
         }
         for (Object key : properties.keySet()) {
-            LOGGER.info("Key: {} -> value: {}", key, properties.get(key));
+            LOGGER.debug("Property: {} -> value: {}", key, properties.get(key));
         }
         return properties;
     }
