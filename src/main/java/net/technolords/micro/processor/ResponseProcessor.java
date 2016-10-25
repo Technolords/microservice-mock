@@ -10,7 +10,6 @@ import org.apache.camel.Processor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.technolords.micro.ResponseContext;
 import net.technolords.micro.command.CommandManager;
 import net.technolords.micro.config.ConfigurationManager;
 

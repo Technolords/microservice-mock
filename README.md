@@ -122,6 +122,12 @@ The XML configuration mentions some optional attributes, which are:
 * delay: which is exactly what it means, it adds a delay in the response measured in milli seconds.
 * error: which allows simulation of erroneous responses, based on a percentage (error rate) and the alternative response code (error-code).
 
+### Properties file
+The mock supports a properties file, where all the properties mentioned above could be placed inside. Then, to use it a Java system property as
+follow must be submitted:
+
+    java -props=/var/data/mock.properties -jar target/microservice-mock-1.0.0.jar
+
 ## XSD Schema
 
     <xs:schema

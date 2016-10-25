@@ -27,7 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
-import net.technolords.micro.ResponseContext;
+import net.technolords.micro.processor.ResponseContext;
 import net.technolords.micro.config.jaxb.Configuration;
 import net.technolords.micro.config.jaxb.Configurations;
 import net.technolords.micro.config.jaxb.resource.ResourceGroup;

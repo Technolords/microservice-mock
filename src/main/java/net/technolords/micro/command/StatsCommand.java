@@ -2,12 +2,11 @@ package net.technolords.micro.command;
 
 import java.net.HttpURLConnection;
 
-import org.apache.camel.Exchange;
 import org.eclipse.jetty.server.handler.StatisticsHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.technolords.micro.ResponseContext;
+import net.technolords.micro.processor.ResponseContext;
 import net.technolords.micro.registry.MockRegistry;
 
 public class StatsCommand {

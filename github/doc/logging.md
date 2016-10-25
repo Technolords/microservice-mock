@@ -3,12 +3,11 @@ Back to [main](https://github.com/Technolords/microservice-mock).
 # Logging
 Every tool needs logging and this tool is no exception.
 
-## History
+## Usage since v1.1.0
 Initially, the implementation of this mock was using the [logback](http://logback.qos.ch/) library. This library is dubbed successor of the log4j framework. However, after research I have switched back to log4j again. Or more specifically the next generation called [log4j2](http://logging.apache.org/log4j/2.x/).
 
-Especially after reading that their implementation uses async log appenders, and optimized garbage collection it seems tailor made for high performance, high volume logging. See also: http://logging.apache.org/log4j/2.x/performance.html
- 
-## Usage
+After reading that their implementation uses async log appenders, and optimized garbage collection it seems tailor made for high performance, high volume logging. See also: http://logging.apache.org/log4j/2.x/performance.html
+
 There is a default logging configuration embedded in the jar file. For many this is good enough, supporting almost all use cases.
 
 ### Default: log configuration:
@@ -30,10 +29,10 @@ There is a default logging configuration embedded in the jar file. For many this
         </Loggers>
     </Configuration>
 
-Note that the default configuration will log from the filter only on error level.
+Note that the default configuration will only log from the filter on error level.
 
-It is possible to have your own log configuration, where you dictate fully the format and levels. See also: https://logging.apache.org/log4j/2.x/manual/layouts.html
-In order to achieve this a system property needs to be specific on the command like:
+It is possible to have your own log configuration, where you have full control over the format and levels. See also: https://logging.apache.org/log4j/2.x/manual/layouts.html
+In order to achieve this a system property must be specified on the command like:
 
     -Dlog4j.configurationFile=log4j2.xml
 
@@ -69,6 +68,13 @@ Using the configuration above, it will produce output that looks like:
 Note that specific lookups _%X{httpUri}_ and _%X{httpStatus}_ are part of the configuration. These lookups are supported by the current mock implementation. 
 See also: https://logging.apache.org/log4j/2.x/manual/lookups.html
 In addition, a specific appender is used, with _additivity_ false (this will prevents double log entries).
+
+## Usage since v1.0.0
+The code uses a logging library called 'logback' and has an embedded (default) configuration. To use a custom log configuration a Java system property must be provided:
+
+    java -Dlogback.configurationFile=/path/to/config.xml -jar target/microservice-mock-1.0.0.jar
+
+To understand the options of the configuration file, see the remote documentation [here](http://logback.qos.ch/manual/configuration.html).
 
 ### Supported 
 The following special lookups are supported:

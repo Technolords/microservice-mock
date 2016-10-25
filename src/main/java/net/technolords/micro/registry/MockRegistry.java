@@ -1,9 +1,7 @@
 package net.technolords.micro.registry;
 
-import static net.technolords.micro.MockedRestService.PROP_CONFIG;
-import static net.technolords.micro.MockedRestService.PROP_DATA;
-
 import java.io.IOException;
+import java.util.Properties;
 
 import javax.xml.bind.JAXBException;
 
@@ -14,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import net.technolords.micro.config.ConfigurationManager;
+import net.technolords.micro.config.PropertiesManager;
 import net.technolords.micro.filter.InfoFilter;
 
 /**
@@ -22,18 +21,27 @@ import net.technolords.micro.filter.InfoFilter;
  */
 public class MockRegistry {
     private static final Logger LOGGER = LoggerFactory.getLogger(MockRegistry.class);
-    private static final String METRICS = "metrics";
-    private static final String CONFIG = "config";
-    private static final String FILTER_INFO = "infoFilter";
+    private static final String BEAN_PROPERTIES = "props";
+    private static final String BEAN_METRICS = "metrics";
+    private static final String BEAN_CONFIG = "config";
+    private static final String BEAN_FILTER_INFO = "infoFilter";
     private static Main main;
+
+    /**
+     * Custom constructor with a reference of the main which is used to store the properties.
+     *
+     * @param mainReference
+     *  A refefence of the Main object.
+     */
+    public static void registerPropertiesInRegistry(Main mainReference) {
+        main = mainReference;
+        main.bind(BEAN_PROPERTIES, PropertiesManager.extractProperties());
+    }
 
     /**
      * Auxiliary method to register beans to the Main component, with the purpose of supporting lookup mechanism
      * in case references of the beans are required. The latter typically occurs at runtime, but also in cases
      * of lazy initialization. Note that this micro service is not using any dependency injection framework.
-     *
-     * @param mainReference
-     *  A refefence of the Main object.
      *
      * @throws JAXBException
      *  When creation the configuration bean fails.
@@ -42,11 +50,10 @@ public class MockRegistry {
      * @throws SAXException
      *  When creation the configuration bean fails.
      */
-    public static void registerBeansInRegistry(Main mainReference) throws JAXBException, IOException, SAXException {
-        main = mainReference;
-        main.bind(METRICS, new StatisticsHandler());
-        main.bind(CONFIG, new ConfigurationManager(System.getProperty(PROP_CONFIG), System.getProperty(PROP_DATA)));
-        main.bind(FILTER_INFO, new InfoFilter());
+    public static void registerBeansInRegistry() throws JAXBException, IOException, SAXException {
+        main.bind(BEAN_METRICS, new StatisticsHandler());
+        main.bind(BEAN_CONFIG, new ConfigurationManager(findConfiguredConfig(), findConfiguredData()));
+        main.bind(BEAN_FILTER_INFO, new InfoFilter());
         LOGGER.info("Beans added to the registry...");
     }
 
@@ -57,7 +64,7 @@ public class MockRegistry {
      *  A reference of the ConfigurationManager.
      */
     public static ConfigurationManager findConfigurationManager() {
-        return main.lookup(CONFIG, ConfigurationManager.class);
+        return main.lookup(BEAN_CONFIG, ConfigurationManager.class);
     }
 
     /**
@@ -67,7 +74,23 @@ public class MockRegistry {
      *  A reference of the StatisticsHandler.
      */
     public static StatisticsHandler findStatisticsHandler() {
-        return main.lookup(METRICS, StatisticsHandler.class);
+        return main.lookup(BEAN_METRICS, StatisticsHandler.class);
+    }
+
+    public static Properties findProperties() {
+        return main.lookup(BEAN_PROPERTIES, Properties.class);
+    }
+
+    public static String findConfiguredPort() {
+        return (String) findProperties().get(PropertiesManager.PROP_PORT);
+    }
+
+    public static String findConfiguredConfig() {
+        return (String) findProperties().get(PropertiesManager.PROP_CONFIG);
+    }
+
+    public static String findConfiguredData() {
+        return (String) findProperties().get(PropertiesManager.PROP_DATA);
     }
 
 }
