@@ -11,12 +11,15 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.technolords.micro.log.LogManager;
+
 public class PropertiesManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(PropertiesManager.class);
     public static final String PROP_PROPS = "props";
     public static final String PROP_PORT = "port";
     public static final String PROP_CONFIG = "config";
     public static final String PROP_DATA = "data";
+    private static final String PROP_LOG_CONFIG = "log4j.configurationFile";
     private static final String DEFAULT_PORT = "9090";
 
     /**
@@ -37,7 +40,15 @@ public class PropertiesManager {
         if (System.getProperty(PROP_PORT) != null) {
             LOGGER.debug("Configured Port: {}", System.getProperty(PROP_PORT));
         }
-        properties.put(PROP_PORT, System.getProperty(PROP_PORT, DEFAULT_PORT));
+        if (properties.get(PROP_PORT) != null) {
+            // Defined, potentially override
+            if (System.getProperty(PROP_PORT) != null) {
+                properties.put(PROP_PORT, System.getProperty(PROP_PORT));
+            }
+        } else {
+            // Not defined, fetch from system property (or default)
+            properties.put(PROP_PORT, System.getProperty(PROP_PORT, DEFAULT_PORT));
+        }
         if (System.getProperty(PROP_CONFIG) != null) {
             LOGGER.debug("Configured Config: {}", System.getProperty(PROP_CONFIG));
             properties.put(PROP_CONFIG, System.getProperty(PROP_CONFIG));
@@ -47,7 +58,7 @@ public class PropertiesManager {
             properties.put(PROP_DATA, System.getProperty(PROP_DATA));
         }
         for (Object key : properties.keySet()) {
-            LOGGER.debug("Property: {} -> value: {}", key, properties.get(key));
+            LOGGER.info("Property: {} -> value: {}", key, properties.get(key));
         }
         return properties;
     }
@@ -69,6 +80,17 @@ public class PropertiesManager {
             }
             Path path = FileSystems.getDefault().getPath(pathToPropertiesFile);
             properties.load(Files.newInputStream(path, READ));
+            if (properties.get(PROP_LOG_CONFIG) != null) {
+                // Note that at this point, putting this property back as system property is pointless,
+                // as the JVM is already started. Therefore invoke the builder (but only if there is no
+                // system property in the first place)!
+                if (System.getProperty(PROP_LOG_CONFIG) == null) {
+                    LOGGER.info("log4j not as system property, do invoke builder");
+                    LogManager.initializeLogging((String) properties.get(PROP_LOG_CONFIG));
+                } else {
+                    LOGGER.info("log4j as system property, do nothing with reference in property file");
+                }
+            }
         } catch (IOException e) {
             LOGGER.warn("Unable to read properties -> ignoring values and using defaults", e);
         }
