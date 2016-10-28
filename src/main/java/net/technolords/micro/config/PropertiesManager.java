@@ -82,8 +82,8 @@ public class PropertiesManager {
             properties.load(Files.newInputStream(path, READ));
             if (properties.get(PROP_LOG_CONFIG) != null) {
                 // Note that at this point, putting this property back as system property is pointless,
-                // as the JVM is already started. Therefore invoke the builder (but only if there is no
-                // system property in the first place)!
+                // as the JVM is already started. When there is no CLI property defined proceed by
+                // delegation towards the LogManager.
                 if (System.getProperty(PROP_LOG_CONFIG) == null) {
                     LOGGER.info("log4j not as system property, do invoke builder");
                     LogManager.initializeLogging((String) properties.get(PROP_LOG_CONFIG));

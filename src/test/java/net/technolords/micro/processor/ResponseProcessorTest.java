@@ -30,8 +30,8 @@ public class ResponseProcessorTest extends TestSupport{
         };
     }
 
-    @Test(dataProvider = DATASET_FOR_CONFIGURATIONS, enabled = false)
-    public void testPostResponses(String configFile, String method, String uri, String body, String expectedResponse) throws Exception {
+    @Test(dataProvider = DATASET_FOR_CONFIGURATIONS)
+    public void testMockResponses(String configFile, String method, String uri, String body, String expectedResponse) throws Exception {
         // Create a path to the file
         Path pathToConfigFile = FileSystems.getDefault().getPath(getPathToDataFolder() + File.separator + "mockConfigurations" + File.separator);
         Path pathToResponseFile = FileSystems.getDefault().getPath(getPathToDataFolder() + File.separator + "mockResponses");
@@ -52,8 +52,7 @@ public class ResponseProcessorTest extends TestSupport{
         Path pathToRequestFile = FileSystems.getDefault().getPath(getPathToDataFolder() + File.separator + "mockRequests");
         Exchange exchange = new DefaultExchange(new DefaultCamelContext());
         exchange.getIn().setHeader(Exchange.HTTP_METHOD, method);
-//        exchange.getIn().setHeader(Exchange.HTTP_URI, uri);
-        exchange.getIn().setHeader(Exchange.HTTP_SERVLET_REQUEST, uri);
+        exchange.getIn().setHeader(Exchange.HTTP_URI, uri);
         if (body != null) {
             String requestContent = new String(Files.readAllBytes(Paths.get(pathToRequestFile + File.separator + body)));
             exchange.getIn().setBody(requestContent);
