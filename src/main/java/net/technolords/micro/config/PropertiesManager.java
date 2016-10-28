@@ -58,7 +58,7 @@ public class PropertiesManager {
             properties.put(PROP_DATA, System.getProperty(PROP_DATA));
         }
         for (Object key : properties.keySet()) {
-            LOGGER.info("Property: {} -> value: {}", key, properties.get(key));
+            LOGGER.debug("Property: {} -> value: {}", key, properties.get(key));
         }
         return properties;
     }
@@ -85,10 +85,10 @@ public class PropertiesManager {
                 // as the JVM is already started. When there is no CLI property defined proceed by
                 // delegation towards the LogManager.
                 if (System.getProperty(PROP_LOG_CONFIG) == null) {
-                    LOGGER.info("log4j not as system property, do invoke builder");
+                    LOGGER.trace("log4j not as system property, do invoke builder");
                     LogManager.initializeLogging((String) properties.get(PROP_LOG_CONFIG));
                 } else {
-                    LOGGER.info("log4j as system property, do nothing with reference in property file");
+                    LOGGER.trace("log4j as system property, do nothing with reference in property file");
                 }
             }
         } catch (IOException e) {

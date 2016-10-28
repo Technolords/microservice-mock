@@ -2,6 +2,7 @@ package net.technolords.micro.log;
 
 import java.net.HttpURLConnection;
 import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.apache.logging.log4j.Level;
@@ -38,8 +39,8 @@ public class LogManager {
      *  A path to the external log configuration file.
      */
     public static void initializeLogging(String pathToLogConfiguration) {
-        LOGGER.info("Path to log configuration: {}", pathToLogConfiguration);
         Path path = FileSystems.getDefault().getPath(pathToLogConfiguration);
+        LOGGER.trace("Path to log configuration: {} -> file exists: {}", pathToLogConfiguration, Files.exists(path));
         LoggerContext loggerContext = LoggerContext.getContext(false);
         loggerContext.setConfigLocation(path.toUri());
     }
