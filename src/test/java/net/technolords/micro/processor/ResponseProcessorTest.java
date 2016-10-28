@@ -31,7 +31,7 @@ public class ResponseProcessorTest extends TestSupport{
     }
 
     @Test(dataProvider = DATASET_FOR_CONFIGURATIONS)
-    public void testPostResponses(String configFile, String method, String uri, String body, String expectedResponse) throws Exception {
+    public void testMockResponses(String configFile, String method, String uri, String body, String expectedResponse) throws Exception {
         // Create a path to the file
         Path pathToConfigFile = FileSystems.getDefault().getPath(getPathToDataFolder() + File.separator + "mockConfigurations" + File.separator);
         Path pathToResponseFile = FileSystems.getDefault().getPath(getPathToDataFolder() + File.separator + "mockResponses");
