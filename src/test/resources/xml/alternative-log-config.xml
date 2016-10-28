@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="debug">
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%date{DEFAULT} [%level] [%thread] [%class{36}] %message%n"/>
+        </Console>
+        <Console name="filterAppender" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{UNIX_MILLIS} %X{httpUri} %X{httpStatus} %message%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="net.technolords.micro.filter" level="info" additivity="false">
+            <AppenderRef ref="filterAppender"/>
+        </Logger>
+        <Root level="info">
+            <AppenderRef ref="console"/>
+        </Root>
+    </Loggers>
+</Configuration>

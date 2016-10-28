@@ -70,13 +70,13 @@ public class LogManager {
                     rootLogger.setLevel(Level.WARN);
                     responseContext.setResponse("Log level changed to WARN");
                     break;
-                case DEBUG:
-                    rootLogger.setLevel(Level.DEBUG);
-                    responseContext.setResponse("Log level changed to DEBUG");
-                    break;
                 case INFO:
                     rootLogger.setLevel(Level.INFO);
                     responseContext.setResponse("Log level changed to INFO");
+                    break;
+                case DEBUG:
+                    rootLogger.setLevel(Level.DEBUG);
+                    responseContext.setResponse("Log level changed to DEBUG");
                     break;
                 case OFF:
                     rootLogger.setLevel(Level.OFF);
