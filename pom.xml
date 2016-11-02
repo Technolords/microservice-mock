@@ -34,6 +34,7 @@
         <maven.source.plugin.version>2.4</maven.source.plugin.version>
         <maven.surefire.plugin.version>2.18.1</maven.surefire.plugin.version>
         <org.testng.version>6.9.4</org.testng.version>
+        <camel.testng.version>2.18.0</camel.testng.version>
     </properties>
 
     <!--+
@@ -94,6 +95,13 @@
             <artifactId>jetty-maven-plugin</artifactId>
             <version>${jetty.maven.plugin.version}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.camel/camel-testng -->
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-testng</artifactId>
+            <version>${camel.testng.version}</version>
+        </dependency>
+
 
         <!--+
             | Test scope
