@@ -38,7 +38,7 @@ public class MockedRestService extends Main {
      */
     @Override
     public void beforeStart() throws JAXBException, IOException, SAXException {
-        MockRegistry.registerBeansInRegistry();
+        MockRegistry.registerBeansInRegistryBeforeStart();
         super.addRouteBuilder(new RestServiceRoute());
     }
 
@@ -48,6 +48,7 @@ public class MockedRestService extends Main {
     @Override
     public void afterStart() {
         LOGGER.info("Mock service started, use CTRL-C to terminate JVM");
+        MockRegistry.registerBeansInRegistryAfterStart();
     }
 
     /**
