@@ -47,8 +47,8 @@ public class MockedRestService extends Main {
      */
     @Override
     public void afterStart() {
-        LOGGER.info("Mock service started, use CTRL-C to terminate JVM");
         MockRegistry.registerBeansInRegistryAfterStart();
+        LOGGER.info("Mock service started, use CTRL-C to terminate JVM");
     }
 
     /**

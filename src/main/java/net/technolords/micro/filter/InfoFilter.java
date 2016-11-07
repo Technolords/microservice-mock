@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
 public class InfoFilter implements Filter {
     private static final Logger LOGGER = LoggerFactory.getLogger(InfoFilter.class);
     public static final String FILTER_ID = "infoFilter";
-    public static final String URL_PATTERNS = "\"/*\"";
+    public static final String URL_PATTERNS = "/*";
     private static final String LOG_CONTEXT_HTTP_URI = "httpUri";
     private static final String LOG_CONTEXT_HTTP_STATUS = "httpStatus";
 
@@ -36,14 +36,14 @@ public class InfoFilter implements Filter {
      *
      * Note that when this filter is annotated with:
      *  dispatcherTypes = { DispatcherType.ASYNC })
-     * it does NOT work (not any other type for that matter)!
+     * it does NOT work (nor any other type for that matter)!
      *
      * @param server
      *  The Server associated with the Filter.
      */
     public static void registerFilterDirectlyWithServer(Server server) {
         ServletContextHandler servletContextHandler = server.getChildHandlerByClass(ServletContextHandler.class);
-        servletContextHandler.addFilter(InfoFilter.class, "/*", EnumSet.of(DispatcherType.ASYNC));
+        servletContextHandler.addFilter(InfoFilter.class, URL_PATTERNS, EnumSet.of(DispatcherType.ASYNC));
     }
 
     @Override
