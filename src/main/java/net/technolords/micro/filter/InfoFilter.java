@@ -31,15 +31,23 @@ public class InfoFilter implements Filter {
     private static final String LOG_CONTEXT_HTTP_URI = "httpUri";
     private static final String LOG_CONTEXT_HTTP_STATUS = "httpStatus";
 
+    /**
+     * Auxiliary method to add the filter directly to the ServlerContextHandler associated with the Jetty Server.
+     *
+     * Note that when this filter is annotated with:
+     *  dispatcherTypes = { DispatcherType.ASYNC })
+     * it does NOT work (not any other type for that matter)!
+     *
+     * @param server
+     *  The Server associated with the Filter.
+     */
     public static void registerFilterDirectlyWithServer(Server server) {
         ServletContextHandler servletContextHandler = server.getChildHandlerByClass(ServletContextHandler.class);
         servletContextHandler.addFilter(InfoFilter.class, "/*", EnumSet.of(DispatcherType.ASYNC));
-        LOGGER.info("Added InfoFilter to server...");
     }
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        LOGGER.debug("init called...");
     }
 
     @Override
@@ -64,6 +72,5 @@ public class InfoFilter implements Filter {
 
     @Override
     public void destroy() {
-        LOGGER.debug("destroy called...");
     }
 }
