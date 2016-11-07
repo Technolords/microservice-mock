@@ -77,6 +77,16 @@ public class MockRegistry {
         return main.lookup(BEAN_METRICS, StatisticsHandler.class);
     }
 
+    /**
+     * Auxiliary method to perform a lookup of the InfoFilter.
+     *
+     * @return
+     *  A reference of the InfoFilter.
+     */
+    public static InfoFilter findInfoFilter() {
+        return main.lookup(BEAN_FILTER_INFO, InfoFilter.class);
+    }
+
     public static Properties findProperties() {
         return main.lookup(BEAN_PROPERTIES, Properties.class);
     }

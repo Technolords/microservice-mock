@@ -2,6 +2,7 @@ package net.technolords.micro.processor;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.util.Map;
 
 import javax.xml.xpath.XPathExpressionException;
 
@@ -122,6 +123,11 @@ public class ResponseProcessor implements Processor {
      *  The ResponseContext associated with the update.
      */
     private void updateExchange(Exchange exchange, ResponseContext responseContext) {
+//        LOGGER.info("MARKER: Dumping for response");
+        Map<String, Object> commands = exchange.getIn().getHeaders();
+        for (String key : commands.keySet()) {
+            LOGGER.debug("Key: {} -> value: {}", key, commands.get(key));
+        }
         if (responseContext != null) {
             exchange.getOut().setBody(responseContext.getResponse());
             exchange.getOut().setHeader(CONTENT_TYPE, responseContext.getContentType());
