@@ -123,7 +123,6 @@ public class ResponseProcessor implements Processor {
      *  The ResponseContext associated with the update.
      */
     private void updateExchange(Exchange exchange, ResponseContext responseContext) {
-//        LOGGER.info("MARKER: Dumping for response");
         Map<String, Object> commands = exchange.getIn().getHeaders();
         for (String key : commands.keySet()) {
             LOGGER.debug("Key: {} -> value: {}", key, commands.get(key));
