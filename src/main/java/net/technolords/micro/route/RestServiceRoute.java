@@ -11,7 +11,6 @@ import org.apache.camel.spi.ShutdownStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.technolords.micro.filter.InfoFilter;
 import net.technolords.micro.processor.ResponseProcessor;
 import net.technolords.micro.registry.MockRegistry;
 
@@ -79,7 +78,7 @@ public class RestServiceRoute extends RouteBuilder {
         buffer.append(QUESTION_SIGN).append("matchOnUriPrefix").append(EQUAL_SIGN).append(TRUE_VALUE);
         buffer.append(AND_SIGN).append("enableJmx").append(EQUAL_SIGN).append(TRUE_VALUE);
         buffer.append(AND_SIGN).append("handlers").append(EQUAL_SIGN).append("metrics");
-        // Added the filter this way does not give the wanted end result.
+        // Adding the filter this way does not give the desired end result.
 //        buffer.append(AND_SIGN).append("filtersRef").append(EQUAL_SIGN).append(InfoFilter.FILTER_ID);
         return buffer.toString();
     }
