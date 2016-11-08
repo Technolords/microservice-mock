@@ -6,6 +6,7 @@ import java.util.Properties;
 import javax.xml.bind.JAXBException;
 
 import org.apache.camel.main.Main;
+import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.StatisticsHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,7 @@ public class MockRegistry {
     private static final Logger LOGGER = LoggerFactory.getLogger(MockRegistry.class);
     private static final String BEAN_PROPERTIES = "props";
     private static final String BEAN_METRICS = "metrics";
+    private static final String BEAN_JETTY_SERVER = "jettyServer";
     private static final String BEAN_CONFIG = "config";
     private static final String BEAN_FILTER_INFO = "infoFilter";
     private static Main main;
@@ -50,11 +52,22 @@ public class MockRegistry {
      * @throws SAXException
      *  When creation the configuration bean fails.
      */
-    public static void registerBeansInRegistry() throws JAXBException, IOException, SAXException {
+    public static void registerBeansInRegistryBeforeStart() throws JAXBException, IOException, SAXException {
         main.bind(BEAN_METRICS, new StatisticsHandler());
         main.bind(BEAN_CONFIG, new ConfigurationManager(findConfiguredConfig(), findConfiguredData()));
         main.bind(BEAN_FILTER_INFO, new InfoFilter());
         LOGGER.info("Beans added to the registry...");
+    }
+
+    /**
+     * Auxiliary method to register beans to the Main component, but after the Main has started. Typically the
+     * underlying Server is also started and instantiated.
+     */
+    public static void registerBeansInRegistryAfterStart() {
+        StatisticsHandler statisticsHandler = findStatisticsHandler();
+        Server server = statisticsHandler.getServer();
+        main.bind(BEAN_JETTY_SERVER, server);
+        InfoFilter.registerFilterDirectlyWithServer(server);
     }
 
     /**
@@ -75,6 +88,26 @@ public class MockRegistry {
      */
     public static StatisticsHandler findStatisticsHandler() {
         return main.lookup(BEAN_METRICS, StatisticsHandler.class);
+    }
+
+    /**
+     * Auxiliary method to perform a lookup of the Jetty Server.
+     *
+     * @return
+     *  A reference of the Jetty Server.
+     */
+    public static Server findJettyServer() {
+        return main.lookup(BEAN_JETTY_SERVER, Server.class);
+    }
+
+    /**
+     * Auxiliary method to perform a lookup of the InfoFilter.
+     *
+     * @return
+     *  A reference of the InfoFilter.
+     */
+    public static InfoFilter findInfoFilter() {
+        return main.lookup(BEAN_FILTER_INFO, InfoFilter.class);
     }
 
     public static Properties findProperties() {
