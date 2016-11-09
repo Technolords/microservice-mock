@@ -116,8 +116,6 @@ public class ConfigurationManager {
      *  When reading the response fails.
      * @throws XPathExpressionException
      *  When evaluation the xpath expression fails.
-     * @throws JAXBException
-     *  When reading the configuration fails.
      * @throws InterruptedException
      *  When delaying the response fails.
      */

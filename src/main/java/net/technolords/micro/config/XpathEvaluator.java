@@ -38,6 +38,8 @@ public class XpathEvaluator {
      *
      * @throws XPathExpressionException
      *  When evaluation the xpath expression fails.
+     * @throws IOException
+     *  When reading the input source fails.
      */
     public boolean evaluateXpathExpression(String xpathExpression, String xmlMessage, Configuration configuration) throws XPathExpressionException, IOException {
         XPathExpression xPathExpression = this.obtainXpathExpression(xpathExpression, configuration);
