@@ -244,4 +244,11 @@
 
     </build>
 
+    <distributionManagement>
+        <repository>
+            <id>internal-repo</id>
+            <name>Internal Repo</name>
+        </repository>
+    </distributionManagement>
+
 </project>
