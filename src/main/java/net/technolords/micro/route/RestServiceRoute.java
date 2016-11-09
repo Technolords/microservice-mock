@@ -26,13 +26,13 @@ public class RestServiceRoute extends RouteBuilder {
     private static final String AND_SIGN = "&";
     private static final String EQUAL_SIGN = "=";
     private static final String TRUE_VALUE = "true";
-    private String port;
+    private String port = null;
     private Processor responseProcessor = null;
 
     public RestServiceRoute() {
         this.port = MockRegistry.findConfiguredPort();
         this.responseProcessor = new ResponseProcessor(MockRegistry.findConfigurationManager());
-        LOGGER.info("Using port: " + port);
+        LOGGER.info("Using port: " + this.port);
     }
 
     /**
