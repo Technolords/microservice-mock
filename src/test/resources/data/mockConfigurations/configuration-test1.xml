@@ -6,6 +6,10 @@
         <resource>data/mockResponses/sample-get.txt</resource>
     </configuration>
 
+    <!--<configuration type="GET" url="/mock/cmd">-->
+        <!--<resource>data/mockResponses/sample-get.txt</resource>-->
+    <!--</configuration>-->
+
     <!--+
         | Supported POST requests
         +-->
