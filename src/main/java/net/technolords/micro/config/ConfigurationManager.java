@@ -80,8 +80,6 @@ public class ConfigurationManager {
      * @return
      *  The response associated with the get request.
      *
-     * @throws JAXBException
-     *  When reading the configuration fails.
      * @throws IOException
      *  When reading the response fails.
      * @throws InterruptedException
@@ -116,8 +114,6 @@ public class ConfigurationManager {
      *  When reading the response fails.
      * @throws XPathExpressionException
      *  When evaluation the xpath expression fails.
-     * @throws JAXBException
-     *  When reading the configuration fails.
      * @throws InterruptedException
      *  When delaying the response fails.
      */
