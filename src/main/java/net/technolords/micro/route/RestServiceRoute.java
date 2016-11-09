@@ -26,11 +26,11 @@ public class RestServiceRoute extends RouteBuilder {
     private static final String AND_SIGN = "&";
     private static final String EQUAL_SIGN = "=";
     private static final String TRUE_VALUE = "true";
-    private static String port;
+    private String port;
     private Processor responseProcessor = null;
 
     public RestServiceRoute() {
-        port = MockRegistry.findConfiguredPort();
+        this.port = MockRegistry.findConfiguredPort();
         this.responseProcessor = new ResponseProcessor(MockRegistry.findConfigurationManager());
         LOGGER.info("Using port: " + port);
     }
@@ -76,10 +76,10 @@ public class RestServiceRoute extends RouteBuilder {
      * @return
      *  A Camel Jetty endpoint
      */
-    public static String generateJettyEndpoint() {
+    protected String generateJettyEndpoint() {
         StringBuilder buffer = new StringBuilder();
         // jetty:http://0.0.0.0:9090/?matchOnUriPrefix=true&enableJmx=true&handlers=metrics&filtersRef=infoFilter
-        buffer.append(JETTY_MAIN).append(JETTY_BINDING_ADDRESS).append(":").append(port);
+        buffer.append(JETTY_MAIN).append(JETTY_BINDING_ADDRESS).append(":").append(this.port);
         buffer.append(JETTY_BINDING_PATH);
         buffer.append(QUESTION_SIGN).append("matchOnUriPrefix").append(EQUAL_SIGN).append(TRUE_VALUE);
         buffer.append(AND_SIGN).append("enableJmx").append(EQUAL_SIGN).append(TRUE_VALUE);
