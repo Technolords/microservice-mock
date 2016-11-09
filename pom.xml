@@ -96,15 +96,6 @@
             <artifactId>jetty-maven-plugin</artifactId>
             <version>${jetty.maven.plugin.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.camel/camel-testng -->
-        <dependency>
-            <groupId>org.apache.camel</groupId>
-            <artifactId>camel-testng</artifactId>
-            <version>${camel.testng.version}</version>
-        </dependency>
-
-
-
 
         <!--+
             | Test scope
