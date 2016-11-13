@@ -1,6 +1,7 @@
-package net.technolords.micro.processor;
+package net.technolords.micro.camel;
 
 import net.technolords.micro.TestSupport;
+import net.technolords.micro.camel.ResponseProcessor;
 import net.technolords.micro.config.ConfigurationManager;
 import org.apache.camel.Exchange;
 import org.apache.camel.impl.DefaultCamelContext;

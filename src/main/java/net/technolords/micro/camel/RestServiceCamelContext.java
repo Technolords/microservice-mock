@@ -1,4 +1,4 @@
-package net.technolords.micro;
+package net.technolords.micro.camel;
 
 import java.io.IOException;
 
@@ -10,15 +10,14 @@ import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import net.technolords.micro.registry.MockRegistry;
-import net.technolords.micro.route.RestServiceRoute;
 
-public class MockedRestService extends Main {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MockedRestService.class);
+public class RestServiceCamelContext extends Main {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RestServiceCamelContext.class);
 
     /**
      * Default constructor which registers the start up properties.
      */
-    public MockedRestService() {
+    public RestServiceCamelContext() {
         MockRegistry.registerPropertiesInRegistry(this);
     }
 
@@ -48,7 +47,7 @@ public class MockedRestService extends Main {
     @Override
     public void afterStart() {
         MockRegistry.registerBeansInRegistryAfterStart();
-        LOGGER.info("Mock service started, use CTRL-C to terminate JVM");
+        LOGGER.info("Mock service started (1), use CTRL-C to terminate JVM");
     }
 
     /**
@@ -72,7 +71,7 @@ public class MockedRestService extends Main {
      */
     public static void main(String[] args) throws Exception {
         LOGGER.info("About to start the mocked service...");
-        MockedRestService mockedRestService = new MockedRestService();
+        RestServiceCamelContext mockedRestService = new RestServiceCamelContext();
         mockedRestService.startService();
     }
 }

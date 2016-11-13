@@ -27,12 +27,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
-import net.technolords.micro.processor.ResponseContext;
-import net.technolords.micro.config.jaxb.Configuration;
-import net.technolords.micro.config.jaxb.Configurations;
-import net.technolords.micro.config.jaxb.resource.ResourceGroup;
-import net.technolords.micro.config.jaxb.resource.ResourceGroups;
-import net.technolords.micro.config.jaxb.resource.SimpleResource;
+import net.technolords.micro.domain.ResponseContext;
+import net.technolords.micro.domain.jaxb.Configuration;
+import net.technolords.micro.domain.jaxb.Configurations;
+import net.technolords.micro.domain.jaxb.resource.ResourceGroup;
+import net.technolords.micro.domain.jaxb.resource.ResourceGroups;
+import net.technolords.micro.domain.jaxb.resource.SimpleResource;
 
 public class ConfigurationManager {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());

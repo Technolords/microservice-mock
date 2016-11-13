@@ -1,4 +1,4 @@
-package net.technolords.micro.route;
+package net.technolords.micro.camel;
 
 import java.util.concurrent.TimeUnit;
 
@@ -11,7 +11,6 @@ import org.apache.camel.spi.ShutdownStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.technolords.micro.processor.ResponseProcessor;
 import net.technolords.micro.registry.MockRegistry;
 
 public class RestServiceRoute extends RouteBuilder {

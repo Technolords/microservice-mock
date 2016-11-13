@@ -2,7 +2,7 @@ package net.technolords.micro.command;
 
 import net.technolords.micro.config.ConfigurationManager;
 import net.technolords.micro.registry.MockRegistry;
-import net.technolords.micro.route.RestServiceRoute;
+import net.technolords.micro.camel.RestServiceRoute;
 import org.apache.camel.Exchange;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.ServiceStatus;

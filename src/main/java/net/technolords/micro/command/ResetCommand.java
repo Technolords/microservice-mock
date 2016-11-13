@@ -6,7 +6,7 @@ import org.eclipse.jetty.server.handler.StatisticsHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.technolords.micro.processor.ResponseContext;
+import net.technolords.micro.domain.ResponseContext;
 import net.technolords.micro.registry.MockRegistry;
 
 public class ResetCommand {
