@@ -13,7 +13,7 @@ import org.apache.logging.log4j.spi.StandardLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.technolords.micro.processor.ResponseContext;
+import net.technolords.micro.domain.ResponseContext;
 
 /**
  * This class has the responsibility to interface with the logging library, which is currently

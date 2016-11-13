@@ -8,9 +8,9 @@ import javax.xml.namespace.NamespaceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.technolords.micro.config.jaxb.Configuration;
-import net.technolords.micro.config.jaxb.namespace.NamespaceConfig;
-import net.technolords.micro.config.jaxb.namespace.NamespaceList;
+import net.technolords.micro.domain.jaxb.Configuration;
+import net.technolords.micro.domain.jaxb.namespace.NamespaceConfig;
+import net.technolords.micro.domain.jaxb.namespace.NamespaceList;
 
 public class ConfigurationToNamespaceContext {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());

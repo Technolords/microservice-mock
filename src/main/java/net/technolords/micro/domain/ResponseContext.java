@@ -1,4 +1,4 @@
-package net.technolords.micro.processor;
+package net.technolords.micro.domain;
 
 public class ResponseContext {
     public static final String JSON_CONTENT_TYPE = "application/json";

@@ -15,7 +15,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import net.technolords.micro.TestSupport;
-import net.technolords.micro.processor.ResponseContext;
+import net.technolords.micro.domain.ResponseContext;
 
 public class LogManagerTest extends TestSupport {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());

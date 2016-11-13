@@ -11,6 +11,6 @@
         <routeBuilder ref="testRouteBuilder" />
     </camelContext>
 
-    <bean id="testRouteBuilder" class="net.technolords.micro.route.RestServiceRoute"/>
+    <bean id="testRouteBuilder" class="net.technolords.micro.camel.RestServiceRoute"/>
 
 </beans>

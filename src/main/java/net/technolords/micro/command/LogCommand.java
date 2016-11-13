@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.technolords.micro.log.LogManager;
-import net.technolords.micro.processor.ResponseContext;
+import net.technolords.micro.domain.ResponseContext;
 
 public class LogCommand {
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCommand.class);

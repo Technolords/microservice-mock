@@ -1,4 +1,4 @@
-package net.technolords.micro.config.jaxb.namespace;
+package net.technolords.micro.domain.jaxb.namespace;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlValue;
