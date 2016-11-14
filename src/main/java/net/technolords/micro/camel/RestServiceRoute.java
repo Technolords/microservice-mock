@@ -55,6 +55,10 @@ public class RestServiceRoute extends RouteBuilder {
             .process(this.responseProcessor);
     }
 
+    /**
+     * Auxiliary method which configures the shut down strategy associated with the CamelContext. As result
+     * it will not wait for any in-flight messages to finish longer than 1 second to finish.
+     */
     private void updateShutdownStrategy() {
         ShutdownStrategy shutdownStrategy = super.getContext().getShutdownStrategy();
         shutdownStrategy.setTimeUnit(TimeUnit.SECONDS);
@@ -64,21 +68,25 @@ public class RestServiceRoute extends RouteBuilder {
     }
 
     /**
-     * Generates a Camel Jetty endpoint.
+     * Generates a Camel Jetty endpoint. Note that there is a (servlet) filter wired, but not by Camel. It seems
+     * to be conflicting in the order of execution (as Camel itself also binds on /* as the filter does). As result
+     * the filter is NOT the last one in the chain. For documentation purposes, the old way:
+     *
+     *      jetty:http://0.0.0.0:9090/?matchOnUriPrefix=true&enableJmx=true&handlers=metrics&filtersRef=infoFilter
+     * and the associated code snippet:
+     *      buffer.append(AND_SIGN).append("filtersRef").append(EQUAL_SIGN).append(InfoFilter.FILTER_ID);
      *
      * @return
      *  A Camel Jetty endpoint
      */
     protected String generateJettyEndpoint() {
         StringBuilder buffer = new StringBuilder();
-        // jetty:http://0.0.0.0:9090/?matchOnUriPrefix=true&enableJmx=true&handlers=metrics&filtersRef=infoFilter
+        // jetty:http://0.0.0.0:9090/?matchOnUriPrefix=true&enableJmx=true&handlers=metrics
         buffer.append(JETTY_MAIN).append(JETTY_BINDING_ADDRESS).append(":").append(this.port);
         buffer.append(JETTY_BINDING_PATH);
         buffer.append(QUESTION_SIGN).append("matchOnUriPrefix").append(EQUAL_SIGN).append(TRUE_VALUE);
         buffer.append(AND_SIGN).append("enableJmx").append(EQUAL_SIGN).append(TRUE_VALUE);
         buffer.append(AND_SIGN).append("handlers").append(EQUAL_SIGN).append("metrics");
-        // Adding the filter this way does not give the desired end result.
-//        buffer.append(AND_SIGN).append("filtersRef").append(EQUAL_SIGN).append(InfoFilter.FILTER_ID);
         return buffer.toString();
     }
 

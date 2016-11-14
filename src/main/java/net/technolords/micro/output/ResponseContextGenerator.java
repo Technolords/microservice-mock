@@ -30,7 +30,8 @@ public class ResponseContextGenerator {
 
     /**
      * Auxiliary method that reads the response data as well as updating the internal cache so
-     * subsequent reads will will served from memory.
+     * subsequent reads will will served from memory. It also implements the delay and updates
+     * the ResponseContext with an erroneous status code if the error rate is triggered.
      *
      * @param resource
      *  The resource to read and cache.

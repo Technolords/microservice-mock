@@ -17,7 +17,7 @@ import net.technolords.micro.domain.ResponseContext;
 
 /**
  * This class has the responsibility to interface with the logging library, which is currently
- * log4j. All log4j dependencies and classes are used here solely, which limits the impact in
+ * log4j-2. All log4j-2 dependencies and classes are used here solely, which limits the impact in
  * case things change.
  *
  * This class supports operations from two angles:

@@ -7,11 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
@@ -34,6 +30,8 @@ import net.technolords.micro.domain.jaxb.Configurations;
 import net.technolords.micro.domain.jaxb.resource.ResourceGroup;
 import net.technolords.micro.domain.jaxb.resource.ResourceGroups;
 import net.technolords.micro.domain.jaxb.resource.SimpleResource;
+import net.technolords.micro.input.ConfigurationSelector;
+import net.technolords.micro.input.xml.XpathEvaluator;
 import net.technolords.micro.output.ResponseContextGenerator;
 
 public class ConfigurationManager {
@@ -42,13 +40,28 @@ public class ConfigurationManager {
     public static final String HTTP_GET = "GET";
     private static final String PATH_TO_CONFIG_FILE = "xml/default-configuration.xml";
     private static final String PATH_TO_SCHEMA_FILE = "xsd/configurations.xsd";
-    private static final String WILD_CARD = "\\*";
     private ResponseContextGenerator responseContextGenerator;
+    private ConfigurationSelector configurationSelector = new ConfigurationSelector();
     private Configurations configurations = null;
     private XpathEvaluator xpathEvaluator = null;
     private Map<String, Configuration> getConfigurations = new HashMap<>();
     private Map<String, Configuration> postConfigurations = new HashMap<>();
 
+    /**
+     * Custom constructor that initializes the Configuration class, but only when it is compliant with the XSD.
+     *
+     * @param pathToConfig
+     *  The path to the configuration file (null value means it will fall back on embedded file, i.e. jar file).
+     * @param pathToData
+     *  The path to the data folder (null value means it will fall back on the embedded files, i.e. jar file).
+     *
+     * @throws JAXBException
+     *  When creating the Configuration fails.
+     * @throws IOException
+     *  When reading the configuration file fails.
+     * @throws SAXException
+     *  When validating the configuration file fails.
+     */
     public ConfigurationManager(String pathToConfig, String pathToData) throws JAXBException, IOException, SAXException {
         InputStream inputStreamForValidation, inputStreamForConfig; // Streams can be read only once
         if (pathToConfig == null || pathToConfig.isEmpty()) {
@@ -79,7 +92,7 @@ public class ConfigurationManager {
     }
 
     /**
-     * Auxiliary method to find a response for a given get request, based on the path.
+     * Auxiliary method to find a response for a given GET request, based on the path.
      *
      * @param path
      *  The path associated with the get request.
@@ -93,7 +106,7 @@ public class ConfigurationManager {
      */
     public ResponseContext findResponseForGetOperationWithPath(String path) throws IOException, InterruptedException {
         LOGGER.debug("About to find response for get operation with path: {}", path);
-        Configuration configuration = this.findMatchingConfiguration(path);
+        Configuration configuration = this.configurationSelector.findMatchingConfiguration(path, this.getConfigurations);
         if (configuration != null) {
             LOGGER.debug("... found, proceeding to the data part...");
             SimpleResource resource = configuration.getSimpleResource();
@@ -106,7 +119,7 @@ public class ConfigurationManager {
     }
 
     /**
-     * Auxiliary method to find a response for a given post request, based on the path and the message (body).
+     * Auxiliary method to find a response for a given POST request, based on the path and the message (body).
      *
      * @param path
      *  The path associated with the post request.
@@ -145,50 +158,6 @@ public class ConfigurationManager {
         }
         LOGGER.debug("... not found!");
         return null;
-    }
-
-    private Configuration findMatchingConfiguration(String path) {
-        Set<Configuration> matchingConfigurations = new HashSet<>();
-        // Run through all configurations
-        for (String key : this.getConfigurations.keySet()) {
-            Configuration currentConfiguration = this.getConfigurations.get(key);
-            if (key.contains("*")) {
-                // Key contains one or more wild cards (means evaluation of regular expression)
-                Pattern pattern = currentConfiguration.getPattern();
-                if (pattern == null) {
-                    pattern = this.createPattern(key);
-                    currentConfiguration.setPattern(pattern);
-                }
-                Matcher matcher = pattern.matcher(path);
-                if (matcher.matches()) {
-                    LOGGER.debug("Got a match for regex -> possible config");
-                    matchingConfigurations.add(this.getConfigurations.get(key));
-                    continue;
-                }
-            }
-            if (key.equals(path)) {
-                LOGGER.debug("Key matches path -> possible config");
-                matchingConfigurations.add(this.getConfigurations.get(key));
-                continue;
-            }
-        }
-        if (matchingConfigurations.size() > 1) {
-            // Force selection
-            LOGGER.debug("Problem, need to force selection (first match without wildcard)");
-            return matchingConfigurations.stream().filter( (configuration -> !configuration.getUrl().contains("*")) ).findFirst().get();
-        }
-        if (matchingConfigurations.size() == 1) {
-            LOGGER.debug("No problem, straightforward selection");
-            return matchingConfigurations.stream().findFirst().get();
-        }
-        return null;
-    }
-
-    private Pattern createPattern(String key) {
-        LOGGER.trace("Before replace: {}", key);
-        String alteredKey = key.replaceAll(WILD_CARD, "(.+)");
-        LOGGER.trace("After replace: {}", alteredKey);
-        return Pattern.compile(alteredKey);
     }
 
     /**

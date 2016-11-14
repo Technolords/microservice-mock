@@ -1,4 +1,4 @@
-package net.technolords.micro.config;
+package net.technolords.micro.input.xml;
 
 import java.io.IOException;
 import java.io.StringReader;

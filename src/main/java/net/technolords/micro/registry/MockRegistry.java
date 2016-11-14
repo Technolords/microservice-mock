@@ -21,7 +21,8 @@ import net.technolords.micro.filter.InfoFilter;
 
 /**
  * This class 'isolates' all the Registry interfacing with Camel, and basically serves as a centralized
- * way of implementation. By no means this class is intended to replace or implement a Registry.
+ * way of implementation. By no means this class is intended to replace or implement a Registry. This class
+ * in fact substitutes for a IOC solution (like Spring or Blueprint).
  */
 public class MockRegistry {
     private static final Logger LOGGER = LoggerFactory.getLogger(MockRegistry.class);
