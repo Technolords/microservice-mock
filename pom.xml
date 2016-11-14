@@ -22,8 +22,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!--+
+            | Maven properties
+            +-->
+        <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
+
+        <!--+
             | Version properties
             +-->
+        <build.timestamp>${maven.build.timestamp}</build.timestamp>
         <camel.version>2.18.0</camel.version>
         <camel.testng.version>2.18.0</camel.testng.version>
         <commons.io.version>2.4</commons.io.version>

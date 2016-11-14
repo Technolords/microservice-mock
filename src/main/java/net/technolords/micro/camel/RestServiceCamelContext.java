@@ -47,7 +47,7 @@ public class RestServiceCamelContext extends Main {
     @Override
     public void afterStart() {
         MockRegistry.registerBeansInRegistryAfterStart();
-        LOGGER.info("Mock service started (1), use CTRL-C to terminate JVM");
+        LOGGER.info("Mock service started ({}), use CTRL-C to terminate JVM", MockRegistry.findBuildMetaData());
     }
 
     /**
