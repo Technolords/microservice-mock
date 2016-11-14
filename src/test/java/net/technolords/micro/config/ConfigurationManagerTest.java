@@ -40,13 +40,6 @@ public class ConfigurationManagerTest {
         LOGGER.debug("Test of initialization of config completed, no errors...");
     }
 
-    @Test (groups = DEFAULT_CONFIG_MANAGER_REQUIRED, enabled = false)
-    public void testRandom() throws JAXBException, IOException, SAXException {
-        for (int i = 0; i < 100; i++) {
-            LOGGER.debug("Generated random: {}", this.configurationManager.generateRandom());
-        }
-    }
-
     @DataProvider(name = DATASET_FOR_GET_OPERATIONS)
     public Object[][] dataSetMock() {
         return new Object[][] {

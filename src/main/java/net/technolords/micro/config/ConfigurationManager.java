@@ -1,9 +1,7 @@
 package net.technolords.micro.config;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,7 +12,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
@@ -37,6 +34,7 @@ import net.technolords.micro.domain.jaxb.Configurations;
 import net.technolords.micro.domain.jaxb.resource.ResourceGroup;
 import net.technolords.micro.domain.jaxb.resource.ResourceGroups;
 import net.technolords.micro.domain.jaxb.resource.SimpleResource;
+import net.technolords.micro.output.ResponseContextGenerator;
 
 public class ConfigurationManager {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
@@ -45,9 +43,9 @@ public class ConfigurationManager {
     private static final String PATH_TO_CONFIG_FILE = "xml/default-configuration.xml";
     private static final String PATH_TO_SCHEMA_FILE = "xsd/configurations.xsd";
     private static final String WILD_CARD = "\\*";
+    private ResponseContextGenerator responseContextGenerator;
     private Configurations configurations = null;
     private XpathEvaluator xpathEvaluator = null;
-    private Path pathToDataFolder = null;
     private Map<String, Configuration> getConfigurations = new HashMap<>();
     private Map<String, Configuration> postConfigurations = new HashMap<>();
 
@@ -68,8 +66,11 @@ public class ConfigurationManager {
         }
         if (pathToData != null) {
             LOGGER.info("Using data folder: {}", pathToData);
-            this.pathToDataFolder = FileSystems.getDefault().getPath(pathToData);
-            LOGGER.info("Folder exist: {}, and is folder: {}", Files.exists(this.pathToDataFolder), Files.isDirectory(this.pathToDataFolder));
+            Path pathToDataFolder = FileSystems.getDefault().getPath(pathToData);
+            LOGGER.info("Folder exist: {}, and is folder: {}", Files.exists(pathToDataFolder), Files.isDirectory(pathToDataFolder));
+            this.responseContextGenerator = new ResponseContextGenerator(pathToDataFolder);
+        } else {
+            this.responseContextGenerator = new ResponseContextGenerator(null);
         }
         // Validate configuration file
         this.validateConfigurationFile(inputStreamForValidation);
@@ -98,7 +99,7 @@ public class ConfigurationManager {
             SimpleResource resource = configuration.getSimpleResource();
             // Load and update cache
             LOGGER.debug("About to load data from: {}", resource.getResource());
-            return this.readResourceCacheOrFile(resource);
+            return this.responseContextGenerator.readResourceCacheOrFile(resource);
         }
         LOGGER.debug("... not found!");
         return null;
@@ -134,11 +135,11 @@ public class ConfigurationManager {
                     LOGGER.debug("... found xpath: {}", resourceGroup.getXpathConfig().getXpath());
                     if (this.xpathEvaluator.evaluateXpathExpression(resourceGroup.getXpathConfig().getXpath(), message, configuration)) {
                         LOGGER.debug("... xpath matched, about to find associated resource");
-                        return this.readResourceCacheOrFile(resourceGroup.getSimpleResource());
+                        return this.responseContextGenerator.readResourceCacheOrFile(resourceGroup.getSimpleResource());
                     }
                 } else {
                     LOGGER.debug("No xpath configured, about to load the data from: {}", resourceGroup.getSimpleResource().getResource());
-                    return this.readResourceCacheOrFile(resourceGroup.getSimpleResource());
+                    return this.responseContextGenerator.readResourceCacheOrFile(resourceGroup.getSimpleResource());
                 }
             }
         }
@@ -239,80 +240,6 @@ public class ConfigurationManager {
         }
         LOGGER.info("... done, URL mappings parsed [{} for POST, {} for GET]", this.postConfigurations.size(), this.getConfigurations.size());
         this.xpathEvaluator = new XpathEvaluator();
-    }
-
-    /**
-     * Auxiliary method that reads the response data as well as updating the internal cache so
-     * subsequent reads will will served from memory.
-     *
-     * @param resource
-     *  The resource to read and cache.
-     *
-     * @return
-     *  The data associated with the resource (i.e. response).
-     *
-     * @throws IOException
-     *  When reading the resource fails.
-     */
-    private ResponseContext readResourceCacheOrFile(SimpleResource resource) throws IOException, InterruptedException {
-        // Add delay (only when applicable)
-        if (resource.getDelay() > 0) {
-            LOGGER.debug("About to delay {} ms", resource.getDelay());
-            Thread.sleep(resource.getDelay());
-        }
-        // Apply response
-        ResponseContext responseContext = new ResponseContext();
-        if (resource.getCachedData() == null) {
-            if (this.pathToDataFolder == null) {
-                resource.setCachedData(this.readFromPackagedFile(resource.getResource()));
-            } else {
-                resource.setCachedData(this.readFromReferencedPath(resource.getResource()));
-            }
-        }
-        // Apply content type
-        responseContext.setResponse(resource.getCachedData());
-        if (resource.getContentType() != null) {
-            responseContext.setContentType(resource.getContentType());
-        } else {
-            responseContext.setContentType(this.fallbackLogicForContentType(resource));
-        }
-        // Apply custom error (only when applicable)
-        if (resource.getErrorRate() > 0) {
-            if (resource.getErrorRate() >= this.generateRandom()) {
-                responseContext.setErrorCode(resource.getErrorCode());
-            }
-        }
-        return responseContext;
-    }
-
-    private String fallbackLogicForContentType(SimpleResource resource) {
-        if (resource.getResource().endsWith(".xml")) {
-            return ResponseContext.XML_CONTENT_TYPE;
-        } else {
-            return ResponseContext.DEFAULT_CONTENT_TYPE;
-        }
-    }
-
-    private String readFromPackagedFile(String resourceReference) throws IOException {
-        InputStream fileStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceReference);
-        LOGGER.debug("Path to file exists: {}", fileStream.available());
-        return new BufferedReader(new InputStreamReader(fileStream)).lines().collect(Collectors.joining("\n"));
-    }
-
-    private String readFromReferencedPath(String resourceReference) throws IOException {
-        Path pathToResource = this.pathToDataFolder.resolve(resourceReference);
-        LOGGER.debug("Path to file exists: {}", Files.exists(pathToResource));
-        return Files.lines(pathToResource).collect(Collectors.joining("\n"));
-    }
-
-    /**
-     * Auxiliary method to generate a random number. This number will be in the range of [1, 100].
-     *
-     * @return
-     *  A random number.
-     */
-    protected int generateRandom() {
-        return (int)(Math.random() * 100 + 1);
     }
 
 }
