@@ -140,7 +140,7 @@ public class ConfigurationManager {
         LOGGER.debug("About to find response for post operation with path: {}", path);
         if (this.postConfigurations.containsKey(path)) {
             LOGGER.debug("... found, proceeding to the data part...");
-            Configuration configuration = this.postConfigurations.get(path);
+            Configuration configuration = this.configurationSelector.findMatchingConfiguration(path, this.postConfigurations);
             // Iterate the resources, and verify whether the xpath matches with the data
             ResourceGroups resourceGroups = configuration.getResourceGroups();
             for (ResourceGroup resourceGroup : resourceGroups.getResourceGroup()) {

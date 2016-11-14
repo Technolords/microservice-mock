@@ -23,7 +23,8 @@ public class ConfigurationSelector {
      *  The path associated with the Configuration.
      * @param configurations
      *  A sub section of the entire map of Configurations. For example all GET related configurations. The smaller the
-     *  map size, the quicker the matching is done. Note that no match means a null reference.
+     *  map size, the quicker the matching is done. Note that no match means a null reference is returned (which will
+     *  lead to a 404 not found).
      *
      * @return
      *  A matching configuration (or null when none was found).
