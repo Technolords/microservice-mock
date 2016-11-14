@@ -23,6 +23,7 @@
 
         <!--+
             | Maven properties
+            | TODO: check http://stackoverflow.com/questions/36548872/maven-timestamp-error
             +-->
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
 

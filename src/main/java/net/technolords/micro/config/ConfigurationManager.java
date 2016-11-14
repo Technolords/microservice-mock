@@ -9,7 +9,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.xml.XMLConstants;
@@ -38,8 +42,9 @@ public class ConfigurationManager {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     public static final String HTTP_POST = "POST";
     public static final String HTTP_GET = "GET";
-    private static final String PATH_TO_CONFIG_FILE = "xml/configuration.xml";
+    private static final String PATH_TO_CONFIG_FILE = "xml/default-configuration.xml";
     private static final String PATH_TO_SCHEMA_FILE = "xsd/configurations.xsd";
+    private static final String WILD_CARD = "\\*";
     private Configurations configurations = null;
     private XpathEvaluator xpathEvaluator = null;
     private Path pathToDataFolder = null;
@@ -87,9 +92,9 @@ public class ConfigurationManager {
      */
     public ResponseContext findResponseForGetOperationWithPath(String path) throws IOException, InterruptedException {
         LOGGER.debug("About to find response for get operation with path: {}", path);
-        if (this.getConfigurations.containsKey(path)) {
+        Configuration configuration = this.findMatchingConfiguration(path);
+        if (configuration != null) {
             LOGGER.debug("... found, proceeding to the data part...");
-            Configuration configuration = this.getConfigurations.get(path);
             SimpleResource resource = configuration.getSimpleResource();
             // Load and update cache
             LOGGER.debug("About to load data from: {}", resource.getResource());
@@ -139,6 +144,50 @@ public class ConfigurationManager {
         }
         LOGGER.debug("... not found!");
         return null;
+    }
+
+    private Configuration findMatchingConfiguration(String path) {
+        Set<Configuration> matchingConfigurations = new HashSet<>();
+        // Run through all configurations
+        for (String key : this.getConfigurations.keySet()) {
+            Configuration currentConfiguration = this.getConfigurations.get(key);
+            if (key.contains("*")) {
+                // Key contains one or more wild cards (means evaluation of regular expression)
+                Pattern pattern = currentConfiguration.getPattern();
+                if (pattern == null) {
+                    pattern = this.createPattern(key);
+                    currentConfiguration.setPattern(pattern);
+                }
+                Matcher matcher = pattern.matcher(path);
+                if (matcher.matches()) {
+                    LOGGER.debug("Got a match for regex -> possible config");
+                    matchingConfigurations.add(this.getConfigurations.get(key));
+                    continue;
+                }
+            }
+            if (key.equals(path)) {
+                LOGGER.debug("Key matches path -> possible config");
+                matchingConfigurations.add(this.getConfigurations.get(key));
+                continue;
+            }
+        }
+        if (matchingConfigurations.size() > 1) {
+            // Force selection
+            LOGGER.debug("Problem, need to force selection (first match without wildcard)");
+            return matchingConfigurations.stream().filter( (configuration -> !configuration.getUrl().contains("*")) ).findFirst().get();
+        }
+        if (matchingConfigurations.size() == 1) {
+            LOGGER.debug("No problem, straightforward selection");
+            return matchingConfigurations.stream().findFirst().get();
+        }
+        return null;
+    }
+
+    private Pattern createPattern(String key) {
+        LOGGER.trace("Before replace: {}", key);
+        String alteredKey = key.replaceAll(WILD_CARD, "(.+)");
+        LOGGER.trace("After replace: {}", alteredKey);
+        return Pattern.compile(alteredKey);
     }
 
     /**
