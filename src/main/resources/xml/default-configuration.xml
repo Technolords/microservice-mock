@@ -1,8 +1,15 @@
 <configurations xmlns="http://xsd.technolords.net">
+
     <!--+
         | Supported GET requests
         +-->
     <configuration type="GET" url="/mock/get">
+        <resource>mock/sample-get.json</resource>
+    </configuration>
+    <configuration type="GET" url="/mock/*/get">
+        <resource>mock/sample-get.json</resource>
+    </configuration>
+    <configuration type="GET" url="/mock/1/get">
         <resource>mock/sample-get.json</resource>
     </configuration>
 

@@ -1,23 +1,23 @@
 package net.technolords.micro.camel;
 
-import net.technolords.micro.TestSupport;
-import net.technolords.micro.camel.ResponseProcessor;
-import net.technolords.micro.config.ConfigurationManager;
-import org.apache.camel.Exchange;
-import org.apache.camel.impl.DefaultCamelContext;
-import org.apache.camel.impl.DefaultExchange;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-import org.testng.Assert;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import org.apache.camel.Exchange;
+import org.apache.camel.impl.DefaultCamelContext;
+import org.apache.camel.impl.DefaultExchange;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import net.technolords.micro.TestSupport;
+import net.technolords.micro.config.ConfigurationManager;
 
 public class ResponseProcessorTest extends TestSupport{
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());

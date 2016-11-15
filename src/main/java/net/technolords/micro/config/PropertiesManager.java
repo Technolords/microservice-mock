@@ -41,7 +41,7 @@ public class PropertiesManager {
         } catch (IOException e) {
             LOGGER.warn("Failed to load meta data properties", e);
         }
-        LOGGER.info("Got meta data properties: {}", properties.size());
+        LOGGER.debug("Got meta data properties: {}", properties.size());
         return properties;
     }
 

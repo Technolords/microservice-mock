@@ -1,8 +1,5 @@
 package net.technolords.micro.command;
 
-import net.technolords.micro.config.ConfigurationManager;
-import net.technolords.micro.registry.MockRegistry;
-import net.technolords.micro.camel.RestServiceRoute;
 import org.apache.camel.Exchange;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.ServiceStatus;
@@ -14,6 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
+import net.technolords.micro.camel.RestServiceRoute;
+import net.technolords.micro.config.ConfigurationManager;
+import net.technolords.micro.registry.MockRegistry;
 
 public class StopCommandTest extends CamelTestSupport {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());

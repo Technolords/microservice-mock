@@ -22,14 +22,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!--+
-            | Maven properties
-            +-->
-        <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
-
-        <!--+
             | Version properties
             +-->
-        <build.timestamp>${maven.build.timestamp}</build.timestamp>
         <camel.version>2.18.0</camel.version>
         <camel.testng.version>2.18.0</camel.testng.version>
         <commons.io.version>2.4</commons.io.version>
@@ -37,7 +31,9 @@
         <jetty.util.version>9.2.19.v20160908</jetty.util.version>
         <jetty.maven.plugin.version>9.4.0.M0</jetty.maven.plugin.version>
         <log4j.version>2.7</log4j.version>
+        <maven.build.helper.plugin.version>1.12</maven.build.helper.plugin.version>
         <maven.compiler.plugin.version>3.3</maven.compiler.plugin.version>
+        <maven.shade.plugin.version>2.4.3</maven.shade.plugin.version>
         <maven.source.plugin.version>2.4</maven.source.plugin.version>
         <maven.surefire.plugin.version>2.18.1</maven.surefire.plugin.version>
         <org.testng.version>6.9.4</org.testng.version>
@@ -102,8 +98,6 @@
             <version>${jetty.maven.plugin.version}</version>
         </dependency>
 
-
-
         <!--+
             | Test scope
             +-->
@@ -139,7 +133,7 @@
         <plugins>
 
             <plugin>
-                <!-- Compiler plugin configuration-->
+                <!-- Required to compile the java sources against a JVM spec -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven.compiler.plugin.version}</version>
@@ -150,7 +144,45 @@
             </plugin>
 
             <plugin>
-                <!-- Surefire plugin configuration -->
+                <!-- Required to bundle all dependencies in a single jar (packaging) -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>${maven.shade.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>net.technolords.micro.camel.RestServiceCamelContext</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <!-- Source plugin configuration -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven.source.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <!-- Required to execute unit tests, supporting both JUnit and TestNG -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven.surefire.plugin.version}</version>
@@ -176,7 +208,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>test-wish-junit</id>
+                        <id>test-with-junit</id>
                         <phase>test</phase>
                         <goals>
                             <goal>test</goal>
@@ -189,37 +221,36 @@
             </plugin>
 
             <plugin>
-                <!-- Jetty plugin configuration-->
+                <!-- Required to generate timestamp with correct timezone -->
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>${maven.build.helper.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>timestamp-property</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>timestamp-property</goal>
+                        </goals>
+                        <configuration>
+                            <name>build.timestamp</name>
+                            <pattern>yyyy-MM-dd HH:mm:ss</pattern>
+                            <timeZone>Etc/GMT-1</timeZone>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <!-- Required to run jetty as servlet container -->
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
-                <version>9.4.0.M0</version>
+                <version>${jetty.maven.plugin.version}</version>
                 <configuration>
                     <httpConnector>
                         <port>${jetty.port}</port>
                     </httpConnector>
                 </configuration>
-            </plugin>
-
-            <plugin>
-                <!-- Shade plugin configuration (packaging) -->
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.4.3</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>net.technolords.micro.camel.RestServiceCamelContext</mainClass>
-                                </transformer>
-                            </transformers>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
 
             <plugin>
@@ -231,21 +262,6 @@
                 </configuration>
             </plugin>
 
-            <plugin>
-                <!-- Source plugin configuration -->
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>${maven.source.plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
 
     </build>
