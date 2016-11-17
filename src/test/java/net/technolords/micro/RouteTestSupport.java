@@ -30,13 +30,4 @@ public class RouteTestSupport extends CamelTestSupport{
         producerTemplate = main.getCamelTemplate();
     }
 
-    private Exchange generateExchange(String method, String uri) throws Exception {
-        method = ConfigurationManager.HTTP_GET;
-        uri = "/mock/cmd";
-        Exchange exchange = new DefaultExchange(producerTemplate.getCamelContext());
-        exchange.getIn().setHeader(Exchange.HTTP_METHOD, method);
-        exchange.getIn().setHeader(Exchange.HTTP_URI, uri);
-        exchange.getIn().setHeader("stop", "now");
-        return exchange;
-    }
 }
