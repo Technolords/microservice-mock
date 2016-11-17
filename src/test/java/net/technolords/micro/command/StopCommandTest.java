@@ -1,39 +1,25 @@
 package net.technolords.micro.command;
 
+import net.technolords.micro.RouteTestSupport;
+import net.technolords.micro.config.ConfigurationManager;
 import org.apache.camel.Exchange;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.ServiceStatus;
 import org.apache.camel.impl.DefaultExchange;
 import org.apache.camel.main.Main;
-import org.apache.camel.testng.CamelTestSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import net.technolords.micro.camel.RestServiceRoute;
-import net.technolords.micro.config.ConfigurationManager;
-import net.technolords.micro.registry.MockRegistry;
-
-public class StopCommandTest extends CamelTestSupport {
+public class StopCommandTest extends RouteTestSupport {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private Main main;
     private ProducerTemplate producerTemplate;
 
-    @BeforeTest
-    public void setUp() throws Exception {
-        main = new Main();
-        MockRegistry.registerPropertiesInRegistry(main);
-        MockRegistry.registerBeansInRegistryBeforeStart();
-        main.addRouteBuilder(new RestServiceRoute());
-        LOGGER.info("Added Route, main started: {}", main.isStarted());
-        main.start();
-        producerTemplate = main.getCamelTemplate();
-    }
-
     @Test
     public void testStopCommand() throws Exception{
+        setUpToStartServer();
         String method = ConfigurationManager.HTTP_GET;
         String uri = "/mock/cmd?stop=now";
         Exchange exchange = this.generateExchange(method, uri);
