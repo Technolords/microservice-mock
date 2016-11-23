@@ -1,10 +1,12 @@
 package net.technolords.micro.command;
 
 import net.technolords.micro.RouteTestSupport;
+import net.technolords.micro.camel.RestServiceRoute;
 import net.technolords.micro.config.ConfigurationManager;
 import java.util.Properties;
 
 import net.technolords.micro.RouteTestSupport;
+import net.technolords.micro.registry.MockRegistry;
 import org.apache.camel.Exchange;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.ServiceStatus;
