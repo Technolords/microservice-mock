@@ -2,20 +2,47 @@ package net.technolords.micro.command;
 
 import net.technolords.micro.RouteTestSupport;
 import net.technolords.micro.config.ConfigurationManager;
+import java.util.Properties;
+
+import net.technolords.micro.RouteTestSupport;
 import org.apache.camel.Exchange;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.ServiceStatus;
 import org.apache.camel.impl.DefaultExchange;
 import org.apache.camel.main.Main;
+import org.apache.camel.testng.AvailablePortFinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 public class StopCommandTest extends RouteTestSupport {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private Main main;
     private ProducerTemplate producerTemplate;
+    private String availablePort;
+
+    @BeforeSuite
+    public void findAvailablePortNumber() {
+        LOGGER.info("BeforeSuite called...");
+        availablePort = String.valueOf(AvailablePortFinder.getNextAvailable(10000));
+        LOGGER.info("Found port: {}", availablePort);
+    }
+
+    @BeforeTest
+    public void setUp() throws Exception {
+        main = new Main();
+        MockRegistry.registerPropertiesInRegistry(main);
+        MockRegistry.registerBeansInRegistryBeforeStart();
+        Properties properties = MockRegistry.findProperties();
+        properties.put("port", availablePort);
+        main.addRouteBuilder(new RestServiceRoute());
+        LOGGER.info("Added Route, main started: {}", main.isStarted());
+        main.start();
+        producerTemplate = main.getCamelTemplate();
+    }
 
     @Test
     public void testStopCommand() throws Exception{
