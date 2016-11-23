@@ -15,9 +15,9 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import net.technolords.micro.camel.RestServiceRoute;
 import net.technolords.micro.config.ConfigurationManager;
 import net.technolords.micro.registry.MockRegistry;
-import net.technolords.micro.route.RestServiceRoute;
 
 public class StopCommandTest  {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());

@@ -3,7 +3,6 @@ package net.technolords.micro.command;
 import java.util.Properties;
 
 import org.apache.camel.Exchange;
-import org.apache.camel.Processor;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.main.Main;
 import org.apache.camel.testng.AvailablePortFinder;
@@ -15,9 +14,9 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import net.technolords.micro.camel.RestServiceRoute;
 import net.technolords.micro.config.ConfigurationManager;
 import net.technolords.micro.registry.MockRegistry;
-import net.technolords.micro.route.RestServiceRoute;
 
 public class StatsCommandTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(StatsCommandTest.class);
