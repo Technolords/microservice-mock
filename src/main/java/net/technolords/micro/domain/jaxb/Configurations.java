@@ -1,4 +1,4 @@
-package net.technolords.micro.config.jaxb;
+package net.technolords.micro.domain.jaxb;
 
 import java.util.List;
 

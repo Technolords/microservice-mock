@@ -1,5 +1,8 @@
-package net.technolords.micro.processor;
+package net.technolords.micro.domain;
 
+/**
+ * This class is a data transfer object and represents the mocked response.
+ */
 public class ResponseContext {
     public static final String JSON_CONTENT_TYPE = "application/json";
     public static final String XML_CONTENT_TYPE = "application/xml";

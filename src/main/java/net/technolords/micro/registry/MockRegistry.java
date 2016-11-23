@@ -1,5 +1,8 @@
 package net.technolords.micro.registry;
 
+import static net.technolords.micro.config.PropertiesManager.PROP_BUILD_DATE;
+import static net.technolords.micro.config.PropertiesManager.PROP_BUILD_VERSION;
+
 import java.io.IOException;
 import java.util.Properties;
 
@@ -18,11 +21,13 @@ import net.technolords.micro.filter.InfoFilter;
 
 /**
  * This class 'isolates' all the Registry interfacing with Camel, and basically serves as a centralized
- * way of implementation. By no means this class is intended to replace or implement a Registry.
+ * way of implementation. By no means this class is intended to replace or implement a Registry. This class
+ * in fact substitutes for a IOC solution (like Spring or Blueprint).
  */
 public class MockRegistry {
     private static final Logger LOGGER = LoggerFactory.getLogger(MockRegistry.class);
     private static final String BEAN_PROPERTIES = "props";
+    private static final String BEAN_META_DATA_PROPERTIES = "propsMetaData";
     private static final String BEAN_METRICS = "metrics";
     private static final String BEAN_JETTY_SERVER = "jettyServer";
     private static final String BEAN_CONFIG = "config";
@@ -37,6 +42,7 @@ public class MockRegistry {
      */
     public static void registerPropertiesInRegistry(Main mainReference) {
         main = mainReference;
+        main.bind(BEAN_META_DATA_PROPERTIES, PropertiesManager.extractMetaData());
         main.bind(BEAN_PROPERTIES, PropertiesManager.extractProperties());
     }
 
@@ -124,6 +130,15 @@ public class MockRegistry {
 
     public static String findConfiguredData() {
         return (String) findProperties().get(PropertiesManager.PROP_DATA);
+    }
+
+    public static String findBuildMetaData() {
+        Properties properties = main.lookup(BEAN_META_DATA_PROPERTIES, Properties.class);
+        StringBuilder buffer = new StringBuilder();
+        buffer.append(properties.get(PROP_BUILD_VERSION));
+        buffer.append(" ");
+        buffer.append(properties.get(PROP_BUILD_DATE));
+        return buffer.toString();
     }
 
 }

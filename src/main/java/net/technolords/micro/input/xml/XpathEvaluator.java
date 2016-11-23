@@ -1,4 +1,4 @@
-package net.technolords.micro.config;
+package net.technolords.micro.input.xml;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 
-import net.technolords.micro.config.jaxb.Configuration;
+import net.technolords.micro.domain.jaxb.Configuration;
 
 public class XpathEvaluator {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());

@@ -1,4 +1,4 @@
-package net.technolords.micro.config.jaxb.resource;
+package net.technolords.micro.domain.jaxb.resource;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;

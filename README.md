@@ -22,14 +22,14 @@ The java jar is executable (required java version is 1.8), and looks like this (
 Most of the logging is suppressed by design, however it is fully configurable as well. For more details see [here](/github/doc/logging.md).
 Out of the box, the log is emitted to the standard output, and there is no log file per default. Snippets of the log output:
 
-    2016-09-06 21:38:09,317 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] INFO  About to validate the configuration...
-    2016-09-06 21:38:09,345 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] INFO  ... valid, proceeding...
-    2016-09-06 21:38:09,345 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] INFO  About to initialize the configuration...
-    2016-09-06 21:38:09,450 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] INFO  ... done, URL mappings parsed [1 for POST, 1 for GET]
+    2016-09-06 21:38:09,317 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] About to validate the configuration...
+    2016-09-06 21:38:09,345 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] ... valid, proceeding...
+    2016-09-06 21:38:09,345 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] About to initialize the configuration...
+    2016-09-06 21:38:09,450 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] ... done, URL mappings parsed [1 for POST, 1 for GET]
 
 The log shows how many mappings (URI with response config) has been recognized. Note that it makes a distinction between POST and GET.
 
-    2016-09-06 21:38:09,969 [INFO] [main] [org.apache.camel.impl.DefaultCamelContext] INFO  Apache Camel 2.17.1 (CamelContext: camel-1) started in 0.342 seconds
+    2016-09-06 21:38:09,969 [INFO] [main] [org.apache.camel.impl.DefaultCamelContext] Apache Camel 2.18.0 (CamelContext: camel-1) started in 0.342 seconds
 
 The log shows the final log statement which means the mock service is started and ready to receive requests.
 
@@ -40,7 +40,7 @@ Provide a Java system property to the command line as follow:
 
 The log confirms the port with:
 
-    2016-09-06 22:31:58,235 [INFO] [main] [net.technolords.micro.route.RestServiceRoute] INFO  Using port: 9999
+    2016-09-06 22:31:58,235 [INFO] [main] [net.technolords.micro.route.RestServiceRoute] Using port: 9999
 
 ## Mock Configuration
 The configuration is XML based, and must be compliant against a XSD. See for the schema [here](https://github.com/Technolords/microservice-mock#xsd-schema).
@@ -51,19 +51,22 @@ Provide a Java system property to the command line as follow:
 
 During startup, the log shows something like this:
 
-    2016-09-06 21:52:10,945 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] INFO  Using configuration file: /var/data/mock-configuration.xml
-    2016-09-06 21:52:10,948 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] INFO  File exist: true
+    2016-09-06 21:52:10,945 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] Using configuration file: /var/data/mock-configuration.xml
+    2016-09-06 21:52:10,948 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] File exist: true
 
 ### Example of a configuration file
 The XML configuration file must have a namespace according to the [schema](https://github.com/Technolords/microservice-mock#xsd-schema).
 
     <configurations xmlns="http://xsd.technolords.net">
 
-        <configuration type="GET" url="/mock/sample1">
-            <resource>sample1.json</resource>
+        <configuration type="GET" url="/mock/get">
+            <resource>mock/sample-get.json</resource>
         </configuration>
-        <configuration type="GET" url="/mock/sample2">
-            <resource>sample2.xml</resource>
+        <configuration type="GET" url="/mock/*/get">
+            <resource>mock/sample-get.json</resource>
+        </configuration>
+        <configuration type="GET" url="/mock/1/get">
+            <resource>mock/sample-get.json</resource>
         </configuration>
 
         <configuration type="POST" url="/mock/post">
@@ -91,8 +94,9 @@ The XML configuration file must have a namespace according to the [schema](https
         </configuration>
     </configurations>
 
-The configuration above lists two configurations for a GET requests, and one for a POST request. However, since
+The configuration above lists three configurations for a GET requests, and one for a POST request. However, since
 the POST is about the body, in this case XML, associated xpath expressions are present for finer grained configuration.
+Note that wild cards are supported, and shown as example in the GET configurations.
 
 Example POST message:
 
@@ -114,8 +118,8 @@ Java system property to the command line as follow must submitted:
 
 The log confirms with:
 
-    2016-09-06 22:34:42,274 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] INFO  Using data folder: /var/data/mock
-    2016-09-06 22:34:42,275 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] INFO  Folder exist: true, and is folder: true
+    2016-09-06 22:34:42,274 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] Using data folder: /var/data/mock
+    2016-09-06 22:34:42,275 [INFO] [main] [net.technolords.micro.config.ConfigurationManager] Folder exist: true, and is folder: true
 
 ### Optional attributes
 The XML configuration mentions some optional attributes, which are:

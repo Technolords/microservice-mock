@@ -1,14 +1,15 @@
-package net.technolords.micro.config.jaxb;
+package net.technolords.micro.domain.jaxb;
 
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import net.technolords.micro.config.jaxb.namespace.NamespaceList;
-import net.technolords.micro.config.jaxb.resource.ResourceGroups;
-import net.technolords.micro.config.jaxb.resource.SimpleResource;
+import net.technolords.micro.domain.jaxb.namespace.NamespaceList;
+import net.technolords.micro.domain.jaxb.resource.ResourceGroups;
+import net.technolords.micro.domain.jaxb.resource.SimpleResource;
 
 public class Configuration {
     private String type;
@@ -17,6 +18,7 @@ public class Configuration {
     private ResourceGroups resourceGroups;
     private NamespaceList namespaceList;
     private Map<String, String> cachedNamespaceMapping;
+    private Pattern pattern;
 
     @XmlAttribute(name = "type")
     public String getType() {
@@ -70,5 +72,14 @@ public class Configuration {
 
     public void setCachedNamespaceMapping(Map<String, String> cachedNamespaceMapping) {
         this.cachedNamespaceMapping = cachedNamespaceMapping;
+    }
+
+    @XmlTransient
+    public Pattern getPattern() {
+        return pattern;
+    }
+
+    public void setPattern(Pattern pattern) {
+        this.pattern = pattern;
     }
 }

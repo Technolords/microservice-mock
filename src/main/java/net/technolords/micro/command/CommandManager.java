@@ -7,7 +7,7 @@ import org.apache.camel.Exchange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.technolords.micro.processor.ResponseContext;
+import net.technolords.micro.domain.ResponseContext;
 
 public class CommandManager {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
@@ -16,6 +16,15 @@ public class CommandManager {
     private static final String STATS = "stats";
     private static final String RESET = "reset";
 
+    /**
+     * Auxiliary method that executes a command by delegation (provided the command is supported).
+     *
+     * @param exchange
+     *  The exchange associated with the command.
+     *
+     * @return
+     *  The result of the command execution.
+     */
     public ResponseContext executeCommand(Exchange exchange) {
         Map<String, Object> commands = exchange.getIn().getHeaders();
         for (String key : commands.keySet()) {
@@ -36,6 +45,12 @@ public class CommandManager {
         return this.createUnsupportedResponse();
     }
 
+    /**
+     * Auxiliary method that generates the result of an unsupported command.
+     *
+     * @return
+     *  The result of an unsupported command.
+     */
     private ResponseContext createUnsupportedResponse() {
         ResponseContext responseContext = new ResponseContext();
         responseContext.setContentType(ResponseContext.PLAIN_TEXT_CONTENT_TYPE);

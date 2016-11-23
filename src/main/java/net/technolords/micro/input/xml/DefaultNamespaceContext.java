@@ -1,4 +1,4 @@
-package net.technolords.micro.config;
+package net.technolords.micro.input.xml;
 
 import java.util.Iterator;
 import java.util.Map;
