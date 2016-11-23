@@ -15,6 +15,8 @@ import net.technolords.micro.registry.MockRegistry;
 
 public class RestServiceRoute extends RouteBuilder {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
+    public static final String ROUTE_ID_JETTY = "RouteJetty";
+    public static final String ROUTE_ID_MAIN = "RouteMain";
     private static final String DIRECT_MAIN = "direct:main";
     private static final String JETTY_MAIN = "jetty:http://";
     private static final String JETTY_BINDING_ADDRESS = "0.0.0.0";
@@ -46,11 +48,15 @@ public class RestServiceRoute extends RouteBuilder {
             .transform(simple("An error occurred: ${exception.message}"));
 
         from(generateJettyEndpoint())
+            .routeId(ROUTE_ID_JETTY)
+            .id(ROUTE_ID_JETTY)
             .log(LoggingLevel.DEBUG, LOGGER, "Received request...")
             .setExchangePattern(ExchangePattern.InOut)
             .to(DIRECT_MAIN);
 
         from(DIRECT_MAIN)
+            .routeId(ROUTE_ID_MAIN)
+            .id(ROUTE_ID_MAIN)
             .log(LoggingLevel.DEBUG, LOGGER, "Current headers: ${headers}")
             .process(this.responseProcessor);
     }
