@@ -11,10 +11,11 @@ import net.technolords.micro.domain.ResponseContext;
 
 public class CommandManager {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
+    private static final String CONFIG = "config";
     private static final String LOG = "log";
-    private static final String STOP = "stop";
-    private static final String STATS = "stats";
     private static final String RESET = "reset";
+    private static final String STATS = "stats";
+    private static final String STOP = "stop";
 
     /**
      * Auxiliary method that executes a command by delegation (provided the command is supported).
@@ -30,17 +31,20 @@ public class CommandManager {
         for (String key : commands.keySet()) {
             LOGGER.debug("Key: {} -> value: {}", key, commands.get(key));
         }
+        if (commands.containsKey(CONFIG)) {
+            return ConfigCommand.executeCommand();
+        }
         if (commands.containsKey(LOG)) {
             return LogCommand.executeCommand((String) commands.get(LOG));
         }
-        if (commands.containsKey(STOP)) {
-            return StopCommand.executeCommand(exchange);
+        if (commands.containsKey(RESET)) {
+            return ResetCommand.executeCommand();
         }
         if (commands.containsKey(STATS)) {
             return StatsCommand.executeCommand((String) commands.get(STATS));
         }
-        if (commands.containsKey(RESET)) {
-            return ResetCommand.executeCommand();
+        if (commands.containsKey(STOP)) {
+            return StopCommand.executeCommand(exchange);
         }
         return this.createUnsupportedResponse();
     }
