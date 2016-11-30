@@ -160,6 +160,10 @@ public class ConfigurationManager {
         return null;
     }
 
+    public Configurations getConfigurations() {
+        return this.configurations;
+    }
+
     /**
      * Auxiliary method to validate the configuration file.
      *
