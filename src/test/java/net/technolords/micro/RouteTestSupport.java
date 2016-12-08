@@ -1,54 +1,50 @@
 package net.technolords.micro;
 
-import net.technolords.micro.camel.RestServiceRoute;
-import net.technolords.micro.registry.MockRegistry;
+import java.util.Properties;
+
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.main.Main;
 import org.apache.camel.testng.AvailablePortFinder;
 import org.apache.camel.testng.CamelTestSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.BeforeClass;
 
-import java.util.Properties;
+import net.technolords.micro.camel.RestServiceRoute;
+import net.technolords.micro.registry.MockRegistry;
 
 public class RouteTestSupport extends CamelTestSupport{
     private static final Logger LOGGER = LoggerFactory.getLogger(RouteTestSupport.class);
-    private Main main = new Main();
+    private Main main;
     private ProducerTemplate producerTemplate;
     private String availablePort;
 
-    @BeforeSuite
-    public void findAvailablePortNumber() {
+    @BeforeClass
+    public void findAvailablePortNumber() throws Exception {
         LOGGER.info("BeforeSuite called...");
-        availablePort = String.valueOf(AvailablePortFinder.getNextAvailable(10000));
-        LOGGER.info("Found port: {}", availablePort);
-    }
-
-    @BeforeTest
-    public void setUpToStartServer() throws Exception {
-        main = new Main();
-        MockRegistry.registerPropertiesInRegistry(main);
+        this.availablePort = String.valueOf(AvailablePortFinder.getNextAvailable(10000));
+        LOGGER.info("Found port: {}", this.availablePort);
+        this.main = new Main();
+        MockRegistry.registerPropertiesInRegistry(this.main);
         MockRegistry.registerBeansInRegistryBeforeStart();
         Properties properties = MockRegistry.findProperties();
-        properties.put("port", availablePort);
-        main.addRouteBuilder(new RestServiceRoute());
-        LOGGER.info("Added Route, main started: {}", main.isStarted());
-        main.start();
+        properties.put("port", this.availablePort);
+        this.main.addRouteBuilder(new RestServiceRoute());
+        this.main.start();
+        LOGGER.info("Main started: {}", this.main.isStarted());
         MockRegistry.registerBeansInRegistryAfterStart();
-        producerTemplate = main.getCamelTemplate();
+        this.producerTemplate = this.main.getCamelTemplate();
     }
 
     public Main getMain() {
-        return main;
+        return this.main;
     }
 
     public ProducerTemplate getProducerTemplate() {
-        return producerTemplate;
+        return this.producerTemplate;
     }
 
     public String getAvailablePort() {
-        return availablePort;
+        return this.availablePort;
     }
 }
