@@ -211,4 +211,7 @@ follow must be submitted:
         </xs:complexType>
     </xs:schema>
 
+## Guide lines
+There are some 'rules' of which this code lives by:
 
+* [Code Style](/github/doc/code-style.md): Uniform way of styling java Code
