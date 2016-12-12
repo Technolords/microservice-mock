@@ -9,7 +9,7 @@ See also explained by JetBrains [here](https://www.jetbrains.com/help/idea/2016.
 For visibility it is also posted below:
 
     <?xml version="1.0" encoding="UTF-8"?>
-    <code_scheme name="LGI">
+    <code_scheme name="Technolords">
       <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="50" />
       <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="30" />
       <option name="IMPORT_LAYOUT_TABLE">
