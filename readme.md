@@ -13,6 +13,7 @@ the associated response from the configuration is returned.
 * [Releases](/github/doc/releases.md)
 * [Roadmap](https://github.com/Technolords/microservice-mock/projects/1)
 * [Debugging](/github/doc/debugging.md)
+* [Code guidelines](#guide-lines)
 
 ## Usage
 The java jar is executable (required java version is 1.8), and looks like this (depending on the version):
