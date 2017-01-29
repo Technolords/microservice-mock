@@ -43,11 +43,3 @@
         </resource-groups>
     </configuration>
 </configurations>
-
-<!--
-    Sample POST message:
-
-    <sample xmlns="urn:some:reference:1.0">
-      <message id="1"/>
-    </sample>
--->
