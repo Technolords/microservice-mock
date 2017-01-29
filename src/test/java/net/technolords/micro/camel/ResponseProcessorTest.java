@@ -35,7 +35,7 @@ public class ResponseProcessorTest extends TestSupport{
     public void testMockResponses(String configFile, String method, String uri, String body, String expectedResponse) throws Exception {
         // Create a path to the file
         Path pathToConfigFile = FileSystems.getDefault().getPath(getPathToDataFolder() + File.separator + "mockConfigurations" + File.separator);
-        Path pathToResponseFile = FileSystems.getDefault().getPath(getPathToDataFolder() + File.separator + "mockResponses");
+        Path pathToResponseFile = FileSystems.getDefault().getPath(getPathToDataFolder() + File.separator + "mockResponses" + File.separator);
         String responseContent = new String(Files.readAllBytes(Paths.get(pathToResponseFile + File.separator + expectedResponse)));
         String pathToConfig = pathToConfigFile + File.separator +configFile;
 
