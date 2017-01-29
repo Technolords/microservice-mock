@@ -13,7 +13,6 @@ import org.testng.annotations.Test;
 public class StatsCommandTest extends RouteTestSupport{
     private static final Logger LOGGER = LoggerFactory.getLogger(StatsCommandTest.class);
     private static StatisticsHandler statisticsHandler;
-    private static final String JETTY_TEST_ENDPOINT = "http://0.0.0.0:9090/";
 
     @Test
     public void testStatsCommand() throws Exception{
@@ -22,7 +21,7 @@ public class StatsCommandTest extends RouteTestSupport{
             exchange.getIn().setHeader(Exchange.HTTP_METHOD, ConfigurationManager.HTTP_GET);
             exchange.getIn().setHeader("stats", "html");
         });
-        StatisticsHandler statisticsHandler = MockRegistry.findStatisticsHandler();
+        statisticsHandler = MockRegistry.findStatisticsHandler();
         Assert.assertTrue(statisticsHandler.getRequests() == 1);
         String html = response.getOut().getBody(String.class);
         LOGGER.info("Got html: {}", html);
