@@ -13,7 +13,7 @@ import org.testng.annotations.BeforeTest;
 
 import java.util.Properties;
 
-public class RouteTestSupport extends CamelTestSupport{
+public class RouteTestSupport extends CamelTestSupport {
     private static final Logger LOGGER = LoggerFactory.getLogger(RouteTestSupport.class);
     private Main main = new Main();
     private ProducerTemplate producerTemplate;
