@@ -12,7 +12,6 @@ import net.technolords.micro.RouteTestSupport;
 import net.technolords.micro.config.ConfigurationManager;
 
 public class StopCommandTest extends RouteTestSupport {
-
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     @Test
