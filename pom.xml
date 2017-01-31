@@ -37,6 +37,7 @@
         <maven.source.plugin.version>2.4</maven.source.plugin.version>
         <maven.surefire.plugin.version>2.18.1</maven.surefire.plugin.version>
         <org.testng.version>6.9.4</org.testng.version>
+        <org.custommonkey.xmlunit.version>1.6</org.custommonkey.xmlunit.version>
     </properties>
 
     <!--+
@@ -116,7 +117,7 @@
         <dependency>
             <groupId>xmlunit</groupId>
             <artifactId>xmlunit</artifactId>
-            <version>1.6</version>
+            <version>${org.custommonkey.xmlunit.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

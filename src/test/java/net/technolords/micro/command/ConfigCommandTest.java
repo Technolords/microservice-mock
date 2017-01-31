@@ -2,7 +2,6 @@ package net.technolords.micro.command;
 
 import net.technolords.micro.RouteTestSupport;
 import net.technolords.micro.config.ConfigurationManager;
-import net.technolords.micro.domain.jaxb.Configuration;
 import net.technolords.micro.domain.jaxb.Configurations;
 import net.technolords.micro.registry.MockRegistry;
 import org.apache.camel.Exchange;
@@ -14,6 +13,8 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.file.FileSystems;
@@ -22,9 +23,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.custommonkey.xmlunit.XMLAssert.assertXMLEqual;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
 
 public class ConfigCommandTest extends RouteTestSupport {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigCommandTest.class);
@@ -74,7 +72,7 @@ public class ConfigCommandTest extends RouteTestSupport {
     }
 
     @Test(dataProvider = DATASET_FOR_TEST_CONFIGURATIONS)
-    public void testWithLoadConfigurations(String testConfigFile) throws Exception {
+    public void testWithLoadConfigurations(final String testConfigFile) throws Exception {
         LOGGER.debug("About to send Config command, total routes: {}", getProducerTemplate().getCamelContext().getRoutes().size());
         ConfigurationManager configurationManager = MockRegistry.findConfigurationManager();
         Configurations configurations = configurationManager.getConfigurations();
