@@ -32,7 +32,7 @@ public class ResponseProcessorTest extends TestSupport{
     }
 
     @Test(dataProvider = DATASET_FOR_CONFIGURATIONS)
-    public void testMockResponses(String configFile, String method, String uri, String body, String expectedResponse) throws Exception {
+    public void testMockResponses(final String configFile, final String method, final String uri, final String body, final String expectedResponse) throws Exception {
         // Create a path to the file
         Path pathToConfigFile = FileSystems.getDefault().getPath(getPathToDataFolder() + File.separator + "mockConfigurations" + File.separator);
         Path pathToResponseFile = FileSystems.getDefault().getPath(getPathToDataFolder() + File.separator + "mockResponses" + File.separator);
@@ -49,7 +49,7 @@ public class ResponseProcessorTest extends TestSupport{
         Assert.assertEquals(actualResponse, responseContent);
     }
 
-    private Exchange generateExchange(String method, String uri, String body) throws IOException {
+    private Exchange generateExchange(final String method, final String uri,final String body) throws IOException {
         Path pathToRequestFile = FileSystems.getDefault().getPath(getPathToDataFolder() + File.separator + "mockRequests");
         Exchange exchange = new DefaultExchange(new DefaultCamelContext());
         exchange.getIn().setHeader(Exchange.HTTP_METHOD, method);
