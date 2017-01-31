@@ -12,7 +12,6 @@ import net.technolords.micro.RouteTestSupport;
 import net.technolords.micro.config.ConfigurationManager;
 
 public class StopCommandTest extends RouteTestSupport {
-
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     @Test
@@ -27,8 +26,7 @@ public class StopCommandTest extends RouteTestSupport {
         Assert.assertEquals(exchange.getContext().getStatus(), ServiceStatus.Stopped);
     }
 
-    private Exchange generateExchange(String method, String uri) throws Exception {
-        LOGGER.info("Producer template: {}", super.getProducerTemplate());
+    private Exchange generateExchange(final String method, final String uri) throws Exception {
         LOGGER.info("Producer template: {}", super.getProducerTemplate());
         Exchange exchange = new DefaultExchange(super.getProducerTemplate().getCamelContext());
         exchange.getIn().setHeader(Exchange.HTTP_METHOD, method);
