@@ -38,7 +38,7 @@ public class MockRegistry {
      * Custom constructor with a reference of the main which is used to store the properties.
      *
      * @param mainReference
-     *  A refefence of the Main object.
+     *  A reference of the Main object.
      */
     public static void registerPropertiesInRegistry(Main mainReference) {
         main = mainReference;
