@@ -10,7 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeClass;
 
-import net.technolords.micro.camel.RestServiceRoute;
+import net.technolords.micro.camel.route.MockRoute;
+import net.technolords.micro.camel.listener.MockMainListener;
 import net.technolords.micro.registry.MockRegistry;
 
 public class RouteTestSupport extends CamelTestSupport{
@@ -29,7 +30,8 @@ public class RouteTestSupport extends CamelTestSupport{
         MockRegistry.registerBeansInRegistryBeforeStart();
         Properties properties = MockRegistry.findProperties();
         properties.put("port", this.availablePort);
-        this.main.addRouteBuilder(new RestServiceRoute());
+        this.main.addMainListener(new MockMainListener());
+        this.main.addRouteBuilder(new MockRoute());
         this.main.start();
         LOGGER.info("Main started: {}", this.main.isStarted());
         MockRegistry.registerBeansInRegistryAfterStart();

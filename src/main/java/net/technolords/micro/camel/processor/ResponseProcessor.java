@@ -1,4 +1,4 @@
-package net.technolords.micro.camel;
+package net.technolords.micro.camel.processor;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;

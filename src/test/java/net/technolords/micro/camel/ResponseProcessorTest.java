@@ -17,6 +17,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import net.technolords.micro.TestSupport;
+import net.technolords.micro.camel.processor.ResponseProcessor;
 import net.technolords.micro.config.ConfigurationManager;
 
 public class ResponseProcessorTest extends TestSupport{
