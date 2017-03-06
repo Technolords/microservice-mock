@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.technolords.micro.domain.ResponseContext;
-import net.technolords.micro.domain.jaxb.resource.SimpleResource;
+import net.technolords.micro.model.ResponseContext;
+import net.technolords.micro.model.jaxb.resource.SimpleResource;
 
 public class ResponseContextGenerator {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());

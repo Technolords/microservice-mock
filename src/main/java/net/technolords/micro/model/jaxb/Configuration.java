@@ -1,4 +1,4 @@
-package net.technolords.micro.domain.jaxb;
+package net.technolords.micro.model.jaxb;
 
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -7,9 +7,9 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import net.technolords.micro.domain.jaxb.namespace.NamespaceList;
-import net.technolords.micro.domain.jaxb.resource.ResourceGroups;
-import net.technolords.micro.domain.jaxb.resource.SimpleResource;
+import net.technolords.micro.model.jaxb.namespace.NamespaceList;
+import net.technolords.micro.model.jaxb.resource.ResourceGroups;
+import net.technolords.micro.model.jaxb.resource.SimpleResource;
 
 public class Configuration {
     private String type;

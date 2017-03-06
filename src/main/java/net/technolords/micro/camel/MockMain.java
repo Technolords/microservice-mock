@@ -39,6 +39,7 @@ public class MockMain extends Main {
      */
     @Override
     public void beforeStart() throws JAXBException, IOException, SAXException {
+        LOGGER.debug("Before start called...");
         MockRegistry.registerBeansInRegistryBeforeStart();
         super.addMainListener(new MockMainListener());
         super.addRouteBuilder(new MockRoute());
@@ -49,6 +50,7 @@ public class MockMain extends Main {
      */
     @Override
     public void afterStart() {
+        LOGGER.debug("After start called...");
         MockRegistry.registerBeansInRegistryAfterStart();
         LOGGER.info("Mock service started ({}), use CTRL-C to terminate JVM", MockRegistry.findBuildMetaData());
     }
@@ -73,7 +75,7 @@ public class MockMain extends Main {
      *  When the program fails.
      */
     public static void main(String[] args) throws Exception {
-        LOGGER.info("About to start the mocked service...");
+        LOGGER.info("About to start the Mock service...");
         MockMain mockedRestService = new MockMain();
         mockedRestService.startService();
     }

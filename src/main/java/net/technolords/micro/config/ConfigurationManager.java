@@ -24,12 +24,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
-import net.technolords.micro.domain.ResponseContext;
-import net.technolords.micro.domain.jaxb.Configuration;
-import net.technolords.micro.domain.jaxb.Configurations;
-import net.technolords.micro.domain.jaxb.resource.ResourceGroup;
-import net.technolords.micro.domain.jaxb.resource.ResourceGroups;
-import net.technolords.micro.domain.jaxb.resource.SimpleResource;
+import net.technolords.micro.model.ResponseContext;
+import net.technolords.micro.model.jaxb.Configuration;
+import net.technolords.micro.model.jaxb.Configurations;
+import net.technolords.micro.model.jaxb.resource.ResourceGroup;
+import net.technolords.micro.model.jaxb.resource.ResourceGroups;
+import net.technolords.micro.model.jaxb.resource.SimpleResource;
 import net.technolords.micro.input.ConfigurationSelector;
 import net.technolords.micro.input.xml.XpathEvaluator;
 import net.technolords.micro.output.ResponseContextGenerator;

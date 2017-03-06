@@ -1,4 +1,4 @@
-package net.technolords.micro.camel;
+package net.technolords.micro.camel.processor;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +20,7 @@ import net.technolords.micro.TestSupport;
 import net.technolords.micro.camel.processor.ResponseProcessor;
 import net.technolords.micro.config.ConfigurationManager;
 
-public class ResponseProcessorTest extends TestSupport{
+public class ResponseProcessorTest extends TestSupport {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private static final String DATASET_FOR_CONFIGURATIONS = "dataSetMockExpectation";
 
@@ -45,7 +45,7 @@ public class ResponseProcessorTest extends TestSupport{
         ResponseProcessor responseProcessor = new ResponseProcessor(configurationManager);
         responseProcessor.process(exchange);
 
-        //Assertions
+        // Assertions
         String actualResponse = exchange.getOut().getBody(String.class);
         Assert.assertEquals(actualResponse, responseContent);
     }

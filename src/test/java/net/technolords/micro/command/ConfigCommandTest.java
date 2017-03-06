@@ -2,7 +2,7 @@ package net.technolords.micro.command;
 
 import net.technolords.micro.RouteTestSupport;
 import net.technolords.micro.config.ConfigurationManager;
-import net.technolords.micro.domain.jaxb.Configurations;
+import net.technolords.micro.model.jaxb.Configurations;
 import net.technolords.micro.registry.MockRegistry;
 import org.apache.camel.Exchange;
 import org.custommonkey.xmlunit.XMLUnit;
