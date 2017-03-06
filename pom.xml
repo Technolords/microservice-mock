@@ -11,6 +11,7 @@
     <description>
         A mock server, able to simulate any web service
     </description>
+    <url>https://github.com/Technolords/microservice-mock</url>
 
     <!--+
         | Properties
