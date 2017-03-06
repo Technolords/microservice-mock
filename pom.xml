@@ -24,7 +24,7 @@
         <!--+
             | Version properties
             +-->
-        <camel.version>2.18.0</camel.version>
+        <camel.version>2.18.2</camel.version>
         <camel.testng.version>2.18.0</camel.testng.version>
         <commons.io.version>2.4</commons.io.version>
         <jetty.port>9090</jetty.port>
