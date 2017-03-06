@@ -1,4 +1,4 @@
-package net.technolords.micro.domain.jaxb.resource;
+package net.technolords.micro.model.jaxb.resource;
 
 import javax.xml.bind.annotation.XmlValue;
 

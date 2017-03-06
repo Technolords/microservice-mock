@@ -12,7 +12,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.xml.sax.SAXException;
 
-import net.technolords.micro.domain.ResponseContext;
+import net.technolords.micro.model.ResponseContext;
 
 public class ConfigurationManagerTest {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());

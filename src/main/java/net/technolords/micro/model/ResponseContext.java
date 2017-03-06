@@ -1,4 +1,4 @@
-package net.technolords.micro.domain;
+package net.technolords.micro.model;
 
 /**
  * This class is a data transfer object and represents the mocked response.

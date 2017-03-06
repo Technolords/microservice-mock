@@ -11,8 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.technolords.micro.config.ConfigurationManager;
-import net.technolords.micro.domain.ResponseContext;
-import net.technolords.micro.domain.jaxb.Configurations;
+import net.technolords.micro.model.ResponseContext;
+import net.technolords.micro.model.jaxb.Configurations;
 import net.technolords.micro.registry.MockRegistry;
 
 public class ConfigCommand {

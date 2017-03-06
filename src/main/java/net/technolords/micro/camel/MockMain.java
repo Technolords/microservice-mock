@@ -9,15 +9,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
+import net.technolords.micro.camel.listener.MockMainListener;
+import net.technolords.micro.camel.route.MockRoute;
 import net.technolords.micro.registry.MockRegistry;
 
-public class RestServiceCamelContext extends Main {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RestServiceCamelContext.class);
+public class MockMain extends Main {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MockMain.class);
 
     /**
      * Default constructor which registers the start up properties.
      */
-    public RestServiceCamelContext() {
+    public MockMain() {
         MockRegistry.registerPropertiesInRegistry(this);
     }
 
@@ -37,8 +39,10 @@ public class RestServiceCamelContext extends Main {
      */
     @Override
     public void beforeStart() throws JAXBException, IOException, SAXException {
+        LOGGER.debug("Before start called...");
         MockRegistry.registerBeansInRegistryBeforeStart();
-        super.addRouteBuilder(new RestServiceRoute());
+        super.addMainListener(new MockMainListener());
+        super.addRouteBuilder(new MockRoute());
     }
 
     /**
@@ -46,6 +50,7 @@ public class RestServiceCamelContext extends Main {
      */
     @Override
     public void afterStart() {
+        LOGGER.debug("After start called...");
         MockRegistry.registerBeansInRegistryAfterStart();
         LOGGER.info("Mock service started ({}), use CTRL-C to terminate JVM", MockRegistry.findBuildMetaData());
     }
@@ -70,8 +75,8 @@ public class RestServiceCamelContext extends Main {
      *  When the program fails.
      */
     public static void main(String[] args) throws Exception {
-        LOGGER.info("About to start the mocked service...");
-        RestServiceCamelContext mockedRestService = new RestServiceCamelContext();
+        LOGGER.info("About to start the Mock service...");
+        MockMain mockedRestService = new MockMain();
         mockedRestService.startService();
     }
 }

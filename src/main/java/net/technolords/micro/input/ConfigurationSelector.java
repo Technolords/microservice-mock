@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.technolords.micro.domain.jaxb.Configuration;
+import net.technolords.micro.model.jaxb.Configuration;
 
 public class ConfigurationSelector {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());

@@ -1,4 +1,4 @@
-package net.technolords.micro.camel;
+package net.technolords.micro.camel.processor;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import net.technolords.micro.command.CommandManager;
 import net.technolords.micro.config.ConfigurationManager;
-import net.technolords.micro.domain.ResponseContext;
+import net.technolords.micro.model.ResponseContext;
 
 public class ResponseProcessor implements Processor {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
