@@ -22,22 +22,29 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!--+
+            | Microservice properties
+            +-->
+        <jetty.port>9090</jetty.port>
+
+        <!--+
             | Version properties
             +-->
-        <camel.version>2.18.2</camel.version>
-        <camel.testng.version>2.18.0</camel.testng.version>
-        <commons.io.version>2.4</commons.io.version>
-        <jetty.port>9090</jetty.port>
-        <jetty.util.version>9.2.19.v20160908</jetty.util.version>
-        <jetty.maven.plugin.version>9.4.0.M0</jetty.maven.plugin.version>
-        <log4j.version>2.7</log4j.version>
-        <maven.build.helper.plugin.version>1.12</maven.build.helper.plugin.version>
-        <maven.compiler.plugin.version>3.3</maven.compiler.plugin.version>
-        <maven.shade.plugin.version>2.4.3</maven.shade.plugin.version>
-        <maven.source.plugin.version>2.4</maven.source.plugin.version>
-        <maven.surefire.plugin.version>2.18.1</maven.surefire.plugin.version>
-        <org.testng.version>6.9.4</org.testng.version>
-        <org.custommonkey.xmlunit.version>1.6</org.custommonkey.xmlunit.version>
+        <version.camel>2.18.2</version.camel>
+        <version.testng.camel>2.18.0</version.testng.camel>
+        <version.jetty.util>9.2.19.v20160908</version.jetty.util>
+        <version.log4j2>2.7</version.log4j2>
+        <version.maven.plugin.build.helper>1.12</version.maven.plugin.build.helper>
+        <version.maven.plugin.compiler>3.3</version.maven.plugin.compiler>
+        <version.maven.plugin.gpg>1.5</version.maven.plugin.gpg>
+        <version.maven.plugin.javadoc>2.10.4</version.maven.plugin.javadoc>
+        <version.maven.plugin.jetty>9.4.0.M0</version.maven.plugin.jetty>
+        <version.maven.plugin.release>2.5.3</version.maven.plugin.release>
+        <version.maven.plugin.shade>2.4.3</version.maven.plugin.shade>
+        <version.maven.plugin.source>2.4</version.maven.plugin.source>
+        <version.maven.plugin.surefire>2.18.1</version.maven.plugin.surefire>
+        <version.maven.plugin.sonatype.nexus.staging>1.6.7</version.maven.plugin.sonatype.nexus.staging>
+        <version.testng>6.9.4</version.testng>
+        <version.xmlunit>1.6</version.xmlunit>
     </properties>
 
     <!--+
@@ -45,8 +52,31 @@
         +-->
     <scm>
         <connection>scm:git:https://github.com/Technolords/microservice-mock</connection>
+        <url>https://github.com/Technolords/microservice-mock/</url>
         <tag>HEAD</tag>
     </scm>
+
+    <!--+
+        | License information
+        +-->
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <!--+
+        | Developers information
+        +-->
+    <developers>
+        <developer>
+            <name>Mike Ahlers</name>
+            <email>mike@technolords.net</email>
+            <organization>Technolords</organization>
+            <organizationUrl>https://www.technolords.net</organizationUrl>
+        </developer>
+    </developers>
 
     <!--+
         | Dependencies
@@ -60,43 +90,49 @@
             <!-- Required to use jetty:http endpoints -->
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-jetty9</artifactId>
-            <version>${camel.version}</version>
+            <version>${version.camel}</version>
         </dependency>
+
         <dependency>
             <!-- Required to use logging -->
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
-            <version>${log4j.version}</version>
+            <version>${version.log4j2}</version>
         </dependency>
+
         <dependency>
             <!-- Required to use logging -->
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>${log4j.version}</version>
+            <version>${version.log4j2}</version>
         </dependency>
+
         <dependency>
             <!-- Required to bridge slf4j over log4j -->
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j-impl</artifactId>
-            <version>${log4j.version}</version>
+            <version>${version.log4j2}</version>
         </dependency>
+
         <dependency>
             <!-- Required to use log4j correctly from jetty -->
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-web</artifactId>
-            <version>${log4j.version}</version>
+            <version>${version.log4j2}</version>
         </dependency>
+
         <dependency>
             <!-- Required to use the queued thread pool -->
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-util</artifactId>
-            <version>${jetty.util.version}</version>
+            <version>${version.jetty.util}</version>
         </dependency>
+
         <dependency>
             <!-- Required to support: mvn run:jetty -->
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-maven-plugin</artifactId>
-            <version>${jetty.maven.plugin.version}</version>
+            <version>${version.maven.plugin.jetty}</version>
         </dependency>
 
         <!--+
@@ -105,19 +141,21 @@
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-testng</artifactId>
-            <version>${camel.testng.version}</version>
+            <version>${version.testng.camel}</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>${org.testng.version}</version>
+            <version>${version.testng}</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>xmlunit</groupId>
             <artifactId>xmlunit</artifactId>
-            <version>${org.custommonkey.xmlunit.version}</version>
+            <version>${version.xmlunit}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -142,7 +180,7 @@
                 <!-- Required to compile the java sources against a JVM spec -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven.compiler.plugin.version}</version>
+                <version>${version.maven.plugin.compiler}</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -150,10 +188,24 @@
             </plugin>
 
             <plugin>
+                <!-- Required to perform a release (Maven Central) -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>${version.maven.plugin.release}</version>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <useReleaseProfile>false</useReleaseProfile>
+                    <releaseProfiles>release</releaseProfiles>
+                    <goals>deploy</goals>
+                    <tagNameFormat>@{project.version}</tagNameFormat>
+                </configuration>
+            </plugin>
+
+            <plugin>
                 <!-- Required to bundle all dependencies in a single jar (packaging) -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>${maven.shade.plugin.version}</version>
+                <version>${version.maven.plugin.shade}</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -172,31 +224,12 @@
             </plugin>
 
             <plugin>
-                <!-- Source plugin configuration -->
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>${maven.source.plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
                 <!-- Required to execute unit tests, supporting both JUnit and TestNG -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven.surefire.plugin.version}</version>
+                <version>${version.maven.plugin.surefire}</version>
                 <configuration>
-                    <!--<childDelegation>false</childDelegation>-->
                     <useFile>true</useFile>
-                    <!-- Due to memory problems, each test class runs in a separate JVM -->
-                    <!--<forkMode>true</forkMode>-->
                     <failIfNoTests>false</failIfNoTests>
                     <includes>
                         <include>**/*Test.java</include>
@@ -230,7 +263,7 @@
                 <!-- Required to generate timestamp with correct timezone -->
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>${maven.build.helper.plugin.version}</version>
+                <version>${version.maven.plugin.build.helper}</version>
                 <executions>
                     <execution>
                         <id>timestamp-property</id>
@@ -251,7 +284,7 @@
                 <!-- Required to run jetty as servlet container -->
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
-                <version>${jetty.maven.plugin.version}</version>
+                <version>${version.maven.plugin.jetty}</version>
                 <configuration>
                     <httpConnector>
                         <port>${jetty.port}</port>
@@ -260,11 +293,15 @@
             </plugin>
 
             <plugin>
-                <!-- Release plugin configuration-->
-                <artifactId>maven-release-plugin</artifactId>
+                <!-- Required to interact with OSSRH -->
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>${version.maven.plugin.sonatype.nexus.staging}</version>
+                <extensions>true</extensions>
                 <configuration>
-                    <!-- @ : substitute the values after the version transformation has taken place -->
-                    <tagNameFormat>@{project.version}</tagNameFormat>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
 
@@ -273,7 +310,76 @@
     </build>
 
     <distributionManagement>
-        <downloadUrl>https://github.com/Technolords/microservice-mock/releases</downloadUrl>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
     </distributionManagement>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+
+                    <plugin>
+                        <!-- Required to sign the artifacts with a GPG key -->
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${version.maven.plugin.gpg}</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <!-- Generate java doc as additional artifact -->
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>${version.maven.plugin.javadoc}</version>
+                        <configuration>
+                            <additionalparam>-Xdoclint:none</additionalparam>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <!-- Generate sources as additional artifact -->
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>${version.maven.plugin.source}</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
