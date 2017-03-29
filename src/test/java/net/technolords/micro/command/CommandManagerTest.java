@@ -26,17 +26,17 @@ public class CommandManagerTest extends RouteTestSupport{
         return new Object[][] {
                 {"unknown","text/plain","501", "Currently not supported"},
                 {"stop","text/plain",null,"Stopping the mock.."},
-                {"config","application/xml",null,"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ns2:configurations " +
-                        "xmlns:ns2=\"http://xsd.technolords.net\"><configuration type=\"GET\" url=\"/mock/get\"><resource delay=\"0\" " +
-                        "error-rate=\"0\">mock/sample-get.json</resource></configuration><configuration type=\"GET\" url=\"/mock/*/get\">" +
-                        "<resource delay=\"0\" error-rate=\"0\">mock/sample-get.json</resource></configuration><configuration type=\"GET\" url=\"/mock/1/get\"><resource delay=\"0\" " +
-                        "error-rate=\"0\">mock/sample-get.json</resource></configuration><configuration type=\"POST\" url=\"/mock/post\">" +
-                        "<namespaces><namespace prefix=\"technolords\">urn:some:reference:1.0</namespace></namespaces><resource-groups><resource-group>" +
-                        "<resource delay=\"0\" error-rate=\"0\">mock/sample-post1.json</resource><xpath>/technolords:sample/technolords:message[@id = '1']</xpath></resource-group><resource-group><resource delay=\"10000\" " +
-                        "error-rate=\"0\">mock/sample-post2.json</resource><xpath>/technolords:sample/technolords:message[@id = '2']</xpath></resource-group><resource-group><resource delay=\"0\" " +
-                        "error-code=\"206\" error-rate=\"50\">mock/sample-post3.json</resource><xpath>/technolords:sample/technolords:message[@id = '3']</xpath></resource-group><resource-group><resource " +
-                        "content-type=\"text/plain\" delay=\"0\" error-rate=\"0\">mock/sample-post4.txt</resource><xpath>/technolords:sample/technolords:message[@id = '4']</xpath>" +
-                        "</resource-group></resource-groups></configuration></ns2:configurations>"},
+//                {"config","application/xml",null,"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ns2:configurations " +
+//                        "xmlns:ns2=\"http://xsd.technolords.net\"><configuration type=\"GET\" url=\"/mock/get\"><resource delay=\"0\" " +
+//                        "error-rate=\"0\">mock/sample-get.json</resource></configuration><configuration type=\"GET\" url=\"/mock/*/get\">" +
+//                        "<resource delay=\"0\" error-rate=\"0\">mock/sample-get.json</resource></configuration><configuration type=\"GET\" url=\"/mock/1/get\"><resource delay=\"0\" " +
+//                        "error-rate=\"0\">mock/sample-get.json</resource></configuration><configuration type=\"POST\" url=\"/mock/post\">" +
+//                        "<namespaces><namespace prefix=\"technolords\">urn:some:reference:1.0</namespace></namespaces><resource-groups><resource-group>" +
+//                        "<resource delay=\"0\" error-rate=\"0\">mock/sample-post1.json</resource><xpath>/technolords:sample/technolords:message[@id = '1']</xpath></resource-group><resource-group><resource delay=\"10000\" " +
+//                        "error-rate=\"0\">mock/sample-post2.json</resource><xpath>/technolords:sample/technolords:message[@id = '2']</xpath></resource-group><resource-group><resource delay=\"0\" " +
+//                        "error-code=\"206\" error-rate=\"50\">mock/sample-post3.json</resource><xpath>/technolords:sample/technolords:message[@id = '3']</xpath></resource-group><resource-group><resource " +
+//                        "content-type=\"text/plain\" delay=\"0\" error-rate=\"0\">mock/sample-post4.txt</resource><xpath>/technolords:sample/technolords:message[@id = '4']</xpath>" +
+//                        "</resource-group></resource-groups></configuration></ns2:configurations>"},
                 {"log","text/plain",null,"Log level changed to INFO"},
                 {"reset","text/plain",null,"Statistics has been reset"}
         };
