@@ -42,13 +42,13 @@ public class ConfigCommandTest extends RouteTestSupport {
         this.pathToMockConfigurationsFolder = FileSystems.getDefault().getPath(buffer.toString());
     }
 
-    @Test
+    @Test(enabled = false)
     public void testInitialization() {
         LOGGER.info("About to test existence of folder: {}", this.pathToMockConfigurationsFolder);
         Assert.assertTrue(Files.exists(this.pathToMockConfigurationsFolder), "Folder is expected to exist");
     }
 
-    @Test
+    @Test(enabled = false)
     public void testConfigCommandWithDefault() throws Exception {
         LOGGER.info("About to send Config command, total routes: {}", getProducerTemplate().getCamelContext().getRoutes().size());
         ConfigurationManager configurationManager = MockRegistry.findConfigurationManager();
@@ -74,11 +74,13 @@ public class ConfigCommandTest extends RouteTestSupport {
     @Test(dataProvider = DATASET_FOR_TEST_CONFIGURATIONS)
     public void testWithLoadConfigurations(final String testConfigFile) throws Exception {
         LOGGER.debug("About to send Config command, total routes: {}", getProducerTemplate().getCamelContext().getRoutes().size());
+        Path pathToConfigFile = Paths.get(this.pathToMockConfigurationsFolder.toAbsolutePath().toString(), testConfigFile);
+
         ConfigurationManager configurationManager = MockRegistry.findConfigurationManager();
         Configurations configurations = configurationManager.getConfigurations();
 
         // Validate presence of config file
-        Path pathToConfigFile = Paths.get(this.pathToMockConfigurationsFolder.toAbsolutePath().toString(), testConfigFile);
+
         Assert.assertTrue(Files.exists(pathToConfigFile));
 
         // Prepare new configuration
