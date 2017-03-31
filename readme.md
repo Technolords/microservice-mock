@@ -1,4 +1,8 @@
 # Microservice mock
+
+![badge-release](https://img.shields.io/badge/release-v1.2.0-green.svg)
+
+## Introduction
 This micro service represents a configurable webservice that can mock any other web service by means of configuration.
 When a request is made to the mock service, it checks the configuration for a matching URI. When a match is found,
 the associated response from the configuration is returned.
