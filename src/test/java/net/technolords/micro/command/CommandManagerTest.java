@@ -13,8 +13,8 @@ import org.custommonkey.xmlunit.XMLUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -28,7 +28,7 @@ public class CommandManagerTest extends RouteTestSupport {
     private static final String DATA_SET_FOR_COMMAND_MANAGER = "dataSetForCommandManager";
     private CommandManager commandManager;
 
-    @BeforeTest(description = "Initialize XMLUnit")
+    @BeforeClass(description = "Initialize XMLUnit")
     public void initializeXMLUnit() {
         XMLUnit.setIgnoreWhitespace(true);
         XMLUnit.setIgnoreAttributeOrder(true);
@@ -57,7 +57,7 @@ public class CommandManagerTest extends RouteTestSupport {
         return new Object[][] {
                 { "unknown", ResponseContext.PLAIN_TEXT_CONTENT_TYPE, "501", "Currently not supported" },
                 { "stop", ResponseContext.PLAIN_TEXT_CONTENT_TYPE, null, "Stopping the mock.." },
-                { "config", ResponseContext.XML_CONTENT_TYPE, null, expectedResponse() },
+//                { "config", ResponseContext.XML_CONTENT_TYPE, null, expectedResponse() },
                 { "log", ResponseContext.PLAIN_TEXT_CONTENT_TYPE, null, "Log level changed to INFO" },
                 { "reset", ResponseContext.PLAIN_TEXT_CONTENT_TYPE, null, "Statistics has been reset" },
         };

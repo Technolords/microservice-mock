@@ -17,7 +17,7 @@ import org.custommonkey.xmlunit.XMLUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -32,7 +32,7 @@ public class ConfigCommandTest extends RouteTestSupport {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigCommandTest.class);
     private static final String DATA_SET_FOR_TEST_CONFIGURATIONS = "dataSetForTestConfigurations";
 
-    @BeforeTest (description = "Initialize XMLUnit")
+    @BeforeClass (description = "Initialize XMLUnit")
     public void initializeXMLUnit() {
         XMLUnit.setIgnoreWhitespace(true);
         XMLUnit.setIgnoreAttributeOrder(true);
@@ -41,7 +41,7 @@ public class ConfigCommandTest extends RouteTestSupport {
 
     @Test
     public void testConfigCommandWithDefault() throws Exception {
-        LOGGER.info("About to send Config command, total routes: {}", getProducerTemplate().getCamelContext().getRoutes().size());
+        LOGGER.info("About to send Config command (default), total routes: {}", getProducerTemplate().getCamelContext().getRoutes().size());
         ConfigurationManager configurationManager = MockRegistry.findConfigurationManager();
         Assert.assertNotNull(configurationManager);
         Exchange response = getProducerTemplate().request("jetty:http://localhost:" + getAvailablePort() + "/mock/cmd", exchange -> {
@@ -66,7 +66,7 @@ public class ConfigCommandTest extends RouteTestSupport {
 
     @Test (dataProvider = DATA_SET_FOR_TEST_CONFIGURATIONS)
     public void testWithLoadConfigurations(final String testConfigFile) throws Exception {
-        LOGGER.debug("About to send Config command, total routes: {}", getProducerTemplate().getCamelContext().getRoutes().size());
+        LOGGER.debug("About to send Config command (test), total routes: {}", getProducerTemplate().getCamelContext().getRoutes().size());
 
         // Validate presence of config file
         Path pathToConfigFile = Paths.get(PathSupport.getPathToTestConfigForMockResources().toString(), testConfigFile);
@@ -77,9 +77,10 @@ public class ConfigCommandTest extends RouteTestSupport {
         Configurations configurations = configurationManager.getConfigurations();
         List<Configuration> savedConfigurations = new ArrayList<>();
         savedConfigurations.addAll(configurations.getConfigurations());
-        LOGGER.debug("Saved size: {}", savedConfigurations.size());
+        LOGGER.info("Current and saved size: {}", savedConfigurations.size());
         configurations.getConfigurations().clear();
         configurations.getConfigurations().addAll(this.loadTestConfiguration(pathToConfigFile).getConfigurations());
+        LOGGER.info("Updated current size: {}", configurations.getConfigurations().size());
 
         // Request and assert
         Exchange response = getProducerTemplate().request("jetty:http://localhost:" + getAvailablePort() + "/mock/cmd", exchange -> {
@@ -94,6 +95,7 @@ public class ConfigCommandTest extends RouteTestSupport {
         LOGGER.debug("Saved size: {}", savedConfigurations.size());
         configurations.getConfigurations().clear();
         configurations.getConfigurations().addAll(savedConfigurations);
+        LOGGER.info("Restored size: {}", configurations.getConfigurations().size());
     }
 
     private Configurations loadTestConfiguration(Path pathToConfigFile) throws Exception {
