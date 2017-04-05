@@ -2,7 +2,6 @@ package net.technolords.micro.camel.processor;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,17 +21,17 @@ import net.technolords.micro.test.PathSupport;
 
 public class ResponseProcessorTest  {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
-    private static final String DATASET_FOR_CONFIGURATIONS = "dataSetMockExpectation";
+    private static final String DATA_SET_FOR_CONFIGURATIONS = "dataSetMockExpectation";
 
-    @DataProvider(name = DATASET_FOR_CONFIGURATIONS)
+    @DataProvider(name = DATA_SET_FOR_CONFIGURATIONS)
     public Object[][] dataSetMock() {
         return new Object[][] {
-            { "config-for-ResponseProcessorTest.xml", ConfigurationManager.HTTP_POST, "/mock/post", "post-1-for-ResponseProcessorTest.xml", "post-1-for-ResponseProcessorTest.txt"},
-            { "config-for-ResponseProcessorTest.xml", ConfigurationManager.HTTP_GET, "/mock/get", null, "get-1-for-ResponseProcessorTest.txt"}
+            { "config-for-ResponseProcessorTest.xml", ConfigurationManager.HTTP_POST, "/mock/post", "post-1-for-ResponseProcessorTest.xml", "post-1-for-ResponseProcessorTest.txt" },
+            { "config-for-ResponseProcessorTest.xml", ConfigurationManager.HTTP_GET, "/mock/get", null, "get-1-for-ResponseProcessorTest.txt" },
         };
     }
 
-    @Test (dataProvider = DATASET_FOR_CONFIGURATIONS)
+    @Test (dataProvider = DATA_SET_FOR_CONFIGURATIONS)
     public void testMockResponses(final String configFile, final String method, final String uri, final String requestFile, final String responseFile) throws Exception {
         LOGGER.info("About to test with request file: {}, and expected response file: {}", requestFile, responseFile);
 

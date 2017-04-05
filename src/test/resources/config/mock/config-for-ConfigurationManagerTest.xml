@@ -4,13 +4,13 @@
         | Supported GET requests
         +-->
     <configuration type="GET" url="/mock/get">
-        <resource>configManagerTest/getResponse1.txt</resource>
+        <resource>get-1-for-ConfigurationManagerTest.txt</resource>
     </configuration>
     <configuration type="GET" url="/mock/*/get">
-        <resource>configManagerTest/getResponse2.txt</resource>
+        <resource>get-2-for-ConfigurationManagerTest.txt</resource>
     </configuration>
     <configuration type="GET" url="/mock/1/get">
-        <resource>configManagerTest/getResponse1.txt</resource>
+        <resource>get-1-for-ConfigurationManagerTest.txt</resource>
     </configuration>
     <configuration type="GET" url="/mock/*/get/*/data">
         <resource>mock/sample-get.json</resource>
