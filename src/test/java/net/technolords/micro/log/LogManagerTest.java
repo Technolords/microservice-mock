@@ -27,12 +27,12 @@ public class LogManagerTest {
      * different. The 'comparison' will be done between:
      *
      * - default config (src/main/resources/log4j2.xml)
-     * - alternatice config (src/test/resources/xml/alternative-log-config.xml)
+     * - alternative config (src/test/resources/xml/config-for-LogManagerTest.xml)
      */
-    @Test (groups = { GROUP_CHANGE_CONFIG } )
+    @Test (groups = { GROUP_CHANGE_CONFIG }, description = "Validate the numbers of Appenders associated with the LoggerContext")
     public void testLogReconfiguration() {
         LOGGER.debug("About to test re-configuration of the logger context");
-        final String pathToAlternativeLogConfig = "src/test/resources/config/log/alternative-log-config.xml";
+        final String pathToAlternativeLogConfig = "src/test/resources/config/log/config-for-LogManagerTest.xml";
         LoggerContext loggerContext = LoggerContext.getContext(false);
         Configuration configuration = loggerContext.getConfiguration();
         Map<String, Appender> appenderMap = configuration.getAppenders();
