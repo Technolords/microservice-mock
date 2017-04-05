@@ -79,11 +79,7 @@ public class PathSupport {
         return pathToData;
     }
 
-    // ---------------
-    // Private methods
-    // ---------------
-
-    private static String getResourcesAsString(String type) {
+    public static String getResourcesAsString(String type) {
         StringBuilder buffer = new StringBuilder();
         buffer.append(SRC).append(File.separator);
         buffer.append(type).append(File.separator);
@@ -92,17 +88,17 @@ public class PathSupport {
     }
 
     // src/main/resources
-    private static String getMainResourcesAsString() {
+    public static String getMainResourcesAsString() {
         return getResourcesAsString(MAIN);
     }
 
     // src/test/resources
-    private static String getTestResourcesAsString() {
+    public static String getTestResourcesAsString() {
         return getResourcesAsString(TEST);
     }
 
     // src/test/resources/config
-    private static String getTestConfigResourcesAsString() {
+    public static String getTestConfigResourcesAsString() {
         StringBuilder buffer = new StringBuilder();
         buffer.append(getTestResourcesAsString()).append(File.separator);
         buffer.append(CONFIG);
@@ -110,7 +106,7 @@ public class PathSupport {
     }
 
     // src/test/resources/config/log
-    private static String getTestConfigResourcesForLogAsString() {
+    public static String getTestConfigResourcesForLogAsString() {
         StringBuilder buffer = new StringBuilder();
         buffer.append(getTestConfigResourcesAsString()).append(File.separator);
         buffer.append(LOG);
@@ -118,7 +114,7 @@ public class PathSupport {
     }
 
     // src/test/resources/config/mock
-    private static String getTestConfigResourcesForMockAsString() {
+    public static String getTestConfigResourcesForMockAsString() {
         StringBuilder buffer = new StringBuilder();
         buffer.append(getTestConfigResourcesAsString()).append(File.separator);
         buffer.append(MOCK);
@@ -126,7 +122,7 @@ public class PathSupport {
     }
 
     // src/test/resources/data
-    private static String getTestDataResourcesAsString() {
+    public static String getTestDataResourcesAsString() {
         StringBuilder buffer = new StringBuilder();
         buffer.append(getTestResourcesAsString()).append(File.separator);
         buffer.append(DATA);
@@ -134,7 +130,7 @@ public class PathSupport {
     }
 
     // src/test/resources/data/request
-    private static String getTestDataResourcesForRequest() {
+    public static String getTestDataResourcesForRequest() {
         StringBuilder buffer = new StringBuilder();
         buffer.append(getTestDataResourcesAsString()).append(File.separator);
         buffer.append(REQUEST);
@@ -142,7 +138,7 @@ public class PathSupport {
     }
 
     // src/test/resources/data/response
-    private static String getTestDataResourcesForResponse() {
+    public static String getTestDataResourcesForResponse() {
         StringBuilder buffer = new StringBuilder();
         buffer.append(getTestDataResourcesAsString()).append(File.separator);
         buffer.append(RESPONSE);

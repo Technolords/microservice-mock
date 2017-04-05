@@ -10,11 +10,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeClass;
 
-import net.technolords.micro.camel.route.MockRoute;
 import net.technolords.micro.camel.listener.MockMainListener;
+import net.technolords.micro.camel.route.MockRoute;
 import net.technolords.micro.registry.MockRegistry;
 
-public class RouteTestSupport extends CamelTestSupport{
+public class RouteTestSupport extends CamelTestSupport {
     private static final Logger LOGGER = LoggerFactory.getLogger(RouteTestSupport.class);
     private Main main;
     private ProducerTemplate producerTemplate;

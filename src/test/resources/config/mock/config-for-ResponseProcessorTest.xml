@@ -3,7 +3,7 @@
         | Supported GET requests
         +-->
     <configuration type="GET" url="/mock/get">
-        <resource>data/mockResponses/sample-get.txt</resource>
+        <resource>data/response/get-1-for-ResponseProcessorTest.txt</resource>
     </configuration>
     <!--+
         | Supported POST requests
@@ -15,11 +15,11 @@
         <resource-groups>
             <resource-group>
                 <xpath>/anyMock:sample/anyMock:message[@id = '1']</xpath>
-                <resource>data/mockResponses/sample-post1.txt</resource>
+                <resource>data/response/post-1-for-ResponseProcessorTest.txt</resource>
             </resource-group>
             <resource-group>
                 <xpath>/anyMock:sample/anyMock:message[@id = '2']</xpath>
-                <resource error-code="206" error-rate="50">data/mockResponses/sample-post2.txt</resource>
+                <resource error-code="206" error-rate="50">data/response/post-2-for-ResponseProcessor.txt</resource>
             </resource-group>            
         </resource-groups>
     </configuration>
