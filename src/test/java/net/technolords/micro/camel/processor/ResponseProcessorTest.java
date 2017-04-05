@@ -23,6 +23,19 @@ public class ResponseProcessorTest  {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private static final String DATA_SET_FOR_CONFIGURATIONS = "dataSetMockExpectation";
 
+    /**
+     * Auxiliary method to declare a data set to support testing of responses with differernt
+     * configurations. An entry is specified with five elements, each meaning:
+     *
+     *  [0] : The file name of the configuration
+     *  [1] : The HTTP request type
+     *  [2] : The HTP uri
+     *  [3] : The body associated with the request (= null for GET)
+     *  [4] : The file name of the response file (with expected body)
+     *
+     * @return
+     *  The data set.
+     */
     @DataProvider(name = DATA_SET_FOR_CONFIGURATIONS)
     public Object[][] dataSetMock() {
         return new Object[][] {
