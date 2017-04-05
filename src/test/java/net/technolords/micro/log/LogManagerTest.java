@@ -14,17 +14,16 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import net.technolords.micro.TestSupport;
 import net.technolords.micro.model.ResponseContext;
 
-public class LogManagerTest extends TestSupport {
+public class LogManagerTest {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private static final String DATASET_FOR_CHANGING_LOG_LEVELS = "datasetForChangingLogLevels";
     private static final String GROUP_CHANGE_CONFIG = "changeConfig";
     private static final String GROUP_CHANGE_LEVEL = "changeLevel";
 
     /**
-     * This test asserts that after reconfiguration of the log engine the total appenders are
+     * This test asserts that after re-configuration of the log engine the total appenders are
      * different. The 'comparison' will be done between:
      *
      * - default config (src/main/resources/log4j2.xml)
@@ -32,7 +31,8 @@ public class LogManagerTest extends TestSupport {
      */
     @Test (groups = { GROUP_CHANGE_CONFIG } )
     public void testLogReconfiguration() {
-        final String pathToAlternativeLogConfig = "src/test/resources/xml/alternative-log-config.xml";
+        LOGGER.debug("About to test re-configuration of the logger context");
+        final String pathToAlternativeLogConfig = "src/test/resources/config/log/alternative-log-config.xml";
         LoggerContext loggerContext = LoggerContext.getContext(false);
         Configuration configuration = loggerContext.getConfiguration();
         Map<String, Appender> appenderMap = configuration.getAppenders();
