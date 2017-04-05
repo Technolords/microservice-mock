@@ -1,6 +1,9 @@
 package net.technolords.micro.config;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.xml.bind.JAXBException;
 
@@ -13,6 +16,7 @@ import org.testng.annotations.Test;
 import org.xml.sax.SAXException;
 
 import net.technolords.micro.model.ResponseContext;
+import net.technolords.micro.test.PathSupport;
 
 /**
  * This test is designed with two groups, where each group represents a specific
@@ -45,8 +49,18 @@ public class ConfigurationManagerTest {
         Assert.assertNotNull(this.configurationManager);
     }
 
+    /**
+     * Auxiliary method to declare a data set to support testing of a configuration. An entry is specified
+     * with two elements, each meaning:
+     *
+     *  [0] : The HTT uri
+     *  [1] : The expected message
+     *
+     * @return
+     *  The data set.
+     */
     @DataProvider (name = DATA_SET_FOR_DEFAULT_CONFIG)
-    public Object[][] dataSetForDefaultConfiguration() {
+    public Object[][] dataSetForDefaultConfiguration() throws IOException {
         return new Object[][] {
                 { "/mock/get", defaultGetResponse() },
                 { "/mock/*/get", defaultGetResponse() },
@@ -57,22 +71,29 @@ public class ConfigurationManagerTest {
         };
     }
 
-    private static String defaultGetResponse() {
-        return "{\n" +
-                "  \"label\" : \"get-request\",\n" +
-                "  \"data\" : \"this is fun\"\n" +
-                "}";
+    private static String defaultGetResponse() throws IOException {
+        Path pathToResponseFile = PathSupport.getPathToTestDataForResponseResources();
+        Path pathToResource = Paths.get(pathToResponseFile.toString(), "get-3-for-ConfigurationManagerTest.json");
+        Assert.assertTrue(Files.exists(pathToResource));
+        return new String(Files.readAllBytes(pathToResource));
     }
 
     @Test (groups = DEFAULT_CONFIG_MANAGER_REQUIRED, dataProvider = DATA_SET_FOR_DEFAULT_CONFIG)
     public void testResponseWithDefaultConfiguration(final String path, final String expectedResponse) throws IOException, InterruptedException {
         LOGGER.debug("About to test with path: {}", path);
-        ResponseContext responseContext = this.configurationManager.findResponseForGetOperationWithPath(path);
-        Assert.assertNotNull(responseContext);
-        Assert.assertNull(responseContext.getErrorCode());
-        Assert.assertTrue(responseContext.getResponse().equals(expectedResponse));
+        this.assertOnResponseContext(path, expectedResponse);
     }
 
+    /**
+     * Auxiliary method to declare a data set to support testing of a configuration. An entry is specified
+     * with two elements, each meaning:
+     *
+     *  [0] : The HTT uri
+     *  [1] : The expected message
+     *
+     * @return
+     *  The data set.
+     */
     @DataProvider(name = DATA_SET_FOR_TEST_CONFIG)
     public Object[][] dataSetForTestConfiguration() {
         return new Object[][] {
@@ -88,6 +109,10 @@ public class ConfigurationManagerTest {
     @Test (groups = TEST_CONFIG_MANAGER_REQUIRED, dataProvider = DATA_SET_FOR_TEST_CONFIG)
     public void testResponseWithTestConfiguration(final String path, final String expectedResponse) throws IOException, InterruptedException {
         LOGGER.debug("About to test with path: {}", path);
+        this.assertOnResponseContext(path, expectedResponse);
+    }
+
+    private void assertOnResponseContext(final String path, final String expectedResponse) throws IOException, InterruptedException {
         ResponseContext responseContext = this.configurationManager.findResponseForGetOperationWithPath(path);
         Assert.assertNotNull(responseContext);
         Assert.assertNull(responseContext.getErrorCode());
