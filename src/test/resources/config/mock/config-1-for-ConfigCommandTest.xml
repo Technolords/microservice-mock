@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:configurations xmlns:ns2="http://xsd.technolords.net">
-    <configuration type="GET" url="/mock/get">
-        <resource delay="0" error-rate="0">configManagerTest/getResponse1.txt</resource>
-    </configuration>
-    <configuration type="GET" url="/mock/*/get">
-        <resource delay="0" error-rate="0">configManagerTest/getResponse2.txt</resource>
-    </configuration>
-    <configuration type="GET" url="/mock/1/get">
-        <resource delay="0" error-rate="0">configManagerTest/getResponse1.txt</resource>
-    </configuration>
-    <configuration type="GET" url="/mock/*/get/*/data">
-        <resource delay="0" error-rate="0">mock/sample-get.json</resource>
-    </configuration>
-    <configuration type="POST" url="/mock/post">
-        <namespaces>
+    <ns2:configuration type="GET" url="/mock/get">
+        <ns2:resource delay="0" error-rate="0">mock/sample-get.json</ns2:resource>
+    </ns2:configuration>
+    <ns2:configuration type="GET" url="/mock/*/get">
+        <ns2:resource delay="0" error-rate="0">mock/sample-get.json</ns2:resource>
+    </ns2:configuration>
+    <ns2:configuration type="GET" url="/mock/1/get">
+        <ns2:resource delay="0" error-rate="0">mock/sample-get.json</ns2:resource>
+    </ns2:configuration>
+    <ns2:configuration type="POST" url="/mock/post">
+        <ns2:namespaces>
             <namespace prefix="technolords">urn:some:reference:1.0</namespace>
-        </namespaces>
-        <resource-groups>
+        </ns2:namespaces>
+        <ns2:resource-groups>
             <resource-group>
                 <resource delay="0" error-rate="0">mock/sample-post1.json</resource>
                 <xpath>/technolords:sample/technolords:message[@id = '1']</xpath>
@@ -33,6 +30,6 @@
                 <resource content-type="text/plain" delay="0" error-rate="0">mock/sample-post4.txt</resource>
                 <xpath>/technolords:sample/technolords:message[@id = '4']</xpath>
             </resource-group>
-        </resource-groups>
-    </configuration>
+        </ns2:resource-groups>
+    </ns2:configuration>
 </ns2:configurations>
