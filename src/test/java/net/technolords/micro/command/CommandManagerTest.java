@@ -1,7 +1,5 @@
 package net.technolords.micro.command;
 
-import static org.custommonkey.xmlunit.XMLAssert.assertXMLEqual;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -9,6 +7,7 @@ import java.nio.file.Paths;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.impl.DefaultExchange;
+import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,7 +86,7 @@ public class CommandManagerTest extends RouteTestSupport {
         // Assert (note we cannot use String compare when we have XML responses)
         switch (contentType) {
             case ResponseContext.XML_CONTENT_TYPE:
-                assertXMLEqual(response, responseContext.getResponse());
+                XMLAssert.assertXMLEqual(response, responseContext.getResponse());
                 break;
             case ResponseContext.PLAIN_TEXT_CONTENT_TYPE:
                 Assert.assertEquals(responseContext.getContentType(), contentType);

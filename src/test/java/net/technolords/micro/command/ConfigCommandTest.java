@@ -1,7 +1,5 @@
 package net.technolords.micro.command;
 
-import static org.custommonkey.xmlunit.XMLAssert.assertXMLEqual;
-
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,6 +11,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.camel.Exchange;
+import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +53,7 @@ public class ConfigCommandTest extends RouteTestSupport {
         Assert.assertTrue(Files.exists(pathToConfigFile));
         String expectedConfig = new String(Files.readAllBytes(pathToConfigFile));
         LOGGER.debug("Got expected: {}", expectedConfig);
-        assertXMLEqual(expectedConfig, actualConfig);
+        XMLAssert.assertXMLEqual(expectedConfig, actualConfig);
     }
 
     @DataProvider (name = DATA_SET_FOR_TEST_CONFIGURATIONS)
@@ -89,7 +88,7 @@ public class ConfigCommandTest extends RouteTestSupport {
         });
         String actualConfig = response.getOut().getBody(String.class);
         String expectedConfig = new String(Files.readAllBytes(pathToConfigFile));
-        assertXMLEqual(expectedConfig, actualConfig);
+        XMLAssert.assertXMLEqual(expectedConfig, actualConfig);
 
         // Revert config (as we extend from a shared MockRegistry, and thus the same ConfigurationManager)
         LOGGER.debug("Saved size: {}", savedConfigurations.size());

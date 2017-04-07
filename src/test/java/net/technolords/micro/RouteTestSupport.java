@@ -22,7 +22,7 @@ public class RouteTestSupport extends CamelTestSupport {
 
     @BeforeClass
     public void findAvailablePortNumber() throws Exception {
-        LOGGER.info("BeforeSuite called...");
+        LOGGER.info("BeforeClass called (from: {})", getClass());
         this.availablePort = String.valueOf(AvailablePortFinder.getNextAvailable(10000));
         LOGGER.info("Found port: {}", this.availablePort);
         this.main = new Main();
