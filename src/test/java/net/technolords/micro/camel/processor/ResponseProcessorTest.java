@@ -16,47 +16,66 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import net.technolords.micro.TestSupport;
-import net.technolords.micro.camel.processor.ResponseProcessor;
 import net.technolords.micro.config.ConfigurationManager;
+import net.technolords.micro.test.PathSupport;
 
-public class ResponseProcessorTest extends TestSupport {
+public class ResponseProcessorTest  {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
-    private static final String DATASET_FOR_CONFIGURATIONS = "dataSetMockExpectation";
+    private static final String DATA_SET_FOR_CONFIGURATIONS = "dataSetMockExpectation";
 
-    @DataProvider(name = DATASET_FOR_CONFIGURATIONS)
-    public Object[][] dataSetMock(){
+    /**
+     * Auxiliary method to declare a data set to support testing of responses with differernt
+     * configurations. An entry is specified with five elements, each meaning:
+     *
+     *  [0] : The file name of the configuration
+     *  [1] : The HTTP request type
+     *  [2] : The HTP uri
+     *  [3] : The body associated with the request (= null for GET)
+     *  [4] : The file name of the response file (with expected body)
+     *
+     * @return
+     *  The data set.
+     */
+    @DataProvider(name = DATA_SET_FOR_CONFIGURATIONS)
+    public Object[][] dataSetMock() {
         return new Object[][] {
-            { "configuration-test1.xml", ConfigurationManager.HTTP_POST, "/mock/post", "sample-post1-request.xml", "sample-post1.txt"},
-            { "configuration-test1.xml", ConfigurationManager.HTTP_GET, "/mock/get", null, "sample-get.txt"}
+            { "config-for-ResponseProcessorTest.xml", ConfigurationManager.HTTP_POST, "/mock/post", "post-1-for-ResponseProcessorTest.xml", "post-1-for-ResponseProcessorTest.txt" },
+            { "config-for-ResponseProcessorTest.xml", ConfigurationManager.HTTP_GET, "/mock/get", null, "get-1-for-ResponseProcessorTest.txt" },
         };
     }
 
-    @Test(dataProvider = DATASET_FOR_CONFIGURATIONS)
-    public void testMockResponses(final String configFile, final String method, final String uri, final String body, final String expectedResponse) throws Exception {
-        // Create a path to the file
-        Path pathToConfigFile = FileSystems.getDefault().getPath(getPathToDataFolder() + File.separator + "mockConfigurations" + File.separator);
-        Path pathToResponseFile = FileSystems.getDefault().getPath(getPathToDataFolder() + File.separator + "mockResponses" + File.separator);
-        String responseContent = new String(Files.readAllBytes(Paths.get(pathToResponseFile + File.separator + expectedResponse)));
-        String pathToConfig = pathToConfigFile + File.separator +configFile;
+    @Test (dataProvider = DATA_SET_FOR_CONFIGURATIONS)
+    public void testMockResponses(final String configFile, final String method, final String uri, final String requestFile, final String responseFile) throws Exception {
+        LOGGER.info("About to test with request file: {}, and expected response file: {}", requestFile, responseFile);
 
-        Exchange exchange = this.generateExchange(method, uri, body);
-        ConfigurationManager configurationManager = new ConfigurationManager(pathToConfig, null);
+        // Initialize with configuration
+        Path pathToConfigFile = FileSystems.getDefault().getPath(PathSupport.getTestConfigResourcesForMockAsString() + File.separator + configFile);
+        Assert.assertTrue(Files.exists(pathToConfigFile));
+        ConfigurationManager configurationManager = new ConfigurationManager(pathToConfigFile.toString(), null);
         ResponseProcessor responseProcessor = new ResponseProcessor(configurationManager);
+
+        // Create and send request
+        Exchange exchange = this.generateExchange(method, uri, requestFile);
         responseProcessor.process(exchange);
 
-        // Assertions
+        // Assert response
+        Path pathToResponseFile = PathSupport.getPathToTestDataForResponseResources();
+        Path pathToResource = Paths.get(pathToResponseFile.toString(), responseFile);
+        Assert.assertTrue(Files.exists(pathToResource));
         String actualResponse = exchange.getOut().getBody(String.class);
-        Assert.assertEquals(actualResponse, responseContent);
+        String expectedResponse = new String(Files.readAllBytes(pathToResource));
+        Assert.assertEquals(actualResponse, expectedResponse);
     }
 
-    private Exchange generateExchange(final String method, final String uri,final String body) throws IOException {
-        Path pathToRequestFile = FileSystems.getDefault().getPath(getPathToDataFolder() + File.separator + "mockRequests");
+    private Exchange generateExchange(final String method, final String uri, final String requestFile) throws IOException {
+        Path pathToRequestFile = PathSupport.getPathToTestDataForRequestResources();
         Exchange exchange = new DefaultExchange(new DefaultCamelContext());
         exchange.getIn().setHeader(Exchange.HTTP_METHOD, method);
         exchange.getIn().setHeader(Exchange.HTTP_URI, uri);
-        if (body != null) {
-            String requestContent = new String(Files.readAllBytes(Paths.get(pathToRequestFile + File.separator + body)));
+        if (requestFile != null) {
+            Path pathToResource = Paths.get(pathToRequestFile.toString(), requestFile);
+            Assert.assertTrue(Files.exists(pathToResource));
+            String requestContent = new String(Files.readAllBytes(pathToResource));
             exchange.getIn().setBody(requestContent);
         }
         return exchange;
