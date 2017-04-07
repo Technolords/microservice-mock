@@ -10,6 +10,7 @@ import javax.xml.bind.JAXBException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
+import org.testng.annotations.AfterGroups;
 import org.testng.annotations.BeforeGroups;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -40,6 +41,11 @@ public class ConfigurationManagerTest {
         Assert.assertNotNull(this.configurationManager);
     }
 
+    @AfterGroups (groups = DEFAULT_CONFIG_MANAGER_REQUIRED)
+    public void afterDefaultGroup() {
+        LOGGER.info("Testing done with default config manager....");
+    }
+
     @BeforeGroups (groups = TEST_CONFIG_MANAGER_REQUIRED, inheritGroups = true)
     public void initTestConfigManager() throws JAXBException, IOException, SAXException {
         LOGGER.info("About to initialize test config manager");
@@ -47,6 +53,11 @@ public class ConfigurationManagerTest {
         final String DATA_LOCATION = "src/test/resources/data/response";
         this.configurationManager = new ConfigurationManager(CONFIG_LOCATION, DATA_LOCATION);
         Assert.assertNotNull(this.configurationManager);
+    }
+
+    @AfterGroups (groups = TEST_CONFIG_MANAGER_REQUIRED)
+    public void afterTestGroup() {
+        LOGGER.info("Testing done with test config manager....");
     }
 
     /**
@@ -116,7 +127,11 @@ public class ConfigurationManagerTest {
         ResponseContext responseContext = this.configurationManager.findResponseForGetOperationWithPath(path);
         Assert.assertNotNull(responseContext);
         Assert.assertNull(responseContext.getErrorCode());
-        Assert.assertTrue(responseContext.getResponse().equals(expectedResponse));
+        Assert.assertTrue(filterWhiteSpace(responseContext.getResponse()).equals(filterWhiteSpace(expectedResponse)));
+    }
+
+    public String filterWhiteSpace(String input) {
+        return input.replaceAll("\\s","");
     }
 
 }
