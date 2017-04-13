@@ -14,13 +14,18 @@ import org.slf4j.LoggerFactory;
 import net.technolords.micro.command.CommandManager;
 import net.technolords.micro.config.ConfigurationManager;
 import net.technolords.micro.model.ResponseContext;
+import net.technolords.micro.registry.MockRegistry;
 
 public class ResponseProcessor implements Processor {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private static final String CONTENT_TYPE = "Content-Type";
     private ConfigurationManager configurationManager = null;
-    private CommandManager commandManager = new CommandManager();
 
+    public ResponseProcessor() {
+        this.configurationManager = MockRegistry.findConfigurationManager();
+    }
+
+    // Supporting test scenario's
     public ResponseProcessor(ConfigurationManager configurationManager) {
         this.configurationManager = configurationManager;
     }
@@ -69,7 +74,7 @@ public class ResponseProcessor implements Processor {
     private ResponseContext handleGetRequest(Exchange exchange) throws InterruptedException, IOException {
         String requestURI = exchange.getIn().getHeader(Exchange.HTTP_URI, String.class);
         if (requestURI.equals("/mock/cmd")) {
-            return this.commandManager.executeCommand(exchange);
+            return CommandManager.executeCommand(exchange);
         } else {
             return this.configurationManager.findResponseForGetOperationWithPath(requestURI);
         }

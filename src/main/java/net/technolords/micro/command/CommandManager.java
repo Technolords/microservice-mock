@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import net.technolords.micro.model.ResponseContext;
 
 public class CommandManager {
-    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
+    private static final Logger LOGGER = LoggerFactory.getLogger(CommandManager.class);
     private static final String CONFIG = "config";
     private static final String LOG = "log";
     private static final String RESET = "reset";
@@ -26,7 +26,7 @@ public class CommandManager {
      * @return
      *  The result of the command execution.
      */
-    public ResponseContext executeCommand(Exchange exchange) {
+    public static ResponseContext executeCommand(Exchange exchange) {
         Map<String, Object> commands = exchange.getIn().getHeaders();
         for (String key : commands.keySet()) {
             LOGGER.debug("Key: {} -> value: {}", key, commands.get(key));
@@ -46,7 +46,7 @@ public class CommandManager {
         if (commands.containsKey(STOP)) {
             return StopCommand.executeCommand(exchange);
         }
-        return this.createUnsupportedResponse();
+        return createUnsupportedResponse();
     }
 
     /**
@@ -55,7 +55,7 @@ public class CommandManager {
      * @return
      *  The result of an unsupported command.
      */
-    private ResponseContext createUnsupportedResponse() {
+    private static ResponseContext createUnsupportedResponse() {
         ResponseContext responseContext = new ResponseContext();
         responseContext.setContentType(ResponseContext.PLAIN_TEXT_CONTENT_TYPE);
         responseContext.setErrorCode(String.valueOf(HttpURLConnection.HTTP_NOT_IMPLEMENTED));
