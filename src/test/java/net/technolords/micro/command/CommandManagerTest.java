@@ -25,7 +25,6 @@ import net.technolords.micro.test.PathSupport;
 public class CommandManagerTest extends RouteTestSupport {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private static final String DATA_SET_FOR_COMMAND_MANAGER = "dataSetForCommandManager";
-    private CommandManager commandManager;
 
     @BeforeClass(description = "Initialize XMLUnit")
     public void initializeXMLUnit() {
@@ -36,7 +35,6 @@ public class CommandManagerTest extends RouteTestSupport {
 
     @BeforeMethod
     public void initializeCommandManager() {
-        this.commandManager = new CommandManager();
     }
 
     /**
@@ -78,7 +76,7 @@ public class CommandManagerTest extends RouteTestSupport {
         exchange.getIn().setHeader(command, contentType);
 
         // Execute
-        ResponseContext responseContext = this.commandManager.executeCommand(exchange);
+        ResponseContext responseContext = CommandManager.executeCommand(exchange);
         LOGGER.info("Response: {}" , responseContext.getResponse());
         LOGGER.info("Content Type: {}" , responseContext.getContentType());
         LOGGER.info("Error code: {}" , responseContext.getErrorCode());
