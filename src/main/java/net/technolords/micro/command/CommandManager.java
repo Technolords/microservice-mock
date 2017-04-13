@@ -1,6 +1,8 @@
 package net.technolords.micro.command;
 
 import java.net.HttpURLConnection;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.camel.Exchange;
@@ -11,11 +13,14 @@ import net.technolords.micro.model.ResponseContext;
 
 public class CommandManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(CommandManager.class);
-    private static final String CONFIG = "config";
-    private static final String LOG = "log";
-    private static final String RESET = "reset";
-    private static final String STATS = "stats";
-    private static final String STOP = "stop";
+
+    private static List<Command> supportedCommands = Arrays.asList(
+            new ConfigCommand(),
+            new LogCommand(),
+            new ResetCommand(),
+            new StatsCommand(),
+            new StopCommand()
+    );
 
     /**
      * Auxiliary method that executes a command by delegation (provided the command is supported).
@@ -31,22 +36,13 @@ public class CommandManager {
         for (String key : commands.keySet()) {
             LOGGER.debug("Key: {} -> value: {}", key, commands.get(key));
         }
-        if (commands.containsKey(CONFIG)) {
-            return ConfigCommand.executeCommand();
-        }
-        if (commands.containsKey(LOG)) {
-            return LogCommand.executeCommand((String) commands.get(LOG));
-        }
-        if (commands.containsKey(RESET)) {
-            return ResetCommand.executeCommand();
-        }
-        if (commands.containsKey(STATS)) {
-            return StatsCommand.executeCommand((String) commands.get(STATS));
-        }
-        if (commands.containsKey(STOP)) {
-            return StopCommand.executeCommand(exchange);
-        }
-        return createUnsupportedResponse();
+        ResponseContext responseContext = supportedCommands
+                .stream()
+                .filter(command -> commands.containsKey(command.getId()))
+                .map(command -> command.executeCommand(exchange))
+                .findAny()
+                .orElse(createUnsupportedResponse());
+        return responseContext;
     }
 
     /**

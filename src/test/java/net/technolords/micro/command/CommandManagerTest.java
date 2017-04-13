@@ -54,7 +54,7 @@ public class CommandManagerTest extends RouteTestSupport {
         return new Object[][] {
                 { "unknown", ResponseContext.PLAIN_TEXT_CONTENT_TYPE, "501", "Currently not supported" },
                 { "stop", ResponseContext.PLAIN_TEXT_CONTENT_TYPE, null, "Stopping the mock.." },
-//                { "config", ResponseContext.XML_CONTENT_TYPE, null, expectedResponse() },
+                { "config", ResponseContext.XML_CONTENT_TYPE, null, expectedResponse() },
                 { "log", ResponseContext.PLAIN_TEXT_CONTENT_TYPE, null, "Log level changed to INFO" },
                 { "reset", ResponseContext.PLAIN_TEXT_CONTENT_TYPE, null, "Statistics has been reset" },
         };
