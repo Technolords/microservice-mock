@@ -36,7 +36,7 @@ public class ResponseProcessorTest {
      * @return
      *  The data set.
      */
-    @DataProvider(name = DATA_SET_FOR_CONFIGURATIONS)
+    @DataProvider (name = DATA_SET_FOR_CONFIGURATIONS)
     public Object[][] dataSetMock() {
         return new Object[][] {
             { "config-for-ResponseProcessorTest.xml", ConfigurationManager.HTTP_POST, "/mock/post", "post-1-for-ResponseProcessorTest.xml", "post-1-for-ResponseProcessorTest.txt" },

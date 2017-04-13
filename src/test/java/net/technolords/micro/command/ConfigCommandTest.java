@@ -38,7 +38,7 @@ public class ConfigCommandTest extends RouteTestSupport {
         XMLUnit.setIgnoreComments(true);
     }
 
-    @Test
+    @Test (description = "Test with default mock configuration")
     public void testConfigCommandWithDefault() throws Exception {
         LOGGER.info("About to send Config command (default), total routes: {}", getProducerTemplate().getCamelContext().getRoutes().size());
         ConfigurationManager configurationManager = MockRegistry.findConfigurationManager();
@@ -63,7 +63,7 @@ public class ConfigCommandTest extends RouteTestSupport {
         };
     }
 
-    @Test (dataProvider = DATA_SET_FOR_TEST_CONFIGURATIONS)
+    @Test (dataProvider = DATA_SET_FOR_TEST_CONFIGURATIONS, description = "Test with custom mock configuration")
     public void testWithLoadConfigurations(final String testConfigFile) throws Exception {
         LOGGER.debug("About to send Config command (test), total routes: {}", getProducerTemplate().getCamelContext().getRoutes().size());
 

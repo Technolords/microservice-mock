@@ -14,7 +14,7 @@ import net.technolords.micro.config.ConfigurationManager;
 public class StopCommandTest extends RouteTestSupport {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
-    @Test
+    @Test (description = "Test result of stop command")
     public void testStopCommand() throws Exception{
         String method = ConfigurationManager.HTTP_GET;
         String uri = "/mock/cmd";
