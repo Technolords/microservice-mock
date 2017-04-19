@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -25,18 +24,12 @@ import net.technolords.micro.test.PathSupport;
 public class CommandManagerTest extends RouteTestSupport {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private static final String DATA_SET_FOR_COMMAND_MANAGER = "dataSetForCommandManager";
-    private CommandManager commandManager;
 
-    @BeforeClass(description = "Initialize XMLUnit")
+    @BeforeClass (description = "Initialize XMLUnit")
     public void initializeXMLUnit() {
         XMLUnit.setIgnoreWhitespace(true);
         XMLUnit.setIgnoreAttributeOrder(true);
         XMLUnit.setIgnoreComments(true);
-    }
-
-    @BeforeMethod
-    public void initializeCommandManager() {
-        this.commandManager = new CommandManager();
     }
 
     /**
@@ -45,7 +38,7 @@ public class CommandManagerTest extends RouteTestSupport {
      *
      *  [0] : The command
      *  [1] : The expected context type
-     *  [2] : The expected response code
+     *  [2] : The expected error code
      *  [3] : The expected message
      *
      * @return
@@ -56,20 +49,13 @@ public class CommandManagerTest extends RouteTestSupport {
         return new Object[][] {
                 { "unknown", ResponseContext.PLAIN_TEXT_CONTENT_TYPE, "501", "Currently not supported" },
                 { "stop", ResponseContext.PLAIN_TEXT_CONTENT_TYPE, null, "Stopping the mock.." },
-//                { "config", ResponseContext.XML_CONTENT_TYPE, null, expectedResponse() },
+                { "config", ResponseContext.XML_CONTENT_TYPE, null, expectedResponse() },
                 { "log", ResponseContext.PLAIN_TEXT_CONTENT_TYPE, null, "Log level changed to INFO" },
                 { "reset", ResponseContext.PLAIN_TEXT_CONTENT_TYPE, null, "Statistics has been reset" },
         };
     }
 
-    private static String expectedResponse() throws IOException {
-        Path pathToRequestFile = PathSupport.getPathToTestConfigForMockResources();
-        Path pathToResource = Paths.get(pathToRequestFile.toString(), "config-for-CommandManagerTest.xml");
-        Assert.assertTrue(Files.exists(pathToResource));
-        return new String(Files.readAllBytes(pathToResource));
-    }
-
-    @Test (dataProvider = DATA_SET_FOR_COMMAND_MANAGER)
+    @Test (dataProvider = DATA_SET_FOR_COMMAND_MANAGER, description = "Test the supported commands of the CommandManager")
     public void testCommandManager(final String command, final String contentType, final String errorCode, final String response) throws Exception {
         // Prepare
         Exchange exchange = new DefaultExchange(super.context());
@@ -78,7 +64,7 @@ public class CommandManagerTest extends RouteTestSupport {
         exchange.getIn().setHeader(command, contentType);
 
         // Execute
-        ResponseContext responseContext = this.commandManager.executeCommand(exchange);
+        ResponseContext responseContext = CommandManager.executeCommand(exchange);
         LOGGER.info("Response: {}" , responseContext.getResponse());
         LOGGER.info("Content Type: {}" , responseContext.getContentType());
         LOGGER.info("Error code: {}" , responseContext.getErrorCode());
@@ -96,5 +82,12 @@ public class CommandManagerTest extends RouteTestSupport {
         }
         Assert.assertEquals(responseContext.getErrorCode(), errorCode);
         Assert.assertEquals(responseContext.getContentType(), contentType);
+    }
+
+    private static String expectedResponse() throws IOException {
+        Path pathToRequestFile = PathSupport.getPathToTestConfigForMockResources();
+        Path pathToResource = Paths.get(pathToRequestFile.toString(), "config-for-CommandManagerTest.xml");
+        Assert.assertTrue(Files.exists(pathToResource));
+        return new String(Files.readAllBytes(pathToResource));
     }
 }

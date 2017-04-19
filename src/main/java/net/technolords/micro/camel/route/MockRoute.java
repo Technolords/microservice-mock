@@ -8,7 +8,6 @@ import org.apache.camel.builder.RouteBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.technolords.micro.camel.processor.ResponseProcessor;
 import net.technolords.micro.registry.MockRegistry;
 
 public class MockRoute extends RouteBuilder {
@@ -28,7 +27,7 @@ public class MockRoute extends RouteBuilder {
 
     public MockRoute() {
         this.port = MockRegistry.findConfiguredPort();
-        this.responseProcessor = new ResponseProcessor(MockRegistry.findConfigurationManager());
+        this.responseProcessor = MockRegistry.findResponseProcessor();
         LOGGER.info("Using port: " + this.port);
     }
 

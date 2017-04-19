@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
+import net.technolords.micro.camel.processor.ResponseProcessor;
 import net.technolords.micro.config.ConfigurationManager;
 import net.technolords.micro.config.PropertiesManager;
 import net.technolords.micro.filter.InfoFilter;
@@ -32,6 +33,7 @@ public class MockRegistry {
     private static final String BEAN_JETTY_SERVER = "jettyServer";
     private static final String BEAN_CONFIG = "config";
     private static final String BEAN_FILTER_INFO = "infoFilter";
+    private static final String BEAN_RESPONSE_PROCESSOR = "responseProcessor";
     private static Main main;
 
     /**
@@ -62,6 +64,7 @@ public class MockRegistry {
         main.bind(BEAN_METRICS, new StatisticsHandler());
         main.bind(BEAN_CONFIG, new ConfigurationManager(findConfiguredConfig(), findConfiguredData()));
         main.bind(BEAN_FILTER_INFO, new InfoFilter());
+        main.bind(BEAN_RESPONSE_PROCESSOR, new ResponseProcessor());
         LOGGER.info("Beans added to the registry...");
     }
 
@@ -76,42 +79,14 @@ public class MockRegistry {
         InfoFilter.registerFilterDirectlyWithServer(server);
     }
 
-    /**
-     * Auxiliary method to perform a lookup of the ConfigurationManager.
-     *
-     * @return
-     *  A reference of the ConfigurationManager.
-     */
+    // -------------------------------
+    // Find beans (sorted by alphabet)
+    // -------------------------------
+
     public static ConfigurationManager findConfigurationManager() {
         return main.lookup(BEAN_CONFIG, ConfigurationManager.class);
     }
 
-    /**
-     * Auxiliary method to perform a lookup of the StatisticsHandler.
-     *
-     * @return
-     *  A reference of the StatisticsHandler.
-     */
-    public static StatisticsHandler findStatisticsHandler() {
-        return main.lookup(BEAN_METRICS, StatisticsHandler.class);
-    }
-
-    /**
-     * Auxiliary method to perform a lookup of the Jetty Server.
-     *
-     * @return
-     *  A reference of the Jetty Server.
-     */
-    public static Server findJettyServer() {
-        return main.lookup(BEAN_JETTY_SERVER, Server.class);
-    }
-
-    /**
-     * Auxiliary method to perform a lookup of the InfoFilter.
-     *
-     * @return
-     *  A reference of the InfoFilter.
-     */
     public static InfoFilter findInfoFilter() {
         return main.lookup(BEAN_FILTER_INFO, InfoFilter.class);
     }
@@ -119,6 +94,22 @@ public class MockRegistry {
     public static Properties findProperties() {
         return main.lookup(BEAN_PROPERTIES, Properties.class);
     }
+
+    public static ResponseProcessor findResponseProcessor() {
+        return main.lookup(BEAN_RESPONSE_PROCESSOR, ResponseProcessor.class);
+    }
+
+    public static Server findJettyServer() {
+        return main.lookup(BEAN_JETTY_SERVER, Server.class);
+    }
+
+    public static StatisticsHandler findStatisticsHandler() {
+        return main.lookup(BEAN_METRICS, StatisticsHandler.class);
+    }
+
+    // -----------------------------------------
+    // Find property values (sorted by alphabet)
+    // -----------------------------------------
 
     public static String findConfiguredPort() {
         return (String) findProperties().get(PropertiesManager.PROP_PORT);

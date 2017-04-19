@@ -11,10 +11,10 @@ import net.technolords.micro.RouteTestSupport;
 import net.technolords.micro.config.ConfigurationManager;
 import net.technolords.micro.registry.MockRegistry;
 
-public class StatsCommandTest extends RouteTestSupport{
+public class StatsCommandTest extends RouteTestSupport {
     private static final Logger LOGGER = LoggerFactory.getLogger(StatsCommandTest.class);
 
-    @Test
+    @Test (description = "Test stats command with actual endpoint")
     public void testStatsCommand() throws Exception{
         LOGGER.info("About to send stats command, total routes: {}", super.getProducerTemplate().getCamelContext().getRoutes().size());
         Exchange response = super.getProducerTemplate().request("jetty:http://localhost:" + super.getAvailablePort() + "/mock/cmd", exchange -> {

@@ -1,6 +1,8 @@
 package net.technolords.micro.command;
 
 import java.net.HttpURLConnection;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.camel.Exchange;
@@ -10,12 +12,15 @@ import org.slf4j.LoggerFactory;
 import net.technolords.micro.model.ResponseContext;
 
 public class CommandManager {
-    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
-    private static final String CONFIG = "config";
-    private static final String LOG = "log";
-    private static final String RESET = "reset";
-    private static final String STATS = "stats";
-    private static final String STOP = "stop";
+    private static final Logger LOGGER = LoggerFactory.getLogger(CommandManager.class);
+
+    private static List<Command> supportedCommands = Arrays.asList(
+            new ConfigCommand(),
+            new LogCommand(),
+            new ResetCommand(),
+            new StatsCommand(),
+            new StopCommand()
+    );
 
     /**
      * Auxiliary method that executes a command by delegation (provided the command is supported).
@@ -26,27 +31,18 @@ public class CommandManager {
      * @return
      *  The result of the command execution.
      */
-    public ResponseContext executeCommand(Exchange exchange) {
+    public static ResponseContext executeCommand(Exchange exchange) {
         Map<String, Object> commands = exchange.getIn().getHeaders();
         for (String key : commands.keySet()) {
             LOGGER.debug("Key: {} -> value: {}", key, commands.get(key));
         }
-        if (commands.containsKey(CONFIG)) {
-            return ConfigCommand.executeCommand();
-        }
-        if (commands.containsKey(LOG)) {
-            return LogCommand.executeCommand((String) commands.get(LOG));
-        }
-        if (commands.containsKey(RESET)) {
-            return ResetCommand.executeCommand();
-        }
-        if (commands.containsKey(STATS)) {
-            return StatsCommand.executeCommand((String) commands.get(STATS));
-        }
-        if (commands.containsKey(STOP)) {
-            return StopCommand.executeCommand(exchange);
-        }
-        return this.createUnsupportedResponse();
+        ResponseContext responseContext = supportedCommands
+                .stream()
+                .filter(command -> commands.containsKey(command.getId()))
+                .map(command -> command.executeCommand(exchange))
+                .findAny()
+                .orElse(createUnsupportedResponse());
+        return responseContext;
     }
 
     /**
@@ -55,7 +51,7 @@ public class CommandManager {
      * @return
      *  The result of an unsupported command.
      */
-    private ResponseContext createUnsupportedResponse() {
+    private static ResponseContext createUnsupportedResponse() {
         ResponseContext responseContext = new ResponseContext();
         responseContext.setContentType(ResponseContext.PLAIN_TEXT_CONTENT_TYPE);
         responseContext.setErrorCode(String.valueOf(HttpURLConnection.HTTP_NOT_IMPLEMENTED));

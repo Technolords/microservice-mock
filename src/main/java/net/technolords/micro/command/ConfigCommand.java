@@ -7,6 +7,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import org.apache.camel.Exchange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,21 +16,33 @@ import net.technolords.micro.model.ResponseContext;
 import net.technolords.micro.model.jaxb.Configurations;
 import net.technolords.micro.registry.MockRegistry;
 
-public class ConfigCommand {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConfigCommand.class);
-    private static ConfigurationManager configurationManager;
+public class ConfigCommand implements Command {
+    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
+
+    /**
+     * Auxiliary method to get the id associated with this command.
+     *
+     * @return
+     *  The id associated with the command.
+     */
+    @Override
+    public String getId() {
+        return Command.CONFIG;
+    }
 
     /**
      * Auxiliary method that executes the config command.
      *
+     * @param exchange
+     * The Camel Exchange associated with the config command.
+     *
      * @return
-     *  The result of the log command.
+     *  The result of the config command.
      */
-    public static ResponseContext executeCommand() {
+    @Override
+    public ResponseContext executeCommand(Exchange exchange) {
         LOGGER.debug("Config command called");
-        if (configurationManager == null) {
-            configurationManager = MockRegistry.findConfigurationManager();
-        }
+        ConfigurationManager configurationManager = MockRegistry.findConfigurationManager();
         ResponseContext responseContext = new ResponseContext();
         try {
             responseContext.setContentType(ResponseContext.XML_CONTENT_TYPE);
@@ -48,4 +61,5 @@ public class ConfigCommand {
         marshaller.marshal(configurations, stringWriter);
         return stringWriter.toString();
     }
+
 }

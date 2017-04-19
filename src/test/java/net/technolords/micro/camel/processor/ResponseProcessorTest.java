@@ -19,7 +19,7 @@ import org.testng.annotations.Test;
 import net.technolords.micro.config.ConfigurationManager;
 import net.technolords.micro.test.PathSupport;
 
-public class ResponseProcessorTest  {
+public class ResponseProcessorTest {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private static final String DATA_SET_FOR_CONFIGURATIONS = "dataSetMockExpectation";
 
@@ -36,7 +36,7 @@ public class ResponseProcessorTest  {
      * @return
      *  The data set.
      */
-    @DataProvider(name = DATA_SET_FOR_CONFIGURATIONS)
+    @DataProvider (name = DATA_SET_FOR_CONFIGURATIONS)
     public Object[][] dataSetMock() {
         return new Object[][] {
             { "config-for-ResponseProcessorTest.xml", ConfigurationManager.HTTP_POST, "/mock/post", "post-1-for-ResponseProcessorTest.xml", "post-1-for-ResponseProcessorTest.txt" },
@@ -53,6 +53,7 @@ public class ResponseProcessorTest  {
         Assert.assertTrue(Files.exists(pathToConfigFile));
         ConfigurationManager configurationManager = new ConfigurationManager(pathToConfigFile.toString(), null);
         ResponseProcessor responseProcessor = new ResponseProcessor(configurationManager);
+        Assert.assertNotNull(responseProcessor);
 
         // Create and send request
         Exchange exchange = this.generateExchange(method, uri, requestFile);
