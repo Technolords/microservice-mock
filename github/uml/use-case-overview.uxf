@@ -121,7 +121,7 @@ response</panel_attributes>
     </coordinates>
     <panel_attributes>lt=.&gt;
 &lt;&lt;includes&gt;&gt;</panel_attributes>
-    <additional_attributes>10.0;20.0;140.0;20.0</additional_attributes>
+    <additional_attributes>140.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLUseCase</id>
@@ -161,14 +161,14 @@ configuration</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>630</x>
-      <y>240</y>
-      <w>230</w>
-      <h>240</h>
+      <x>620</x>
+      <y>230</y>
+      <w>220</w>
+      <h>250</h>
     </coordinates>
     <panel_attributes>lt=.&gt;
 &lt;&lt;includes&gt;&gt;</panel_attributes>
-    <additional_attributes>10.0;220.0;210.0;10.0</additional_attributes>
+    <additional_attributes>200.0;10.0;10.0;230.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
