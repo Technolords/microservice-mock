@@ -195,7 +195,7 @@ code</panel_attributes>
     <id>UMLPackage</id>
     <coordinates>
       <x>1030</x>
-      <y>220</y>
+      <y>240</y>
       <w>140</w>
       <h>70</h>
     </coordinates>
@@ -210,11 +210,11 @@ response
     <id>Relation</id>
     <coordinates>
       <x>860</x>
-      <y>250</y>
+      <y>260</y>
       <w>190</w>
-      <h>50</h>
+      <h>40</h>
     </coordinates>
     <panel_attributes/>
-    <additional_attributes>10.0;30.0;170.0;10.0</additional_attributes>
+    <additional_attributes>10.0;20.0;170.0;20.0</additional_attributes>
   </element>
 </diagram>
