@@ -217,4 +217,30 @@ response
     <panel_attributes/>
     <additional_attributes>10.0;20.0;170.0;20.0</additional_attributes>
   </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>1030</x>
+      <y>150</y>
+      <w>140</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>bg=gray
+File
+--
+configuration
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>630</x>
+      <y>170</y>
+      <w>420</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;400.0;20.0</additional_attributes>
+  </element>
 </diagram>
