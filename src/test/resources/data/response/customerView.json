@@ -1,0 +1,37 @@
+{
+  "customerId": "1287622",
+  "customerType": "Relational",
+  "location":    {
+    "latitude": 52.578217,
+    "longitude": 4.9026484
+  },
+  "streetviews":    [
+    {
+      "direction": 0,
+      "url": "https://maps.googleapis.com/maps/api/streetview?size=600x300&location=52.578216552734375,4.902648448944092&heading=0&pitch=10&key=AIzaSyA1wt2RVXt2HhSHYsJAGTt911yKaA5gV0A"
+    },
+    {
+      "direction": 90,
+      "url": "https://maps.googleapis.com/maps/api/streetview?size=600x300&location=52.578216552734375,4.902648448944092&heading=90&pitch=10&key=AIzaSyA1wt2RVXt2HhSHYsJAGTt911yKaA5gV0A"
+    },
+    {
+      "direction": 180,
+      "url": "https://maps.googleapis.com/maps/api/streetview?size=600x300&location=52.578216552734375,4.902648448944092&heading=180&pitch=10&key=AIzaSyA1wt2RVXt2HhSHYsJAGTt911yKaA5gV0A"
+    },
+    {
+      "direction": 270,
+      "url": "https://maps.googleapis.com/maps/api/streetview?size=600x300&location=52.578216552734375,4.902648448944092&heading=270&pitch=10&key=AIzaSyA1wt2RVXt2HhSHYsJAGTt911yKaA5gV0A"
+    }
+  ],
+  "churnPredictions": [   {
+    "productGroup": "Adverteren in zoekmachines",
+    "churnProbability": 0.13333,
+    "category": "Low churn probability",
+    "reasoning": "Relational customer and provided NPS score higher than 4.5, which decreases churn probability.",
+    "extraReasoning": "Customer has 3 or more DTG products, which decreases churn probability."
+  }],
+  "establishmentYear": "1995",
+  "mainCategory": "Commis./mak.in effect., beleg.adv. e.d.",
+  "totalEmployees": 0,
+  "branchLogoUrl": "http://www.detelefoongids.nl/images/mini-logos/VACO-icon.gif"
+}
