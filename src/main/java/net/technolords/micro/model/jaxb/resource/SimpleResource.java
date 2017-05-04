@@ -12,6 +12,22 @@ public class SimpleResource {
     private int errorRate;
     private String contentType;
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof SimpleResource)) {
+            return false;
+        }
+        SimpleResource ref = (SimpleResource) obj;
+        return (ref.getResource().equals(this.getResource())
+//                && ref.getCachedData().equals(this.getCachedData())
+//                && ref.getContentType().equals(this.getContentType())
+//                && ref.getErrorCode().equals(this.getErrorCode())
+ );
+    }
+
     @XmlValue
     public String getResource() {
         return resource;

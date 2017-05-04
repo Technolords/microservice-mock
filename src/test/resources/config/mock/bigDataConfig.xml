@@ -1,8 +1,0 @@
-<configurations xmlns="http://xsd.technolords.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xsd.technolords.net \\USERSHARES\userdata$\1795\Desktop\configurationx.xsd">
-    <!--+
-        | Supported GET requests
-        +-->
-    <configuration type="GET" url="/mock/admin/customerContext/v1.0/customerView/1287622">
-        <resource>customerView.json</resource>
-    </configuration>
-</configurations>

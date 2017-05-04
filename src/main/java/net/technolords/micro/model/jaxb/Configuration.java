@@ -1,15 +1,14 @@
 package net.technolords.micro.model.jaxb;
 
-import java.util.Map;
-import java.util.regex.Pattern;
+import net.technolords.micro.model.jaxb.namespace.NamespaceList;
+import net.technolords.micro.model.jaxb.resource.ResourceGroups;
+import net.technolords.micro.model.jaxb.resource.SimpleResource;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
-
-import net.technolords.micro.model.jaxb.namespace.NamespaceList;
-import net.technolords.micro.model.jaxb.resource.ResourceGroups;
-import net.technolords.micro.model.jaxb.resource.SimpleResource;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 public class Configuration {
     private String type;
@@ -19,6 +18,18 @@ public class Configuration {
     private NamespaceList namespaceList;
     private Map<String, String> cachedNamespaceMapping;
     private Pattern pattern;
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null) {
+            return false;
+        }
+        if(!(obj instanceof Configuration)) {
+            return false;
+        }
+        Configuration ref = (Configuration) obj;
+        return (ref.getUrl().equals(this.getUrl()) && ref.getType().equals(this.getType()) && ref.getSimpleResource().equals(this.getSimpleResource()));
+    }
 
     @XmlAttribute(name = "type")
     public String getType() {
