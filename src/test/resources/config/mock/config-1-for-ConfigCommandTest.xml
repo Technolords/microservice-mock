@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:configurations xmlns:ns2="http://xsd.technolords.net">
     <ns2:configuration type="GET" url="/mock/get">
-        <ns2:resource delay="0" error-rate="0">mock/sample-get.json</ns2:resource>
+        <ns2:query-groups>
+            <query-group>
+                <query-parameter key="key1">value1</query-parameter>
+                <query-parameter key="key2">value2</query-parameter>
+                <resource delay="0" error-rate="0">mock/sample-get-complex.json</resource>
+            </query-group>
+            <query-group>
+                <query-parameter key="customerNumber">{customerNumber}</query-parameter>
+                <resource delay="0" error-rate="0">mock/sample-get-{customerNumber}.json</resource>
+            </query-group>
+        </ns2:query-groups>
+        <ns2:resource delay="0" error-rate="0">mock/sample-get-default.json</ns2:resource>
     </ns2:configuration>
     <ns2:configuration type="GET" url="/mock/*/get">
         <ns2:resource delay="0" error-rate="0">mock/sample-get.json</ns2:resource>

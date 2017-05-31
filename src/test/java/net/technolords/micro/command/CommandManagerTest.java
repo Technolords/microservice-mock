@@ -47,11 +47,11 @@ public class CommandManagerTest extends RouteTestSupport {
     @DataProvider (name = DATA_SET_FOR_COMMAND_MANAGER)
     public Object[][] dataSetForCommandManager() throws IOException {
         return new Object[][] {
-                { "unknown", ResponseContext.PLAIN_TEXT_CONTENT_TYPE, "501", "Currently not supported" },
-                { "stop", ResponseContext.PLAIN_TEXT_CONTENT_TYPE, null, "Stopping the mock.." },
+//                { "unknown", ResponseContext.PLAIN_TEXT_CONTENT_TYPE, "501", "Currently not supported" },
+//                { "stop", ResponseContext.PLAIN_TEXT_CONTENT_TYPE, null, "Stopping the mock.." },
                 { "config", ResponseContext.XML_CONTENT_TYPE, null, expectedResponse() },
-                { "log", ResponseContext.PLAIN_TEXT_CONTENT_TYPE, null, "Log level changed to INFO" },
-                { "reset", ResponseContext.PLAIN_TEXT_CONTENT_TYPE, null, "Statistics has been reset" },
+//                { "log", ResponseContext.PLAIN_TEXT_CONTENT_TYPE, null, "Log level changed to INFO" },
+//                { "reset", ResponseContext.PLAIN_TEXT_CONTENT_TYPE, null, "Statistics has been reset" },
         };
     }
 

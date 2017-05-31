@@ -32,9 +32,10 @@
         +-->
     <xs:complexType name="configurationType">
         <xs:sequence>
+            <xs:element name="query-groups" type="queryGroupsType" minOccurs="0" maxOccurs="1"/>
             <xs:element name="resource" type="resourceType" minOccurs="0" maxOccurs="unbounded" />
             <xs:element name="namespaces" type="namespacesType" minOccurs="0" maxOccurs="unbounded" />
-            <xs:element name="resource-groups" type="resourceGroupsType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="resource-groups" type="resourceGroupsType" minOccurs="0" maxOccurs="1" />
         </xs:sequence>
         <xs:attribute name="type" type="httpRequestType" use="required" />
         <xs:attribute name="url" type="xs:string" use="required" />
@@ -74,6 +75,27 @@
                 <xs:attribute name="delay" type="xs:string" use="optional" />
                 <xs:attribute name="error-code" type="xs:string" use="optional" />
                 <xs:attribute name="error-rate" type="xs:integer" use="optional" />
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    
+    <xs:complexType name="queryGroupsType">
+        <xs:sequence>
+            <xs:element name="query-group" type="queryGroupType" minOccurs="1" maxOccurs="unbounded"/>            
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="queryGroupType">
+        <xs:sequence>
+            <xs:element name="query-parameter" type="queryParameterType" minOccurs="1" maxOccurs="unbounded"/>
+            <xs:element name="resource" type="resourceType" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="queryParameterType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="key" type="xs:string" use="required" />
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>

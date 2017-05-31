@@ -8,12 +8,14 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import net.technolords.micro.model.jaxb.namespace.NamespaceList;
+import net.technolords.micro.model.jaxb.query.QueryGroups;
 import net.technolords.micro.model.jaxb.resource.ResourceGroups;
 import net.technolords.micro.model.jaxb.resource.SimpleResource;
 
 public class Configuration {
     private String type;
     private String url;
+    private QueryGroups queryGroups;
     private SimpleResource simpleResource;
     private ResourceGroups resourceGroups;
     private NamespaceList namespaceList;
@@ -36,6 +38,15 @@ public class Configuration {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @XmlElement (name = "query-groups")
+    public QueryGroups getQueryGroups() {
+        return queryGroups;
+    }
+
+    public void setQueryGroups(QueryGroups queryGroups) {
+        this.queryGroups = queryGroups;
     }
 
     @XmlElement(name = "resource")

@@ -4,7 +4,18 @@
         | Supported GET requests
         +-->
     <configuration type="GET" url="/mock/get">
-        <resource>mock/sample-get.json</resource>
+        <query-groups>
+            <query-group>
+                <query-parameter key="key1">value1</query-parameter>
+                <query-parameter key="key2">value2</query-parameter>
+                <resource>mock/sample-get-complex.json</resource>
+            </query-group>
+            <query-group>
+                <query-parameter key="customerNumber">{customerNumber}</query-parameter>
+                <resource>mock/sample-get-{customerNumber}.json</resource>
+            </query-group>
+        </query-groups>
+        <resource>mock/sample-get-default.json</resource>
     </configuration>
     <configuration type="GET" url="/mock/*/get">
         <resource>mock/sample-get.json</resource>
