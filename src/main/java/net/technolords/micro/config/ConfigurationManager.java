@@ -27,6 +27,8 @@ import org.xml.sax.SAXException;
 import net.technolords.micro.model.ResponseContext;
 import net.technolords.micro.model.jaxb.Configuration;
 import net.technolords.micro.model.jaxb.Configurations;
+import net.technolords.micro.model.jaxb.query.QueryGroup;
+import net.technolords.micro.model.jaxb.query.QueryGroups;
 import net.technolords.micro.model.jaxb.resource.ResourceGroup;
 import net.technolords.micro.model.jaxb.resource.ResourceGroups;
 import net.technolords.micro.model.jaxb.resource.SimpleResource;
@@ -109,13 +111,31 @@ public class ConfigurationManager {
         Configuration configuration = this.configurationSelector.findMatchingConfiguration(path, this.getConfigurations);
         if (configuration != null) {
             LOGGER.debug("... found, proceeding to the data part...");
-            SimpleResource resource = configuration.getSimpleResource();
+            SimpleResource resource = null;
+            // Check for query groups
+            if (configuration.getQueryGroups().getQueryGroups().size() > 0) {
+                resource = this.findMatchForQueryGroup(configuration.getQueryGroups());
+            }
+            // If match found, stop checking rest
+            if (resource == null) {
+                resource = configuration.getSimpleResource();
+            }
             // Load and update cache
             LOGGER.debug("About to load data from: {}", resource.getResource());
             return this.responseContextGenerator.readResourceCacheOrFile(resource);
         }
         LOGGER.debug("... not found!");
         return null;
+    }
+
+    private SimpleResource findMatchForQueryGroup(QueryGroups queryGroups) {
+        SimpleResource resource = null;
+        // check for query group
+        for (QueryGroup queryGroup : queryGroups.getQueryGroups()) {
+
+        }
+        // If match found, stop checking rest
+        return resource;
     }
 
     /**
