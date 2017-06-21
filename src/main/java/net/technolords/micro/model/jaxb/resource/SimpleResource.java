@@ -22,9 +22,9 @@ public class SimpleResource {
         }
         SimpleResource ref = (SimpleResource) obj;
         return (ref.getResource().equals(this.getResource())
-//                && ref.getCachedData().equals(this.getCachedData())
-//                && ref.getContentType().equals(this.getContentType())
-//                && ref.getErrorCode().equals(this.getErrorCode())
+                && ref.getCachedData().equals(this.getCachedData())
+                && ref.getContentType().equals(this.getContentType())
+                && ref.getErrorCode().equals(this.getErrorCode())
  );
     }
 
