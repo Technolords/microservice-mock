@@ -14,23 +14,24 @@ import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class ConfigurationSelectorTest extends RouteTestSupport {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationSelectorTest.class);
     private static final String DATA_SET_FOR_TEST_CONFIGURATION_SELECTION = "dataSetForTestConfigurationSelection";
     private ConfigurationSelector configurationSelector = new ConfigurationSelector();
-    SimpleResource simpleResource = new SimpleResource();
+//    SimpleResource simpleResource = new SimpleResource();
 
     @DataProvider(name = DATA_SET_FOR_TEST_CONFIGURATION_SELECTION)
     public Object[][] dataSetConfigs(){
         return new Object[][] {
-                { "/mock/get",          getConfigs(),       expectedConfig("/mock/get", "GET", "configManagerTest/getResponse1.txt", "null", "null", "null")},
-                { "/mock/100/get",      getConfigs(),       expectedConfig("/mock/*/get", "GET", "configManagerTest/getResponse2.txt", "null", "null", "null")},
-                { "/mock/1/get",        getConfigs(),       expectedConfig("/mock/1/get", "GET", "configManagerTest/getResponse1.txt", "null", "null", "null")},
-                { "/mock/1/get/0/data", getConfigs(),       expectedConfig("/mock/*/get/*/data", "GET", "mock/sample-get.json", "null", "null", "null")},
-                { "/mock/post",         postConfigs(),      expectedConfig("/mock/post", "POST", "mock/sample-post4.txt", "null", "text/plain", "null")},
-                { "/mock/post",         postConfigs(),      expectedConfig("/mock/post", "POST", "mock/sample-post3.json", "206", "null", "null")},
-                { "/angry/kid",         postConfigs(),      expectedConfig("null", "null", "null", "null", "null", "null")}
+                { "/mock/get",          getConfigs(),       expectedConfig("/mock/get", "GET", "configManagerTest/getResponse1.txt", null, null, null)},
+                { "/mock/100/get",      getConfigs(),       expectedConfig("/mock/*/get", "GET", "configManagerTest/getResponse2.txt", null, null, null)},
+                { "/mock/1/get",        getConfigs(),       expectedConfig("/mock/1/get", "GET", "configManagerTest/getResponse1.txt", null, null, null)},
+                { "/mock/1/get/0/data", getConfigs(),       expectedConfig("/mock/*/get/*/data", "GET", "mock/sample-get.json", null, null, null)},
+                { "/mock/post",         postConfigs1(),     expectedConfig("/mock/post", "POST", "mock/sample-post4.txt", null, "text/plain", null)},
+                { "/mock/post",         postConfigs2(),     expectedConfig("/mock/post", "POST", "mock/sample-post3.json", "206", null, null)},
+                { "/angry/kid",         postConfigs1(),     null},
         };
     }
 
@@ -38,7 +39,7 @@ public class ConfigurationSelectorTest extends RouteTestSupport {
     public void testConfigurationSelection(final String url, final Map<String ,Configuration> testConfigs, final Configuration expectedConfiguration) throws IOException, JAXBException, SAXException, InterruptedException {
         for(String key : testConfigs.keySet()) {
             Configuration actualConfiguration = configurationSelector.findMatchingConfiguration(url, testConfigs);
-            Assert.assertEquals(actualConfiguration,expectedConfiguration);
+            Assert.assertTrue(Objects.equals(actualConfiguration, expectedConfiguration));
         }
     }
 
@@ -51,15 +52,20 @@ public class ConfigurationSelectorTest extends RouteTestSupport {
         return getConfigurations;
     }
 
-    private Map<String, Configuration> postConfigs() {
+    private Map<String, Configuration> postConfigs1() {
         Map<String, Configuration> postConfigurations = new HashMap<>();
-        postConfigurations.put("/mock/post", expectedConfig("/mock/post", "POST", "mock/sample-post4.txt", "null", "text/plain", null));
+        postConfigurations.put("/mock/post", expectedConfig("/mock/post", "POST", "mock/sample-post4.txt", null, "text/plain", null));
+        return postConfigurations;
+    }
+
+    private Map<String, Configuration> postConfigs2() {
+        Map<String, Configuration> postConfigurations = new HashMap<>();
         postConfigurations.put("/mock/post", expectedConfig("/mock/post", "POST", "mock/sample-post3.json", "206", null, null));
-        postConfigurations.put("/angry/kid", expectedConfig("null", "null", "null", "null", "null", "null"));
         return postConfigurations;
     }
 
     private Configuration expectedConfig(final String url, final String type, final String resource, final String errorcode, final String contentType, final String cachedData) {
+        SimpleResource simpleResource = new SimpleResource();
         Configuration createdConfig = new Configuration();
         createdConfig.setUrl(url);
         createdConfig.setType(type);

@@ -3,6 +3,7 @@ package net.technolords.micro.model.jaxb.resource;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlValue;
+import java.util.Objects;
 
 public class SimpleResource {
     private String resource;
@@ -21,11 +22,10 @@ public class SimpleResource {
             return false;
         }
         SimpleResource ref = (SimpleResource) obj;
-        return (ref.getResource().equals(this.getResource())
-                && ref.getCachedData().equals(this.getCachedData())
-                && ref.getContentType().equals(this.getContentType())
-                && ref.getErrorCode().equals(this.getErrorCode())
- );
+        return (Objects.equals(this.getContentType(), ref.getContentType())
+                && Objects.equals(this.getErrorCode(), ref.getErrorCode())
+                && Objects.equals(this.getResource(), ref.getResource())
+        );
     }
 
     @XmlValue

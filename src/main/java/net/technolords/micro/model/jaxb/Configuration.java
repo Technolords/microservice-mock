@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class Configuration {
@@ -28,7 +29,10 @@ public class Configuration {
             return false;
         }
         Configuration ref = (Configuration) obj;
-        return (ref.getUrl().equals(this.getUrl()) && ref.getType().equals(this.getType()) && ref.getSimpleResource().equals(this.getSimpleResource()));
+        return (Objects.equals(this.getUrl(), ref.getUrl())
+                && Objects.equals(this.getType(), ref.getType())
+                && Objects.equals(this.getSimpleResource(), ref.getSimpleResource())
+        );
     }
 
     @XmlAttribute(name = "type")
