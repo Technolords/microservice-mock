@@ -1,8 +1,12 @@
 package net.technolords.micro.input;
 
-import net.technolords.micro.RouteTestSupport;
-import net.technolords.micro.model.jaxb.Configuration;
-import net.technolords.micro.model.jaxb.resource.SimpleResource;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
+import javax.xml.bind.JAXBException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -10,17 +14,14 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.xml.sax.SAXException;
 
-import javax.xml.bind.JAXBException;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import net.technolords.micro.RouteTestSupport;
+import net.technolords.micro.model.jaxb.Configuration;
+import net.technolords.micro.model.jaxb.resource.SimpleResource;
 
 public class ConfigurationSelectorTest extends RouteTestSupport {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationSelectorTest.class);
     private static final String DATA_SET_FOR_TEST_CONFIGURATION_SELECTION = "dataSetForTestConfigurationSelection";
     private ConfigurationSelector configurationSelector = new ConfigurationSelector();
-//    SimpleResource simpleResource = new SimpleResource();
 
     @DataProvider(name = DATA_SET_FOR_TEST_CONFIGURATION_SELECTION)
     public Object[][] dataSetConfigs(){
@@ -37,10 +38,8 @@ public class ConfigurationSelectorTest extends RouteTestSupport {
 
     @Test(dataProvider = DATA_SET_FOR_TEST_CONFIGURATION_SELECTION)
     public void testConfigurationSelection(final String url, final Map<String ,Configuration> testConfigs, final Configuration expectedConfiguration) throws IOException, JAXBException, SAXException, InterruptedException {
-        for(String key : testConfigs.keySet()) {
-            Configuration actualConfiguration = configurationSelector.findMatchingConfiguration(url, testConfigs);
-            Assert.assertTrue(Objects.equals(actualConfiguration, expectedConfiguration));
-        }
+        Configuration actualConfiguration = configurationSelector.findMatchingConfiguration(url, testConfigs);
+        Assert.assertTrue(Objects.equals(actualConfiguration, expectedConfiguration));
     }
 
     private Map<String,Configuration> getConfigs() {
