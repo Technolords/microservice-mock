@@ -114,7 +114,7 @@ public class ConfigurationManager {
             LOGGER.debug("... found, proceeding to the data part...");
             SimpleResource resource = null;
             // Check for query groups
-            if (configuration.getQueryGroups().getQueryGroups().size() > 0) {
+            if (configuration.getQueryGroups() != null) {
                 resource = this.findMatchForQueryGroup(configuration.getQueryGroups());
             }
             // If match found, stop checking rest
@@ -130,6 +130,9 @@ public class ConfigurationManager {
     }
 
     private SimpleResource findMatchForQueryGroup(QueryGroups queryGroups) {
+        if (queryGroups == null) {
+            return null;
+        }
         SimpleResource resource = null;
         // check for query group
         for (QueryGroup queryGroup : queryGroups.getQueryGroups()) {
