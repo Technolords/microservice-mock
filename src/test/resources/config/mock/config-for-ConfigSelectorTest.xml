@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<configurations xmlns="http://xsd.technolords.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xsd.technolords.net">
+    <configuration type="GET" url="/mock/get">
+        <resource delay="0" error-rate="0">configManagerTest/getResponse1.txt</resource>
+    </configuration>
+    <configuration type="GET" url="/mock/*/get">
+        <resource delay="0" error-rate="0">configManagerTest/getResponse2.txt</resource>
+    </configuration>
+    <configuration type="GET" url="/mock/1/get">
+        <resource delay="0" error-rate="0">configManagerTest/getResponse1.txt</resource>
+    </configuration>
+    <configuration type="GET" url="/mock/*/get/*/data">
+        <resource delay="0" error-rate="0">mock/sample-get.json</resource>
+    </configuration>
+    <configuration type="POST" url="/mock/post">
+        <namespaces>
+            <namespace prefix="technolords">urn:some:reference:1.0</namespace>
+        </namespaces>
+        <resource-groups>
+            <resource-group>
+                <xpath>/technolords:sample/technolords:message[@id = '1']</xpath>
+                <resource delay="0" error-rate="0">mock/sample-post1.json</resource>
+            </resource-group>
+            <resource-group>
+                <xpath>/technolords:sample/technolords:message[@id = '2']</xpath>
+                <resource delay="10000" error-rate="0">mock/sample-post2.json</resource>
+            </resource-group>
+            <resource-group>
+                <xpath>/technolords:sample/technolords:message[@id = '3']</xpath>
+                <resource delay="0" error-code="206" error-rate="50">mock/sample-post3.json</resource>
+            </resource-group>
+            <resource-group>
+                <xpath>/technolords:sample/technolords:message[@id = '4']</xpath>
+                <resource content-type="text/plain" delay="0" error-rate="0">mock/sample-post4.txt</resource>
+            </resource-group>
+        </resource-groups>
+    </configuration>
+</configurations>
