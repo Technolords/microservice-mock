@@ -106,6 +106,7 @@ public class ConfigurationManager {
      * @throws InterruptedException
      *  When delaying the response fails.
      */
+    // TODO: extend method definition, add parameter representing map
     public ResponseContext findResponseForGetOperationWithPath(String path) throws IOException, InterruptedException {
         LOGGER.debug("About to find response for get operation with path: {}", path);
         Configuration configuration = this.configurationSelector.findMatchingConfiguration(path, this.getConfigurations);
@@ -135,6 +136,11 @@ public class ConfigurationManager {
 
         }
         // If match found, stop checking rest
+        return resource;
+    }
+
+    private SimpleResource findMatchForQueryParameters(QueryGroup queryGroup) {
+        SimpleResource resource = null;
         return resource;
     }
 
