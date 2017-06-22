@@ -3,6 +3,7 @@ package net.technolords.micro.model.jaxb.resource;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlValue;
+import java.util.Objects;
 
 public class SimpleResource {
     private String resource;
@@ -11,6 +12,21 @@ public class SimpleResource {
     private String errorCode;
     private int errorRate;
     private String contentType;
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof SimpleResource)) {
+            return false;
+        }
+        SimpleResource ref = (SimpleResource) obj;
+        return (Objects.equals(this.getContentType(), ref.getContentType())
+                && Objects.equals(this.getErrorCode(), ref.getErrorCode())
+                && Objects.equals(this.getResource(), ref.getResource())
+        );
+    }
 
     @XmlValue
     public String getResource() {
