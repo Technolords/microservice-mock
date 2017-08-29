@@ -107,7 +107,7 @@ public class ConfigurationManager {
      *  When delaying the response fails.
      */
     // TODO: extend method definition, add parameter representing map
-    public ResponseContext findResponseForGetOperationWithPath(String path) throws IOException, InterruptedException {
+    public ResponseContext findResponseForGetOperationWithPath(String path, String parameters) throws IOException, InterruptedException {
         LOGGER.debug("About to find response for get operation with path: {}", path);
         Configuration configuration = this.configurationSelector.findMatchingConfiguration(path, this.getConfigurations);
         if (configuration != null) {
@@ -115,7 +115,7 @@ public class ConfigurationManager {
             SimpleResource resource = null;
             // Check for query groups
             if (configuration.getQueryGroups() != null) {
-                resource = this.findMatchForQueryGroup(configuration.getQueryGroups());
+                resource = this.findMatchForQueryGroup(configuration.getQueryGroups(), parameters);
             }
             // If match found, stop checking rest
             if (resource == null) {
@@ -129,22 +129,28 @@ public class ConfigurationManager {
         return null;
     }
 
-    private SimpleResource findMatchForQueryGroup(QueryGroups queryGroups) {
+    private SimpleResource findMatchForQueryGroup(QueryGroups queryGroups, String parameters) {
         if (queryGroups == null) {
             return null;
         }
-        SimpleResource resource = null;
         // check for query group
         for (QueryGroup queryGroup : queryGroups.getQueryGroups()) {
-
+            SimpleResource resource = this.findMatchForQueryParameters(queryGroup, this.extractQueryParametersFromString(parameters));
+            if (resource != null) {
+                return resource;
+            }
         }
         // If match found, stop checking rest
+        return null;
+    }
+
+    private SimpleResource findMatchForQueryParameters(QueryGroup queryGroup, Map<String, String> parameters) {
+        SimpleResource resource = null;
         return resource;
     }
 
-    private SimpleResource findMatchForQueryParameters(QueryGroup queryGroup) {
-        SimpleResource resource = null;
-        return resource;
+    private Map<String, String> extractQueryParametersFromString(String parameters) {
+        return null;
     }
 
     /**
