@@ -149,8 +149,23 @@ public class ConfigurationManager {
         return resource;
     }
 
+    // key1=11&key=12
     private Map<String, String> extractQueryParametersFromString(String parameters) {
-        return null;
+        Map<String, String> result = new HashMap<>();
+        String[] pairs = parameters.split("&");
+        LOGGER.info("About to extract parameters from: {} -> total pairs: {}", parameters, pairs.length);
+        if (pairs.length > 0) {
+            for (int i = 0 ; i < pairs.length; i++) {
+                // key1=11
+                String key = pairs[i].substring(0, pairs[i].indexOf("="));
+//                LOGGER.info("Index of = {} -> key: {}", pairs[i].indexOf("="), key);
+                String value = pairs[i].substring(pairs[0].indexOf("=") + 1, pairs[i].length());
+//                LOGGER.info("Value: {}", value);
+                result.put(key, value);
+                LOGGER.info("Adding key/value: {} -> {}", key, value);
+            }
+        }
+        return result;
     }
 
     /**
