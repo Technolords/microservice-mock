@@ -29,6 +29,7 @@ import net.technolords.micro.model.jaxb.Configuration;
 import net.technolords.micro.model.jaxb.Configurations;
 import net.technolords.micro.model.jaxb.query.QueryGroup;
 import net.technolords.micro.model.jaxb.query.QueryGroups;
+import net.technolords.micro.model.jaxb.query.QueryParameter;
 import net.technolords.micro.model.jaxb.resource.ResourceGroup;
 import net.technolords.micro.model.jaxb.resource.ResourceGroups;
 import net.technolords.micro.model.jaxb.resource.SimpleResource;
@@ -145,14 +146,29 @@ public class ConfigurationManager {
     }
 
     private SimpleResource findMatchForQueryParameters(QueryGroup queryGroup, Map<String, String> parameters) {
-        SimpleResource resource = null;
-        return resource;
+        for (QueryParameter queryParameter : queryGroup.getQueryParameters()) {
+            // TODO: support placeholders to reduce configuration file
+            // Satisfy key being present
+            String key = queryParameter.getKey();
+            if (parameters.containsKey(key)) {
+                // Satisfy the value
+                String configuredValue = queryParameter.getValue();
+                String receivedValue = parameters.get(key);
+                if (!configuredValue.equals(receivedValue)) {
+                    return null;
+                }
+            } else {
+                return null;
+            }
+        }
+        return queryGroup.getSimpleResource();
     }
 
     // key1=11&key=12
     private Map<String, String> extractQueryParametersFromString(String parameters) {
         Map<String, String> result = new HashMap<>();
         String[] pairs = parameters.split("&");
+        // TODO: refactor into lambda expression
         LOGGER.info("About to extract parameters from: {} -> total pairs: {}", parameters, pairs.length);
         if (pairs.length > 0) {
             for (int i = 0 ; i < pairs.length; i++) {
