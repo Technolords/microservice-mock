@@ -130,7 +130,7 @@ public class ConfigurationManager {
         return null;
     }
 
-    private SimpleResource findMatchForQueryGroup(QueryGroups queryGroups, String parameters) {
+    protected SimpleResource findMatchForQueryGroup(QueryGroups queryGroups, String parameters) {
         if (queryGroups == null) {
             return null;
         }
@@ -145,7 +145,7 @@ public class ConfigurationManager {
         return null;
     }
 
-    private SimpleResource findMatchForQueryParameters(QueryGroup queryGroup, Map<String, String> parameters) {
+    protected SimpleResource findMatchForQueryParameters(QueryGroup queryGroup, Map<String, String> parameters) {
         for (QueryParameter queryParameter : queryGroup.getQueryParameters()) {
             // TODO: support placeholders to reduce configuration file
             // Satisfy key being present
@@ -165,10 +165,10 @@ public class ConfigurationManager {
     }
 
     // key1=11&key=12
-    private Map<String, String> extractQueryParametersFromString(String parameters) {
+    protected Map<String, String> extractQueryParametersFromString(String parameters) {
         Map<String, String> result = new HashMap<>();
         String[] pairs = parameters.split("&");
-        // TODO: refactor into lambda expression
+        // TODO: refactor into lambda expression (use Pattern.splitAsStream)
         LOGGER.info("About to extract parameters from: {} -> total pairs: {}", parameters, pairs.length);
         if (pairs.length > 0) {
             for (int i = 0 ; i < pairs.length; i++) {
