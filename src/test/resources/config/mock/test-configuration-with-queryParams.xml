@@ -1,0 +1,53 @@
+<configurations xmlns="http://xsd.technolords.net">
+
+    <!--+
+        | Supported GET requests
+        +-->
+    <configuration type="GET" url="/mock/get">
+        <query-groups>
+            <query-group>
+                <query-parameter key="key1">value1</query-parameter>
+                <query-parameter key="key2">value2</query-parameter>
+                <resource>mock/sample-get-complex.json</resource>
+            </query-group>
+            <query-group>
+                <query-parameter key="customerNumber">122333</query-parameter>
+                <resource>sample-get-122333.json</resource>
+            </query-group>
+        </query-groups>
+        <resource>mock/sample-get-default.json</resource>
+    </configuration>
+    <configuration type="GET" url="/mock/*/get">
+        <resource>mock/sample-get.json</resource>
+    </configuration>
+    <configuration type="GET" url="/mock/1/get">
+        <resource>mock/sample-get.json</resource>
+    </configuration>
+
+    <!--+
+        | Supported POST requests
+        +-->
+    <configuration type="POST" url="/mock/post">
+        <namespaces>
+            <namespace prefix="technolords">urn:some:reference:1.0</namespace>
+        </namespaces>
+        <resource-groups>
+            <resource-group>
+                <xpath>/technolords:sample/technolords:message[@id = '1']</xpath>
+                <resource>mock/sample-post1.json</resource>
+            </resource-group>
+            <resource-group>
+                <xpath>/technolords:sample/technolords:message[@id = '2']</xpath>
+                <resource delay="10000">mock/sample-post2.json</resource>
+            </resource-group>
+            <resource-group>
+                <xpath>/technolords:sample/technolords:message[@id = '3']</xpath>
+                <resource error-code="206" error-rate="50">mock/sample-post3.json</resource>
+            </resource-group>
+            <resource-group>
+                <xpath>/technolords:sample/technolords:message[@id = '4']</xpath>
+                <resource content-type="text/plain">mock/sample-post4.txt</resource>
+            </resource-group>
+        </resource-groups>
+    </configuration>
+</configurations>
