@@ -64,7 +64,7 @@ public class ConfigurationManagerTest {
      * Auxiliary method to declare a data set to support testing of a configuration. An entry is specified
      * with two elements, each meaning:
      *
-     *  [0] : The HTT uri
+     *  [0] : The HTTP uri
      *  [1] : The expected message
      *
      * @return
@@ -89,7 +89,7 @@ public class ConfigurationManagerTest {
         return new String(Files.readAllBytes(pathToResource));
     }
 
-    // TODO: fix for Sridevi
+    // TODO: fix broken test for Sridevi
     @Test (enabled = false, groups = DEFAULT_CONFIG_MANAGER_REQUIRED, dataProvider = DATA_SET_FOR_DEFAULT_CONFIG)
     public void testResponseWithDefaultConfiguration(final String path, final String expectedResponse) throws IOException, InterruptedException {
         LOGGER.debug("About to test with path: {}", path);
@@ -118,7 +118,7 @@ public class ConfigurationManagerTest {
         };
     }
 
-    // TODO: fix for Sridevi
+    // TODO: fix broken test for Sridevi
     @Test (enabled = false, groups = TEST_CONFIG_MANAGER_REQUIRED, dataProvider = DATA_SET_FOR_TEST_CONFIG)
     public void testResponseWithTestConfiguration(final String path, final String expectedResponse) throws IOException, InterruptedException {
         LOGGER.debug("About to test with path: {}", path);
@@ -135,5 +135,7 @@ public class ConfigurationManagerTest {
     public String filterWhiteSpace(String input) {
         return input.replaceAll("\\s","");
     }
+
+    // TODO: add new test with query groups
 
 }
