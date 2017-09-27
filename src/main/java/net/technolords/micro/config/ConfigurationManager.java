@@ -1,5 +1,7 @@
 package net.technolords.micro.config;
 
+import static java.util.stream.Collectors.toMap;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.FileSystems;
@@ -172,12 +174,11 @@ public class ConfigurationManager {
             return result;
         }
         Pattern keyValuePattern = Pattern.compile("&");
-        result = keyValuePattern.splitAsStream(parameters)
+        result = keyValuePattern
+                .splitAsStream(parameters)
                 .map(keyValue -> keyValue.split("="))
-                .collect(Collectors.toMap(
-                        split -> split[0],
-                        split -> split[1]
-                ));
+                .filter(split -> split.length % 2 == 0)
+                .collect(toMap(split -> split[0], split -> split[1]));
         return result;
     }
 

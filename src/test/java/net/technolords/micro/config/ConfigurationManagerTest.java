@@ -142,7 +142,7 @@ public class ConfigurationManagerTest {
     public void testExtractQueryParametersFromString() {
 //        final String parameters = "key1=11&key2=12";
 //        final String parameters = "key1=11";  // TODO: use data provider for all
-        final String parameters = "";
+        final String parameters = "a=b=c";
         Map<String, String> expected = new HashMap<>();
 //        expected.put("key1", "11");
 //        expected.put("key2", "12");
