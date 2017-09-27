@@ -115,10 +115,10 @@ public class ConfigurationManager {
             LOGGER.debug("... found, proceeding to the data part...");
             SimpleResource resource = null;
             // Check for query groups
-            if (configuration.getQueryGroups() != null) {
+            if (configuration.getQueryGroups() != null && (parameters != null && !parameters.isEmpty())) {
                 resource = this.findMatchForQueryGroup(configuration.getQueryGroups(), parameters);
             }
-            // If match found, stop checking rest
+            // Fall back on default when no group match is found
             if (resource == null) {
                 resource = configuration.getSimpleResource();
             }
@@ -167,6 +167,9 @@ public class ConfigurationManager {
     // key1=11&key=12
     protected Map<String, String> extractQueryParametersFromString(String parameters) {
         Map<String, String> result = new HashMap<>();
+        if (parameters.isEmpty()) {
+            return result;
+        }
         String[] pairs = parameters.split("&");
         // TODO: refactor into lambda expression (use Pattern.splitAsStream)
         LOGGER.info("About to extract parameters from: {} -> total pairs: {}", parameters, pairs.length);
