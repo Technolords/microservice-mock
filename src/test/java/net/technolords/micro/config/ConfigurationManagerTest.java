@@ -89,8 +89,7 @@ public class ConfigurationManagerTest {
         return new String(Files.readAllBytes(pathToResource));
     }
 
-    // TODO: fix broken test for Sridevi
-    @Test (enabled = false, groups = DEFAULT_CONFIG_MANAGER_REQUIRED, dataProvider = DATA_SET_FOR_DEFAULT_CONFIG)
+    @Test (enabled = true, groups = DEFAULT_CONFIG_MANAGER_REQUIRED, dataProvider = DATA_SET_FOR_DEFAULT_CONFIG)
     public void testResponseWithDefaultConfiguration(final String path, final String expectedResponse) throws IOException, InterruptedException {
         LOGGER.debug("About to test with path: {}", path);
         this.assertOnResponseContext(path, expectedResponse);
@@ -118,8 +117,7 @@ public class ConfigurationManagerTest {
         };
     }
 
-    // TODO: fix broken test for Sridevi
-    @Test (enabled = false, groups = TEST_CONFIG_MANAGER_REQUIRED, dataProvider = DATA_SET_FOR_TEST_CONFIG)
+    @Test (enabled = true, groups = TEST_CONFIG_MANAGER_REQUIRED, dataProvider = DATA_SET_FOR_TEST_CONFIG)
     public void testResponseWithTestConfiguration(final String path, final String expectedResponse) throws IOException, InterruptedException {
         LOGGER.debug("About to test with path: {}", path);
         this.assertOnResponseContext(path, expectedResponse);
