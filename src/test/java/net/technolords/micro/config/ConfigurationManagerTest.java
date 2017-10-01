@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
@@ -89,7 +91,7 @@ public class ConfigurationManagerTest {
         return new String(Files.readAllBytes(pathToResource));
     }
 
-    @Test (enabled = true, groups = DEFAULT_CONFIG_MANAGER_REQUIRED, dataProvider = DATA_SET_FOR_DEFAULT_CONFIG)
+    @Test (groups = DEFAULT_CONFIG_MANAGER_REQUIRED, dataProvider = DATA_SET_FOR_DEFAULT_CONFIG)
     public void testResponseWithDefaultConfiguration(final String path, final String expectedResponse) throws IOException, InterruptedException {
         LOGGER.debug("About to test with path: {}", path);
         this.assertOnResponseContext(path, expectedResponse);
@@ -117,7 +119,7 @@ public class ConfigurationManagerTest {
         };
     }
 
-    @Test (enabled = true, groups = TEST_CONFIG_MANAGER_REQUIRED, dataProvider = DATA_SET_FOR_TEST_CONFIG)
+    @Test (groups = TEST_CONFIG_MANAGER_REQUIRED, dataProvider = DATA_SET_FOR_TEST_CONFIG)
     public void testResponseWithTestConfiguration(final String path, final String expectedResponse) throws IOException, InterruptedException {
         LOGGER.debug("About to test with path: {}", path);
         this.assertOnResponseContext(path, expectedResponse);
@@ -135,5 +137,20 @@ public class ConfigurationManagerTest {
     }
 
     // TODO: add new test with query groups
+
+    @Test (groups = DEFAULT_CONFIG_MANAGER_REQUIRED)
+    public void testExtractQueryParametersFromString() {
+//        final String parameters = "key1=11&key2=12";
+//        final String parameters = "key1=11";  // TODO: use data provider for all
+        final String parameters = "a=b=c";
+        Map<String, String> expected = new HashMap<>();
+//        expected.put("key1", "11");
+//        expected.put("key2", "12");
+        Map<String, String> result = this.configurationManager.extractQueryParametersFromString(parameters);
+        Assert.assertEquals(expected.size(), result.size());
+        for (String key : expected.keySet()) {
+            Assert.assertTrue(expected.get(key).equals(result.get(key)));
+        }
+    }
 
 }

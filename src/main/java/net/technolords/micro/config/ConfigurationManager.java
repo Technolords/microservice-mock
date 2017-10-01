@@ -1,5 +1,7 @@
 package net.technolords.micro.config;
 
+import static java.util.stream.Collectors.toMap;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.FileSystems;
@@ -8,6 +10,8 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
@@ -24,6 +28,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
+import net.technolords.micro.input.ConfigurationSelector;
+import net.technolords.micro.input.xml.XpathEvaluator;
 import net.technolords.micro.model.ResponseContext;
 import net.technolords.micro.model.jaxb.Configuration;
 import net.technolords.micro.model.jaxb.Configurations;
@@ -33,8 +39,6 @@ import net.technolords.micro.model.jaxb.query.QueryParameter;
 import net.technolords.micro.model.jaxb.resource.ResourceGroup;
 import net.technolords.micro.model.jaxb.resource.ResourceGroups;
 import net.technolords.micro.model.jaxb.resource.SimpleResource;
-import net.technolords.micro.input.ConfigurationSelector;
-import net.technolords.micro.input.xml.XpathEvaluator;
 import net.technolords.micro.output.ResponseContextGenerator;
 
 public class ConfigurationManager {
@@ -107,7 +111,6 @@ public class ConfigurationManager {
      * @throws InterruptedException
      *  When delaying the response fails.
      */
-    // TODO: extend method definition, add parameter representing map
     public ResponseContext findResponseForGetOperationWithPath(String path, String parameters) throws IOException, InterruptedException {
         LOGGER.debug("About to find response for get operation with path: {}", path);
         Configuration configuration = this.configurationSelector.findMatchingConfiguration(path, this.getConfigurations);
@@ -170,22 +173,16 @@ public class ConfigurationManager {
         if (parameters.isEmpty()) {
             return result;
         }
-        String[] pairs = parameters.split("&");
-        // TODO: refactor into lambda expression (use Pattern.splitAsStream)
-        LOGGER.info("About to extract parameters from: {} -> total pairs: {}", parameters, pairs.length);
-        if (pairs.length > 0) {
-            for (int i = 0 ; i < pairs.length; i++) {
-                // key1=11
-                String key = pairs[i].substring(0, pairs[i].indexOf("="));
-//                LOGGER.info("Index of = {} -> key: {}", pairs[i].indexOf("="), key);
-                String value = pairs[i].substring(pairs[0].indexOf("=") + 1, pairs[i].length());
-//                LOGGER.info("Value: {}", value);
-                result.put(key, value);
-                LOGGER.info("Adding key/value: {} -> {}", key, value);
-            }
-        }
+        Pattern keyValuePattern = Pattern.compile("&");
+        result = keyValuePattern
+                .splitAsStream(parameters)
+                .map(keyValue -> keyValue.split("="))
+                .filter(split -> split.length % 2 == 0)
+                .collect(toMap(split -> split[0], split -> split[1]));
         return result;
     }
+
+
 
     /**
      * Auxiliary method to find a response for a given POST request, based on the path and the message (body).
