@@ -8,14 +8,14 @@
             <query-group>
                 <query-parameter key="key1">value1</query-parameter>
                 <query-parameter key="key2">value2</query-parameter>
-                <resource>mock/sample-get-complex.json</resource>
+                <resource>sample-get-complex.json</resource>
             </query-group>
             <query-group>
                 <query-parameter key="customerNumber">122333</query-parameter>
                 <resource>sample-get-122333.json</resource>
             </query-group>
         </query-groups>
-        <resource>mock/sample-get-default.json</resource>
+        <resource>sample-get-default.json</resource>
     </configuration>
     <configuration type="GET" url="/mock/*/get">
         <resource>mock/sample-get.json</resource>
