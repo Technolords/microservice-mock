@@ -151,13 +151,12 @@ public class ConfigurationManagerTest {
         return input.replaceAll("\\s","");
     }
 
-    // TODO: add new test with query groups
     @DataProvider(name = DATA_SET_FOR_TEST_QUERY_GROUPS)
     public Object[][] dataSetForTestQueryGroup() throws IOException {
         return new Object[][] {
-//                { "/mock/get", "key1=value1&key2=value2", defaultGetResponse("sample-get-complex.json") },
-                { "/mock/get", "customerNumber=12233", defaultGetResponse("sample-get-122333.json") },
-//                { "/mock/get", "", defaultGetResponse("sample-get-default.json")}
+                { "/mock/get", "key1=value1&key2=value2", defaultGetResponse("sample-get-complex.json") },
+                { "/mock/get", "customerNumber=122333", defaultGetResponse("sample-get-122333.json") },
+                { "/mock/get", "", defaultGetResponse("sample-get-default.json")}
         };
     }
 
@@ -175,7 +174,7 @@ public class ConfigurationManagerTest {
         return new Object[][] {
                 {"key1=11&key2=12", expectedQueryParams("key1=11&key2=12")},
                 {"key1=11"        , expectedQueryParams("key1=11")},
-                {"a=b=c"          , "a=b=c"},
+                {"a=b=c"          , expectedQueryParams("")},
                 {""               , expectedQueryParams("")}
         };
     }
