@@ -1,5 +1,7 @@
 package net.technolords.micro.config;
 
+import static java.util.stream.Collectors.toMap;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.FileSystems;
@@ -8,6 +10,8 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
@@ -24,14 +28,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
+import net.technolords.micro.input.ConfigurationSelector;
+import net.technolords.micro.input.xml.XpathEvaluator;
 import net.technolords.micro.model.ResponseContext;
 import net.technolords.micro.model.jaxb.Configuration;
 import net.technolords.micro.model.jaxb.Configurations;
+import net.technolords.micro.model.jaxb.query.QueryGroup;
+import net.technolords.micro.model.jaxb.query.QueryGroups;
+import net.technolords.micro.model.jaxb.query.QueryParameter;
 import net.technolords.micro.model.jaxb.resource.ResourceGroup;
 import net.technolords.micro.model.jaxb.resource.ResourceGroups;
 import net.technolords.micro.model.jaxb.resource.SimpleResource;
-import net.technolords.micro.input.ConfigurationSelector;
-import net.technolords.micro.input.xml.XpathEvaluator;
 import net.technolords.micro.output.ResponseContextGenerator;
 
 public class ConfigurationManager {
@@ -104,12 +111,20 @@ public class ConfigurationManager {
      * @throws InterruptedException
      *  When delaying the response fails.
      */
-    public ResponseContext findResponseForGetOperationWithPath(String path) throws IOException, InterruptedException {
+    public ResponseContext findResponseForGetOperationWithPath(String path, String parameters) throws IOException, InterruptedException {
         LOGGER.debug("About to find response for get operation with path: {}", path);
         Configuration configuration = this.configurationSelector.findMatchingConfiguration(path, this.getConfigurations);
         if (configuration != null) {
             LOGGER.debug("... found, proceeding to the data part...");
-            SimpleResource resource = configuration.getSimpleResource();
+            SimpleResource resource = null;
+            // Check for query groups
+            if (configuration.getQueryGroups() != null && (parameters != null && !parameters.isEmpty())) {
+                resource = this.findMatchForQueryGroup(configuration.getQueryGroups(), parameters);
+            }
+            // Fall back on default when no group match is found
+            if (resource == null) {
+                resource = configuration.getSimpleResource();
+            }
             // Load and update cache
             LOGGER.debug("About to load data from: {}", resource.getResource());
             return this.responseContextGenerator.readResourceCacheOrFile(resource);
@@ -117,6 +132,57 @@ public class ConfigurationManager {
         LOGGER.debug("... not found!");
         return null;
     }
+
+    protected SimpleResource findMatchForQueryGroup(QueryGroups queryGroups, String parameters) {
+        if (queryGroups == null) {
+            return null;
+        }
+        // check for query group
+        for (QueryGroup queryGroup : queryGroups.getQueryGroups()) {
+            SimpleResource resource = this.findMatchForQueryParameters(queryGroup, this.extractQueryParametersFromString(parameters));
+            if (resource != null) {
+                return resource;
+            }
+        }
+        // If match found, stop checking rest
+        return null;
+    }
+
+    protected SimpleResource findMatchForQueryParameters(QueryGroup queryGroup, Map<String, String> parameters) {
+        for (QueryParameter queryParameter : queryGroup.getQueryParameters()) {
+            // TODO: support placeholders to reduce configuration file
+            // Satisfy key being present
+            String key = queryParameter.getKey();
+            if (parameters.containsKey(key)) {
+                // Satisfy the value
+                String configuredValue = queryParameter.getValue();
+                String receivedValue = parameters.get(key);
+                if (!configuredValue.equals(receivedValue)) {
+                    return null;
+                }
+            } else {
+                return null;
+            }
+        }
+        return queryGroup.getSimpleResource();
+    }
+
+    // key1=11&key=12
+    protected Map<String, String> extractQueryParametersFromString(String parameters) {
+        Map<String, String> result = new HashMap<>();
+        if (parameters.isEmpty()) {
+            return result;
+        }
+        Pattern keyValuePattern = Pattern.compile("&");
+        result = keyValuePattern
+                .splitAsStream(parameters)
+                .map(keyValue -> keyValue.split("="))
+                .filter(split -> split.length % 2 == 0)
+                .collect(toMap(split -> split[0], split -> split[1]));
+        return result;
+    }
+
+
 
     /**
      * Auxiliary method to find a response for a given POST request, based on the path and the message (body).

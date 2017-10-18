@@ -1,39 +1,27 @@
 package net.technolords.micro.model.jaxb;
 
-import net.technolords.micro.model.jaxb.namespace.NamespaceList;
-import net.technolords.micro.model.jaxb.resource.ResourceGroups;
-import net.technolords.micro.model.jaxb.resource.SimpleResource;
-
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
 import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+import net.technolords.micro.model.jaxb.namespace.NamespaceList;
+import net.technolords.micro.model.jaxb.query.QueryGroups;
+import net.technolords.micro.model.jaxb.resource.ResourceGroups;
+import net.technolords.micro.model.jaxb.resource.SimpleResource;
+
 public class Configuration {
     private String type;
     private String url;
+    private QueryGroups queryGroups;
     private SimpleResource simpleResource;
     private ResourceGroups resourceGroups;
     private NamespaceList namespaceList;
     private Map<String, String> cachedNamespaceMapping;
     private Pattern pattern;
-
-    @Override
-    public boolean equals(Object obj) {
-        if(obj == null) {
-            return false;
-        }
-        if(!(obj instanceof Configuration)) {
-            return false;
-        }
-        Configuration ref = (Configuration) obj;
-        return (Objects.equals(this.getUrl(), ref.getUrl())
-                && Objects.equals(this.getType(), ref.getType())
-                && Objects.equals(this.getSimpleResource(), ref.getSimpleResource())
-        );
-    }
 
     @XmlAttribute(name = "type")
     public String getType() {
@@ -51,6 +39,15 @@ public class Configuration {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @XmlElement (name = "query-groups")
+    public QueryGroups getQueryGroups() {
+        return queryGroups;
+    }
+
+    public void setQueryGroups(QueryGroups queryGroups) {
+        this.queryGroups = queryGroups;
     }
 
     @XmlElement(name = "resource")
@@ -96,5 +93,20 @@ public class Configuration {
 
     public void setPattern(Pattern pattern) {
         this.pattern = pattern;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null) {
+            return false;
+        }
+        if(!(obj instanceof Configuration)) {
+            return false;
+        }
+        Configuration ref = (Configuration) obj;
+        return (Objects.equals(this.getUrl(), ref.getUrl())
+                && Objects.equals(this.getType(), ref.getType())
+                && Objects.equals(this.getSimpleResource(), ref.getSimpleResource())
+        );
     }
 }

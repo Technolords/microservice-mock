@@ -72,11 +72,14 @@ public class ResponseProcessor implements Processor {
      *  When reading the response data failed.
      */
     private ResponseContext handleGetRequest(Exchange exchange) throws InterruptedException, IOException {
+        // Example: "CamelHttpUri" -> "/mock/get"
         String requestURI = exchange.getIn().getHeader(Exchange.HTTP_URI, String.class);
         if (requestURI.equals("/mock/cmd")) {
             return CommandManager.executeCommand(exchange);
         } else {
-            return this.configurationManager.findResponseForGetOperationWithPath(requestURI);
+            // Example: "CamelHttpQuery" -> "key1=11&key2=12"
+            String requestParameters = exchange.getIn().getHeader(Exchange.HTTP_QUERY, String.class);
+            return this.configurationManager.findResponseForGetOperationWithPath(requestURI, requestParameters);
         }
     }
 
