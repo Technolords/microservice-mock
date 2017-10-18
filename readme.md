@@ -1,6 +1,6 @@
 # Microservice mock
 
-![badge-release](https://img.shields.io/badge/release-v1.2.0-green.svg)
+![badge-release](https://img.shields.io/badge/release-v1.3.0-green.svg)
 
 ## Introduction
 This micro service represents a configurable webservice that can mock any other web service by means of configuration.
