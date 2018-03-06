@@ -36,6 +36,7 @@
         <version.log4j2>2.7</version.log4j2>
         <version.maven.plugin.build.helper>1.12</version.maven.plugin.build.helper>
         <version.maven.plugin.compiler>3.3</version.maven.plugin.compiler>
+        <version.maven.plugin.docker>1.4.0</version.maven.plugin.docker>
         <version.maven.plugin.gpg>1.5</version.maven.plugin.gpg>
         <version.maven.plugin.javadoc>2.10.4</version.maven.plugin.javadoc>
         <version.maven.plugin.jetty>9.4.0.M0</version.maven.plugin.jetty>
@@ -378,6 +379,48 @@
                         </executions>
                     </plugin>
 
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>docker</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.spotify</groupId>
+                        <artifactId>dockerfile-maven-plugin</artifactId>
+                        <version>${version.maven.plugin.docker}</version>
+                        <executions>
+                            <execution>
+                                <id>default</id>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <skipDockerBuild>false</skipDockerBuild>
+                            <repository>technolords/mock</repository>
+                            <tag>${project.version}</tag>
+                            <tag>latest</tag>
+                            <imageName>technolords/mock</imageName>
+                            <buildArgs>
+                                <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                            </buildArgs>
+                        </configuration>
+                        <!--+
+                            | From source: https://github.com/spotify/dockerfile-maven/blob/master/plugin/src/main/java/com/spotify/plugin/dockerfile/BuildMojo.java
+                            |
+                            | - File: @Parameter(defaultValue = "${project.basedir}", property = "dockerfile.contextDirectory", required = true)
+                            | - String: @Parameter(property = "dockerfile.repository")
+                            | - String: @Parameter(property = "dockerfile.tag", defaultValue = "latest")
+                            | - boolean: @Parameter(property = "dockerfile.build.skip", defaultValue = "false")
+                            | - boolean: @Parameter(property = "dockerfile.build.pullNewerImage", defaultValue = "true")
+                            | - boolean: @Parameter(property = "dockerfile.build.noCache", defaultValue = "false")
+                            | - Map<String, String>: @Parameter(property = "dockerfile.buildArgs")
+                            +-->
+                    </plugin>
                 </plugins>
             </build>
         </profile>
