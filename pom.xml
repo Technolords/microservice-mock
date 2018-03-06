@@ -403,23 +403,11 @@
                             <skipDockerBuild>false</skipDockerBuild>
                             <repository>technolords/mock</repository>
                             <tag>${project.version}</tag>
-                            <tag>latest</tag>
                             <imageName>technolords/mock</imageName>
                             <buildArgs>
                                 <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                             </buildArgs>
                         </configuration>
-                        <!--+
-                            | From source: https://github.com/spotify/dockerfile-maven/blob/master/plugin/src/main/java/com/spotify/plugin/dockerfile/BuildMojo.java
-                            |
-                            | - File: @Parameter(defaultValue = "${project.basedir}", property = "dockerfile.contextDirectory", required = true)
-                            | - String: @Parameter(property = "dockerfile.repository")
-                            | - String: @Parameter(property = "dockerfile.tag", defaultValue = "latest")
-                            | - boolean: @Parameter(property = "dockerfile.build.skip", defaultValue = "false")
-                            | - boolean: @Parameter(property = "dockerfile.build.pullNewerImage", defaultValue = "true")
-                            | - boolean: @Parameter(property = "dockerfile.build.noCache", defaultValue = "false")
-                            | - Map<String, String>: @Parameter(property = "dockerfile.buildArgs")
-                            +-->
                     </plugin>
                 </plugins>
             </build>
