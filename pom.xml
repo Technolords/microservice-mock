@@ -400,10 +400,8 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <skipDockerBuild>false</skipDockerBuild>
                             <repository>technolords/mock</repository>
                             <tag>${project.version}</tag>
-                            <imageName>technolords/mock</imageName>
                             <buildArgs>
                                 <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                             </buildArgs>
