@@ -4,7 +4,7 @@
 
     <groupId>net.technolords.micro.service</groupId>
     <artifactId>microservice-mock</artifactId>
-    <version>1.5.0-SNAPSHOT</version>
+    <version>1.4.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Technolords :: Microservices :: Mock</name>
@@ -192,9 +192,9 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <skipPush>true</skipPush>
                     <repository>docker.io/technolords/mock</repository>
-                    <tag>latest</tag>
-                    <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+                    <tag>${project.version}</tag>
                     <buildArgs>
                         <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                     </buildArgs>
@@ -416,6 +416,7 @@
                             </execution>
                         </executions>
                         <configuration>
+                            <skipBuild>true</skipBuild>
                             <repository>docker.io/technolords/mock</repository>
                             <tag>latest</tag>
                             <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
