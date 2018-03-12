@@ -1,6 +1,7 @@
 # Microservice mock
 
-![badge-release](https://img.shields.io/badge/release-v1.3.0-green.svg)
+[![maven-central](https://img.shields.io/badge/Maven%20Central-v1.4.0-green.svg)](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22net.technolords.micro.service%22%20mock)
+[![docker](https://img.shields.io/badge/Docker-v1.4.0-green.svg)](https://hub.docker.com/r/technolords/mock/)
 
 ## Introduction
 This micro service represents a configurable webservice that can mock any other web service by means of configuration.
