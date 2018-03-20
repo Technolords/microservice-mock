@@ -1,6 +1,9 @@
 FROM openjdk:8
 
+ARG MOCK_VERSION
 ARG JAR_FILE
+
+LABEL mock.version=${MOCK_VERSION}
 
 RUN mkdir -p /etc/mock
 

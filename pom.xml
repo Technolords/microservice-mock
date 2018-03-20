@@ -244,6 +244,7 @@
                     <repository>docker.io/technolords/mock</repository>
                     <tag>${project.version}</tag>
                     <buildArgs>
+                        <MOCK_VERSION>${project.version}</MOCK_VERSION>
                         <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                     </buildArgs>
                 </configuration>
@@ -418,6 +419,7 @@
                         </executions>
                         <configuration>
                             <skipBuild>true</skipBuild>
+                            <skipPush>false</skipPush>
                             <repository>docker.io/technolords/mock</repository>
                             <tag>latest</tag>
                             <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
@@ -429,6 +431,39 @@
 
                 </plugins>
             </build>
+        </profile>
+
+        <profile>
+            <id>docker</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <!-- Push image to Docker -->
+                        <groupId>com.spotify</groupId>
+                        <artifactId>dockerfile-maven-plugin</artifactId>
+                        <version>${version.maven.plugin.docker}</version>
+                        <executions>
+                            <execution>
+                                <id>default</id>
+                                <goals>
+                                    <goal>push</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <skipBuild>true</skipBuild>
+                            <skipPush>false</skipPush>
+                            <repository>docker.io/technolords/mock</repository>
+                            <tag>latest</tag>
+                            <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+                            <buildArgs>
+                                <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                            </buildArgs>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+
         </profile>
 
     </profiles>
