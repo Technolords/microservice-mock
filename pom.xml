@@ -232,7 +232,7 @@
                 <version>${version.maven.plugin.docker}</version>
                 <executions>
                     <execution>
-                        <id>default</id>
+                        <id>build-image</id>
                         <phase>package</phase>
                         <goals>
                             <goal>build</goal>
@@ -336,17 +336,6 @@
 
     </build>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
-
     <profiles>
         <profile>
             <id>release</id>
@@ -411,14 +400,15 @@
                         <version>${version.maven.plugin.docker}</version>
                         <executions>
                             <execution>
-                                <id>default</id>
+                                <id>push-image</id>
+                                <phase>deploy</phase>
                                 <goals>
+                                    <goal>tag</goal>
                                     <goal>push</goal>
                                 </goals>
                             </execution>
                         </executions>
                         <configuration>
-                            <skipBuild>true</skipBuild>
                             <skipPush>false</skipPush>
                             <repository>docker.io/technolords/mock</repository>
                             <tag>latest</tag>
@@ -431,41 +421,19 @@
 
                 </plugins>
             </build>
-        </profile>
-
-        <profile>
-            <id>docker</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <!-- Push image to Docker -->
-                        <groupId>com.spotify</groupId>
-                        <artifactId>dockerfile-maven-plugin</artifactId>
-                        <version>${version.maven.plugin.docker}</version>
-                        <executions>
-                            <execution>
-                                <id>default</id>
-                                <goals>
-                                    <goal>push</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <skipBuild>true</skipBuild>
-                            <skipPush>false</skipPush>
-                            <repository>docker.io/technolords/mock</repository>
-                            <tag>latest</tag>
-                            <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
-                            <buildArgs>
-                                <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
-                            </buildArgs>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-
         </profile>
 
     </profiles>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 
 </project>
