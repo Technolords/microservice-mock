@@ -20,6 +20,11 @@ public class RouteTestSupport extends CamelTestSupport {
     private ProducerTemplate producerTemplate;
     private String availablePort;
 
+    /**
+     * Find an available port number
+     *
+     * @throws Exception
+     */
     @BeforeClass
     public void findAvailablePortNumber() throws Exception {
         LOGGER.info("BeforeClass called (from: {})", getClass());
