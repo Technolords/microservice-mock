@@ -12,6 +12,7 @@
     <xs:element name="configurations">
         <xs:complexType>
             <xs:sequence>
+                <xs:element name="service-registration" type="serviceRegistrationType" minOccurs="0" maxOccurs="1"/>
                 <xs:element name="configuration" type="configurationType" minOccurs="0" maxOccurs="unbounded" />
             </xs:sequence>
         </xs:complexType>
@@ -40,6 +41,20 @@
         <xs:attribute name="type" type="httpRequestType" use="required" />
         <xs:attribute name="url" type="xs:string" use="required" />
     </xs:complexType>
+    
+    <xs:complexType name="consulType">
+        <xs:sequence>
+            <xs:element name="service" type="serviceType" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="address" type="xs:string" use="required" />
+        <xs:attribute name="port" type="xs:integer" use="optional" />
+    </xs:complexType>
+    
+    <xs:complexType name="healthCheckType">
+        <xs:attribute name="enabled" type="xs:boolean" use="required" />
+        <xs:attribute name="interval" type="xs:string" use="required" />
+        <xs:attribute name="deregister-after" type="xs:string" use="required" />
+    </xs:complexType>
 
     <xs:complexType name="namespacesType">
         <xs:sequence>
@@ -51,6 +66,27 @@
         <xs:simpleContent>
             <xs:extension base="xs:string">
                 <xs:attribute name="prefix" type="xs:string" use="required" />
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    
+    <xs:complexType name="queryGroupsType">
+        <xs:sequence>
+            <xs:element name="query-group" type="queryGroupType" minOccurs="1" maxOccurs="unbounded"/>            
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="queryGroupType">
+        <xs:sequence>
+            <xs:element name="query-parameter" type="queryParameterType" minOccurs="1" maxOccurs="unbounded"/>
+            <xs:element name="resource" type="resourceType" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="queryParameterType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="key" type="xs:string" use="required" />
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
@@ -79,27 +115,22 @@
         </xs:simpleContent>
     </xs:complexType>
     
-    <xs:complexType name="queryGroupsType">
+    <xs:complexType name="serviceType">
         <xs:sequence>
-            <xs:element name="query-group" type="queryGroupType" minOccurs="1" maxOccurs="unbounded"/>            
+            <xs:element name="health-check" type="healthCheckType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="address" type="xs:string" use="required" />
+        <xs:attribute name="port" type="xs:integer" use="optional" />
+        <xs:attribute name="id" type="xs:string" use="optional" />
+        <xs:attribute name="name" type="xs:string" use="optional" />
+    </xs:complexType>
+    
+    <xs:complexType name="serviceRegistrationType">
+        <xs:sequence>
+            <xs:element name="consul" type="consulType" minOccurs="0" maxOccurs="1"/>
         </xs:sequence>
     </xs:complexType>
     
-    <xs:complexType name="queryGroupType">
-        <xs:sequence>
-            <xs:element name="query-parameter" type="queryParameterType" minOccurs="1" maxOccurs="unbounded"/>
-            <xs:element name="resource" type="resourceType" />
-        </xs:sequence>
-    </xs:complexType>
-    
-    <xs:complexType name="queryParameterType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute name="key" type="xs:string" use="required" />
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
-
     <xs:complexType name="xpathType">
         <xs:simpleContent>
             <xs:extension base="xs:string" />
