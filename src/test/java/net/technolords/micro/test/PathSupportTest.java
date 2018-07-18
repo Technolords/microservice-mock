@@ -47,6 +47,14 @@ public class PathSupportTest {
         Assert.assertTrue(Files.isDirectory(path));
     }
 
+    @Test (description = "Validate path to test configuration for registration resources")
+    public void testPathToTestConfigurationForRegistrationResources() {
+        LOGGER.debug("About to validate path to test configuration for registration resources");
+        Path path = PathSupport.getTestConfigResourcesForRegistration();
+        Assert.assertTrue(Files.exists(path));
+        Assert.assertTrue(Files.isDirectory(path));
+    }
+
     // src/test/resources/data/request
     @Test (description = "Validate path to test data for request resources")
     public void testPathToTestDataForRequestResources() {
