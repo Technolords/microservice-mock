@@ -34,6 +34,7 @@ public class MockRegistry {
     private static final String BEAN_CONFIG = "config";
     private static final String BEAN_FILTER_INFO = "infoFilter";
     private static final String BEAN_RESPONSE_PROCESSOR = "responseProcessor";
+    private static final String BEAN_SERVICE_REGISTRATION = "serviceRegistration";
     private static Main main;
 
     /**
@@ -77,6 +78,8 @@ public class MockRegistry {
         Server server = statisticsHandler.getServer();
         main.bind(BEAN_JETTY_SERVER, server);
         InfoFilter.registerFilterDirectlyWithServer(server);
+        ServiceRegistrationManager serviceRegistrationManager = new ServiceRegistrationManager();
+        main.bind(BEAN_SERVICE_REGISTRATION, serviceRegistrationManager);
     }
 
     // -------------------------------
@@ -101,6 +104,10 @@ public class MockRegistry {
 
     public static Server findJettyServer() {
         return main.lookup(BEAN_JETTY_SERVER, Server.class);
+    }
+
+    public static ServiceRegistrationManager findRegistrationManager() {
+        return main.lookup(BEAN_SERVICE_REGISTRATION, ServiceRegistrationManager.class);
     }
 
     public static StatisticsHandler findStatisticsHandler() {

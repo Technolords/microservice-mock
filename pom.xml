@@ -31,7 +31,6 @@
             | Version properties
             +-->
         <version.camel>2.18.2</version.camel>
-        <version.testng.camel>2.18.0</version.testng.camel>
         <version.jetty.util>9.2.19.v20160908</version.jetty.util>
         <version.log4j2>2.7</version.log4j2>
         <version.maven.plugin.build.helper>1.12</version.maven.plugin.build.helper>
@@ -143,7 +142,7 @@
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-testng</artifactId>
-            <version>${version.testng.camel}</version>
+            <version>${version.camel}</version>
             <scope>test</scope>
         </dependency>
 
