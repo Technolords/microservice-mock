@@ -66,8 +66,7 @@ public class MockRegistry {
         main.bind(BEAN_CONFIG, new ConfigurationManager(findConfiguredConfig(), findConfiguredData()));
         main.bind(BEAN_FILTER_INFO, new InfoFilter());
         main.bind(BEAN_RESPONSE_PROCESSOR, new ResponseProcessor());
-        ServiceRegistrationManager serviceRegistrationManager = new ServiceRegistrationManager();
-        main.bind(BEAN_SERVICE_REGISTRATION, serviceRegistrationManager);
+        main.bind(BEAN_SERVICE_REGISTRATION, new ServiceRegistrationManager());
         LOGGER.info("Beans added to the registry...");
     }
 
