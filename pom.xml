@@ -31,6 +31,7 @@
             | Version properties
             +-->
         <version.camel>2.18.2</version.camel>
+        <version.http.client>4.5.2</version.http.client>
         <version.jetty.util>9.2.19.v20160908</version.jetty.util>
         <version.log4j2>2.7</version.log4j2>
         <version.maven.plugin.build.helper>1.12</version.maven.plugin.build.helper>
@@ -92,6 +93,13 @@
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-jetty9</artifactId>
             <version>${version.camel}</version>
+        </dependency>
+
+        <dependency>
+            <!-- Used for rest calls -->
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${version.http.client}</version>
         </dependency>
 
         <dependency>

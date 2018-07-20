@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeClass;
 
+import net.technolords.micro.camel.listener.MockMainListener;
 import net.technolords.micro.camel.listener.MockTestListener;
 import net.technolords.micro.camel.route.MockRoute;
 import net.technolords.micro.registry.MockRegistry;
@@ -31,12 +32,12 @@ public class RouteTestSupport extends CamelTestSupport {
             LOGGER.info("BeforeClass called (from: {})", getClass());
             this.availablePort = String.valueOf(AvailablePortFinder.getNextAvailable(10000));
             LOGGER.info("Found port: {}", this.availablePort);
-
             this.main = new Main();
             MockRegistry.registerPropertiesInRegistry(this.main);
             MockRegistry.registerBeansInRegistryBeforeStart();
             Properties properties = MockRegistry.findProperties();
             properties.put("port", this.availablePort);
+//            this.main.addMainListener(new MockMainListener());      // Breaks deep within Camel: NPE in org.apache.camel.management.mbean.ManagedCamelContext.<init>(ManagedCamelContext.java:85)
             this.main.addMainListener(new MockTestListener());      // Alternative listener
             this.main.addRouteBuilder(new MockRoute());
             this.main.start();

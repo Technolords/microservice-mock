@@ -6,6 +6,8 @@ import org.apache.camel.management.DefaultManagementLifecycleStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.technolords.micro.registry.MockRegistry;
+
 public class MainLifecycleStrategy extends DefaultManagementLifecycleStrategy {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
@@ -16,14 +18,14 @@ public class MainLifecycleStrategy extends DefaultManagementLifecycleStrategy {
     @Override
     public void onContextStart(CamelContext camelContext) throws VetoCamelContextStartException {
         LOGGER.info("onContextStart started...");
-        // TODO: register (if configured)
+        MockRegistry.findRegistrationManager().registerService();
         super.onContextStart(camelContext);
     }
 
     @Override
     public void onContextStop(CamelContext context) {
         LOGGER.info("onContextStop started...");
-        // TODO: deregister (if configured)
+        MockRegistry.findRegistrationManager().deregisterService();
         super.onContextStop(getCamelContext());
     }
 }

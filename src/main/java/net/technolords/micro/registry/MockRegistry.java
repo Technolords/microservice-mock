@@ -66,6 +66,8 @@ public class MockRegistry {
         main.bind(BEAN_CONFIG, new ConfigurationManager(findConfiguredConfig(), findConfiguredData()));
         main.bind(BEAN_FILTER_INFO, new InfoFilter());
         main.bind(BEAN_RESPONSE_PROCESSOR, new ResponseProcessor());
+        ServiceRegistrationManager serviceRegistrationManager = new ServiceRegistrationManager();
+        main.bind(BEAN_SERVICE_REGISTRATION, serviceRegistrationManager);
         LOGGER.info("Beans added to the registry...");
     }
 
@@ -78,8 +80,6 @@ public class MockRegistry {
         Server server = statisticsHandler.getServer();
         main.bind(BEAN_JETTY_SERVER, server);
         InfoFilter.registerFilterDirectlyWithServer(server);
-        ServiceRegistrationManager serviceRegistrationManager = new ServiceRegistrationManager();
-        main.bind(BEAN_SERVICE_REGISTRATION, serviceRegistrationManager);
     }
 
     // -------------------------------
