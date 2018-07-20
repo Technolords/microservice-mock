@@ -58,23 +58,26 @@ public class ConsulRequestFactory {
      *  The generated HttpPut
      */
     public static HttpEntityEnclosingRequestBase createDeregisterRequest(Consul consul) {
-        return new HttpPut(generatedUrlForDeregister(consul.getService()));
+        return new HttpPut(generatedUrlForDeregister(consul));
     }
 
     /**
      * http://192.168.10.14:8500/v1/agent/service/deregister/:serviceId (PUT)
      *
-     * @param service
+     * @param consul
      *  The service associated with the URL
      *
      * @return
      *  The generated URL in string format
      */
-    private static String generatedUrlForDeregister(Service service) {
+    private static String generatedUrlForDeregister(Consul consul) {
         StringBuffer buffer = new StringBuffer();
-        buffer.append(service.getAddress()).append(":").append(service.getPort());
+        if (!consul.getAddress().startsWith("http")) {
+            buffer.append("http://");
+        }
+        buffer.append(consul.getAddress()).append(":").append(consul.getPort());
         buffer.append(API_SERVICE_DEREGISTER);
-        buffer.append(service.getId());
+        buffer.append(consul.getService().getId());
         return buffer.toString();
     }
 
