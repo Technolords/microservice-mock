@@ -8,7 +8,6 @@ import org.apache.http.entity.StringEntity;
 
 import net.technolords.micro.model.jaxb.Configuration;
 import net.technolords.micro.model.jaxb.registration.Consul;
-import net.technolords.micro.model.jaxb.registration.Service;
 
 public class ConsulRequestFactory {
     private static final String API_SERVICE_REGISTER = "/v1/agent/service/register";

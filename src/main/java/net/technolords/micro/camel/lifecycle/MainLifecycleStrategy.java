@@ -17,14 +17,14 @@ public class MainLifecycleStrategy extends DefaultManagementLifecycleStrategy {
 
     @Override
     public void onContextStart(CamelContext camelContext) throws VetoCamelContextStartException {
-        LOGGER.info("onContextStart started...");
+        LOGGER.debug("onContextStart called...");
         MockRegistry.findRegistrationManager().registerService();
         super.onContextStart(camelContext);
     }
 
     @Override
     public void onContextStop(CamelContext context) {
-        LOGGER.info("onContextStop started...");
+        LOGGER.debug("onContextStop called...");
         MockRegistry.findRegistrationManager().deregisterService();
         super.onContextStop(getCamelContext());
     }
