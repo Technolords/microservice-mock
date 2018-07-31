@@ -12,7 +12,7 @@ public class Configurations {
     private ServiceRegistration serviceRegistration;
     private List<Configuration> configurations;
 
-    @XmlElement (name = "service-registration")
+    @XmlElement (name = "service-registrations")
     public ServiceRegistration getServiceRegistration() {
         return serviceRegistration;
     }

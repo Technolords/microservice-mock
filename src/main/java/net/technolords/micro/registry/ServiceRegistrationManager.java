@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import net.technolords.micro.config.ConfigurationManager;
 import net.technolords.micro.model.jaxb.Configurations;
+import net.technolords.micro.model.jaxb.registration.Registration;
 import net.technolords.micro.model.jaxb.registration.ServiceRegistration;
 import net.technolords.micro.registry.consul.ConsulRequestFactory;
 
@@ -28,14 +29,22 @@ public class ServiceRegistrationManager {
         Configurations configurations = configurationManager.getConfigurations();
         ServiceRegistration serviceRegistration = configurations.getServiceRegistration();
         if (serviceRegistration != null) {
-            LOGGER.info("... Yes, about to register...");
-            if (serviceRegistration.getConsul() != null) {
-                try {
-                    HttpEntityEnclosingRequestBase request = ConsulRequestFactory.createRegisterRequest(serviceRegistration.getConsul(), configurations.getConfigurations());
-                    HttpResponse httpResponse = this.httpClient.execute(request);
-                    LOGGER.info("... with success to {} -> {}", request.getURI().toString(), httpResponse.getStatusLine().getStatusCode());
-                } catch (Exception e) {
-                    LOGGER.error("Failed to register for Consul", e);
+            LOGGER.info("... Yes, about to perform some registrations...");
+            for (Registration registration : serviceRegistration.getRegistrations()) {
+                switch (registration.getRegistrar()) {
+                    case CONSUL:
+                        try {
+                            HttpEntityEnclosingRequestBase request = ConsulRequestFactory.createRegisterRequest(registration, configurations.getConfigurations());
+                            HttpResponse httpResponse = this.httpClient.execute(request);
+                            LOGGER.info("... with success to {} -> {}", request.getURI().toString(), httpResponse.getStatusLine().getStatusCode());
+                        } catch (Exception e) {
+                            LOGGER.error("Failed to register for Registration", e);
+                        }
+                        break;
+                    case EUREKA:
+                        break;
+                    default:
+                        LOGGER.info("Unsupported registrar: {} -> ignored...", registration.getRegistrar().toString());
                 }
             }
         } else {
@@ -44,24 +53,32 @@ public class ServiceRegistrationManager {
     }
 
     /**
-     * Deregister the mock as micro service with a service registration.
+     * De-register the mock as micro service with a service registration.
      *
      * Note that this is being called from the Camel's lifecycle management, i.e. on stop.
      */
     public void deregisterService() {
-        LOGGER.info("Checking whether the service needs to be unregistered...");
+        LOGGER.info("Checking whether the service needs to be de-registered...");
         ConfigurationManager configurationManager = MockRegistry.findConfigurationManager();
         Configurations configurations = configurationManager.getConfigurations();
         ServiceRegistration serviceRegistration = configurations.getServiceRegistration();
         if (serviceRegistration != null) {
-            LOGGER.info("... Yes, about to unregister...");
-            if (serviceRegistration.getConsul() != null) {
-                try {
-                    HttpEntityEnclosingRequestBase request = ConsulRequestFactory.createDeregisterRequest(serviceRegistration.getConsul());
-                    HttpResponse httpResponse = this.httpClient.execute(request);
-                    LOGGER.info("... with success to {} -> {}", request.getURI().toString(), httpResponse.getStatusLine().getStatusCode());
-                } catch (Exception e) {
-                    LOGGER.error("Failed to deregister for Consul", e);
+            LOGGER.info("... Yes, about to perform some de-registrations...");
+            for (Registration registration : serviceRegistration.getRegistrations()) {
+                switch (registration.getRegistrar()) {
+                    case CONSUL:
+                        try {
+                            HttpEntityEnclosingRequestBase request = ConsulRequestFactory.createDeregisterRequest(registration);
+                            HttpResponse httpResponse = this.httpClient.execute(request);
+                            LOGGER.info("... with success to {} -> {}", request.getURI().toString(), httpResponse.getStatusLine().getStatusCode());
+                        } catch (Exception e) {
+                            LOGGER.error("Failed to deregister for Registration", e);
+                        }
+                        break;
+                    case EUREKA:
+                        break;
+                    default:
+                        LOGGER.info("Unsupported registrar: {} -> ignored...", registration.getRegistrar().toString());
                 }
             }
         } else {

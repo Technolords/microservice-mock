@@ -12,7 +12,7 @@
     <xs:element name="configurations">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="service-registration" type="serviceRegistrationType" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="service-registrations" type="serviceRegistrationsType" minOccurs="0" maxOccurs="1"/>
                 <xs:element name="configuration" type="configurationType" minOccurs="0" maxOccurs="unbounded" />
             </xs:sequence>
         </xs:complexType>
@@ -25,6 +25,13 @@
         <xs:restriction base="xs:string">
             <xs:enumeration value="GET"/>
             <xs:enumeration value="POST"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="registrarType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="CONSUL"/>
+            <xs:enumeration value="EUREKA"/>
         </xs:restriction>
     </xs:simpleType>
 
@@ -40,14 +47,6 @@
         </xs:sequence>
         <xs:attribute name="type" type="httpRequestType" use="required" />
         <xs:attribute name="url" type="xs:string" use="required" />
-    </xs:complexType>
-    
-    <xs:complexType name="consulType">
-        <xs:sequence>
-            <xs:element name="service" type="serviceType" minOccurs="1" maxOccurs="1"/>
-        </xs:sequence>
-        <xs:attribute name="address" type="xs:string" use="required" />
-        <xs:attribute name="port" type="xs:integer" use="optional" />
     </xs:complexType>
     
     <xs:complexType name="healthCheckType">
@@ -90,6 +89,15 @@
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
+    
+    <xs:complexType name="registrationType">
+        <xs:sequence>
+            <xs:element name="service" type="serviceType" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="registrar" type="registrarType" use="required"/>
+        <xs:attribute name="address" type="xs:string" use="required" />
+        <xs:attribute name="port" type="xs:integer" use="optional" />
+    </xs:complexType>
 
     <xs:complexType name="resourceGroupsType">
         <xs:sequence>
@@ -125,9 +133,9 @@
         <xs:attribute name="name" type="xs:string" use="optional" />
     </xs:complexType>
     
-    <xs:complexType name="serviceRegistrationType">
+    <xs:complexType name="serviceRegistrationsType">
         <xs:sequence>
-            <xs:element name="consul" type="consulType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="registration" type="registrationType" minOccurs="1" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
     

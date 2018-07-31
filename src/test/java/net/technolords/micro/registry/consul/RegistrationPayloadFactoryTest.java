@@ -17,7 +17,7 @@ import net.technolords.micro.model.jaxb.registration.HealthCheck;
 import net.technolords.micro.model.jaxb.registration.Service;
 import net.technolords.micro.test.PathSupport;
 
-public class ConsulPayloadFactoryTest {
+public class RegistrationPayloadFactoryTest {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     @Test

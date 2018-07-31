@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
@@ -15,7 +16,7 @@ import org.testng.annotations.Test;
 import org.xml.sax.SAXException;
 
 import net.technolords.micro.model.jaxb.Configurations;
-import net.technolords.micro.model.jaxb.registration.Consul;
+import net.technolords.micro.model.jaxb.registration.Registration;
 import net.technolords.micro.model.jaxb.registration.ServiceRegistration;
 import net.technolords.micro.test.PathSupport;
 
@@ -26,7 +27,7 @@ public class ConfigurationsTest {
     @DataProvider(name = DATA_SET_FOR_CONFIG_FILES)
     public Object[][] dataSetForDefaultConfiguration() throws IOException {
         return new Object[][]{
-                { "config-for-Consul.xml", "192.168.10.14", 8500 },
+                { "config-for-registrations.xml", "192.168.10.14", 8500 },
         };
     }
 
@@ -41,10 +42,12 @@ public class ConfigurationsTest {
         Assert.assertNotNull(configurations);
         ServiceRegistration serviceRegistration = configurations.getServiceRegistration();
         Assert.assertNotNull(serviceRegistration);
-        Consul consul = serviceRegistration.getConsul();
-        Assert.assertNotNull(consul);
-        Assert.assertEquals(consul.getAddress(), consulAddress);
-        Assert.assertEquals(consul.getPort(), consulPort);
+        List<Registration> registrations = serviceRegistration.getRegistrations();
+        Assert.assertNotNull(registrations);
+        Assert.assertTrue(registrations.size() > 0);
+        Registration registration= registrations.get(0);
+        Assert.assertEquals(registration.getAddress(), consulAddress);
+        Assert.assertEquals(registration.getPort(), consulPort);
     }
 
 }

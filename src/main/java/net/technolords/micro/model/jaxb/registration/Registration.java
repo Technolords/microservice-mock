@@ -2,11 +2,25 @@ package net.technolords.micro.model.jaxb.registration;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlEnum;
 
-public class Consul {
+public class Registration {
+    private Registrar registrar;
     private String address;
     private int port;
     private Service service;
+
+    @XmlEnum
+    public enum Registrar { CONSUL, EUREKA }
+
+    @XmlAttribute (name = "registrar", required = true)
+    public Registrar getRegistrar() {
+        return registrar;
+    }
+
+    public void setRegistrar(Registrar registrar) {
+        this.registrar = registrar;
+    }
 
     @XmlAttribute (name = "address")
     public String getAddress() {

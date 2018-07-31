@@ -1,15 +1,51 @@
 <configurations xmlns="http://xsd.technolords.net">
 
     <!--+
-        | Service registration (Consul and Eureka)
+        | Service registration (Registration and Eureka)
         +-->
-    <service-registration>
-        <consul address="192.168.10.14" port="8500">
+    <service-registrations>
+        <registration registrar="CONSUL" address="192.168.10.14" port="8500">
             <service address="192.168.10.10" port="9090" id="mock-1" name="mock-service" >
                 <health-check enabled="true" interval="60s" deregister-after="90m"/>
             </service>
-        </consul>
-    </service-registration>
+        </registration>
+        <registration registrar="CONSUL" address="192.168.10.14" port="8500">
+            <service address="192.168.10.11" port="9090" id="mock-2" name="mock-service" >
+                <health-check enabled="true" interval="60s" deregister-after="90m"/>
+            </service>
+        </registration>
+        <registration registrar="EUREKA" address="localhost" port="8080">
+            <service address="192.168.10.10" port="9090" id="mock-1" name="mock-service" >
+                <!-- Renews -->
+            </service>
+        </registration>
+    </service-registrations>
+
+    <!--
+        https://github.com/Netflix/eureka/wiki/Eureka-REST-operations
+        https://github.com/Netflix/eureka/wiki/Understanding-eureka-client-server-communication
+        https://dzone.com/articles/the-mystery-of-eureka-health-monitoring
+
+    {
+    "instance": {
+        "hostName": "mock1",                                                        instanceId
+        "app": "mock",                                                              appId
+        "ipAddr": "10.0.0.10",
+        "port": {"$": "8080", "@enabled": "true"},
+        "status": "UP",
+        "securePort": {"$": "8443", "@enabled": "true"},
+        "healthCheckUrl": "http://192.168.10.10:9090/mock/cmd?config=current",
+        "dataCenterInfo": {
+            "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
+            "name": "MyOwn"
+        },
+        "metadata": {
+        	"get": "/mock/get",
+    		"post": "/mock/post1, /mock/post2"
+        }
+    }
+}
+    -->
 
     <!--+
         | Supported GET requests
