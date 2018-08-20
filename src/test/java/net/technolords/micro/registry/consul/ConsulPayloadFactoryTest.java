@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 import net.technolords.micro.test.PathSupport;
 import net.technolords.micro.test.factory.ConfigurationsFactory;
 import net.technolords.micro.test.factory.ServiceFactory;
+import net.technolords.micro.util.WhitespaceFilter;
 
 public class ConsulPayloadFactoryTest {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
@@ -24,20 +25,7 @@ public class ConsulPayloadFactoryTest {
         LOGGER.debug("Json file exists: {}", Files.exists(jsonFile));
         String expected = new String(Files.readAllBytes(jsonFile));
         String actual = ConsulPayloadFactory.generatePayloadForRegister(ServiceFactory.createService(), ConfigurationsFactory.createConfigurations());
-        Assert.assertEquals(this.filterWhitespace(actual), this.filterWhitespace(expected));
-    }
-
-    /**
-     * Auiliary method to filter some white space (spaces and carriage return)
-     *
-     * @param original
-     *  The original to be filtered.
-     *
-     * @return
-     *  The filtered original.
-     */
-    protected String filterWhitespace(String original) {
-        return original.replaceAll(" |\n", "");
+        Assert.assertEquals(WhitespaceFilter.filter(actual), WhitespaceFilter.filter(expected));
     }
 
 }
