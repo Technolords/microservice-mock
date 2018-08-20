@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import net.technolords.micro.camel.listener.MockMainListener;
+import net.technolords.micro.camel.route.EurekaRenewalRoute;
 import net.technolords.micro.camel.route.MockRoute;
 import net.technolords.micro.registry.MockRegistry;
 
@@ -43,6 +44,10 @@ public class MockMain extends Main {
         MockRegistry.registerBeansInRegistryBeforeStart();
         super.addMainListener(new MockMainListener());
         super.addRouteBuilder(new MockRoute());
+        if (MockRegistry.findRegistrationManager().renewalRequired()) {
+            LOGGER.info("Adding renewal route...");
+            super.addRouteBuilder(new EurekaRenewalRoute());
+        }
     }
 
     /**

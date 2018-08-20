@@ -1,13 +1,11 @@
 package net.technolords.micro.registry.consul;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.technolords.micro.model.jaxb.Configuration;
 import net.technolords.micro.model.jaxb.registration.HealthCheck;
 import net.technolords.micro.model.jaxb.registration.Service;
+import net.technolords.micro.registry.util.MetadataHelper;
 
 public class ConsulPayloadFactory {
 
@@ -56,23 +54,7 @@ public class ConsulPayloadFactory {
         buffer.append("\"Port\": ").append(service.getPort()).append(",");
         // Meta
         buffer.append("\"Meta\": {");
-        Map<String, List<String>> servicesByType = getServicesByType(configurations);
-        int numberOfTypes = servicesByType.size();
-        int currentNumber = 1;
-        for (String type: servicesByType.keySet()) {
-            // Add entries such as: "post": "/mock/post1, /mock/post2"
-            buffer.append("\"").append(type).append("\": \"");
-            List<String> servicesByURL = servicesByType.get(type);
-            int numberOfUrls = servicesByURL.size();
-            int currentURL = 1;
-            for(String url: servicesByURL) {
-                buffer.append(url);
-                buffer.append(currentURL < numberOfUrls ? ", " : "");
-                currentURL++;
-            }
-            buffer.append(currentNumber < numberOfTypes ? "\"," : "\"");
-            currentNumber++;
-        }
+        MetadataHelper.addMetadataEntries(buffer, configurations);
         buffer.append("},");
         // EnableTagOverride
         buffer.append("\"EnableTagOverride\": false,");
@@ -92,32 +74,6 @@ public class ConsulPayloadFactory {
         }
         buffer.append("}");
         return buffer.toString();
-    }
-
-    /**
-     * Auxiliary method to 'convert' a list of configurations to a map. This data structure is more
-     * convenient to generate the meta data tags.
-     *
-     * @param configurations
-     *  The configurations associated with the map.
-     *
-     * @return
-     *  A map of services by type.
-     */
-    protected static Map<String, List<String>> getServicesByType(List<Configuration> configurations) {
-        Map<String, List<String>> servicesByType = new HashMap<>();
-        for (Configuration configuration : configurations) {
-            String type = configuration.getType();
-            if (!servicesByType.containsKey(type)) {
-                List<String> services = new ArrayList<>();
-                services.add(configuration.getUrl());
-                servicesByType.put(configuration.getType(), services);
-            } else {
-                List<String> services = servicesByType.get(type);
-                services.add(configuration.getUrl());
-            }
-        }
-        return servicesByType;
     }
 
 }

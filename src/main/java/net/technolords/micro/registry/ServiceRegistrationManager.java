@@ -17,6 +17,21 @@ public class ServiceRegistrationManager {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private HttpClient httpClient = HttpClientBuilder.create().build();
 
+    public boolean renewalRequired() {
+        LOGGER.info("Checking whether a renewal route should be created...");
+        ConfigurationManager configurationManager = MockRegistry.findConfigurationManager();
+        Configurations configurations = configurationManager.getConfigurations();
+        ServiceRegistration serviceRegistration = configurations.getServiceRegistration();
+        if (serviceRegistration != null) {
+            for (Registration registration : serviceRegistration.getRegistrations()) {
+                if (Registration.Registrar.EUREKA == registration.getRegistrar()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     /**
      * Register the mock as micro service with a service registration (so it will be available for
      * service discovery).
