@@ -27,6 +27,7 @@
         https://dzone.com/articles/the-mystery-of-eureka-health-monitoring
 
     {
+
     "instance": {
         "hostName": "mock1",                                                        instanceId
         "app": "mock",                                                              appId

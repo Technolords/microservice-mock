@@ -57,6 +57,7 @@ public class ServiceRegistrationManager {
                         }
                         break;
                     case EUREKA:
+                        // TODO: consider STARTING vs UP
                         break;
                     default:
                         LOGGER.info("Unsupported registrar: {} -> ignored...", registration.getRegistrar().toString());

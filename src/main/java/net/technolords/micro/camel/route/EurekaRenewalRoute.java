@@ -16,7 +16,7 @@ public class EurekaRenewalRoute extends RouteBuilder {
                 .routeId(ROUTE_ID_RENEWAL)
                 .id(ROUTE_ID_RENEWAL)
                 .log(LoggingLevel.INFO, LOGGER, "Got timed event...")
-                // TODO: http client
+                // TODO: http client (multiple)
                 .to("mock:test");
     }
 
