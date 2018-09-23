@@ -1,9 +1,13 @@
 package net.technolords.micro.registry;
 
+import java.io.IOException;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,6 +16,7 @@ import net.technolords.micro.model.jaxb.Configurations;
 import net.technolords.micro.model.jaxb.registration.Registration;
 import net.technolords.micro.model.jaxb.registration.ServiceRegistration;
 import net.technolords.micro.registry.consul.ConsulRequestFactory;
+import net.technolords.micro.registry.eureka.EurekaRequestFactory;
 
 public class ServiceRegistrationManager {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
@@ -57,7 +62,15 @@ public class ServiceRegistrationManager {
                         }
                         break;
                     case EUREKA:
-                        // TODO: consider STARTING vs UP
+                        try {
+                            HttpEntityEnclosingRequestBase request = EurekaRequestFactory.createRegisterRequest(registration, configurations.getConfigurations());
+                            LOGGER.info("Request path: {}", request.getURI().toString());
+                            LOGGER.info("Request body: {}", EntityUtils.toString(request.getEntity()));
+                            HttpResponse httpResponse = this.httpClient.execute(request);
+                            LOGGER.info("... with success to {} -> {}", request.getURI().toString(), httpResponse.getStatusLine().getStatusCode());
+                        } catch (IOException e) {
+                            LOGGER.error("Failed to register for Registration", e);
+                        }
                         break;
                     default:
                         LOGGER.info("Unsupported registrar: {} -> ignored...", registration.getRegistrar().toString());
@@ -92,6 +105,13 @@ public class ServiceRegistrationManager {
                         }
                         break;
                     case EUREKA:
+                        try {
+                            HttpRequestBase request = EurekaRequestFactory.createDeRegisterRequest(registration, configurations.getConfigurations());
+                            HttpResponse httpResponse = this.httpClient.execute(request);
+                            LOGGER.info("... with success to {} -> {}", request.getURI().toString(), httpResponse.getStatusLine().getStatusCode());
+                        } catch (Exception e) {
+                            LOGGER.error("Failed to deregister for Registration", e);
+                        }
                         break;
                     default:
                         LOGGER.info("Unsupported registrar: {} -> ignored...", registration.getRegistrar().toString());

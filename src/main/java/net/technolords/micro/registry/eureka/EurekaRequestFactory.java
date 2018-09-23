@@ -2,6 +2,7 @@ package net.technolords.micro.registry.eureka;
 
 import java.util.List;
 
+import org.apache.http.HttpHeaders;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpPost;
@@ -26,6 +27,7 @@ public class EurekaRequestFactory {
      */
     public static HttpEntityEnclosingRequestBase createRegisterRequest(Registration registration, List<Configuration> configurations) {
         HttpPost httpPost = new HttpPost(generateUrlForRegister(registration));
+        httpPost.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
         httpPost.setEntity(new StringEntity(EurekaPayloadFactory.generatePayloadForRegister(registration.getService(), configurations), "UTF-8"));
         return httpPost;
     }
