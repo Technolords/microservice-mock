@@ -1,23 +1,30 @@
 package net.technolords.micro.camel.route;
 
 import org.apache.camel.LoggingLevel;
+import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.technolords.micro.registry.MockRegistry;
+
 public class EurekaRenewalRoute extends RouteBuilder {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private static final String ROUTE_ID_RENEWAL = "RouteRenewal";
+    private Processor renewalProcessor = null;
+
+    public EurekaRenewalRoute() {
+        this.renewalProcessor = MockRegistry.findEurekaRenewalProcessor();
+    }
 
     @Override
     public void configure() throws Exception {
 
         from(this.generateTimedEndpoint())
-                .routeId(ROUTE_ID_RENEWAL)
-                .id(ROUTE_ID_RENEWAL)
-                .log(LoggingLevel.INFO, LOGGER, "Got timed event...")
-                // TODO: http client (multiple)
-                .to("mock:test");
+            .routeId(ROUTE_ID_RENEWAL)
+            .id(ROUTE_ID_RENEWAL)
+            .log(LoggingLevel.TRACE, LOGGER, "Got timed event...")
+            .process(this.renewalProcessor);
     }
 
     /**

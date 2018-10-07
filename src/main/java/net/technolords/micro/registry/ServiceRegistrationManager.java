@@ -53,24 +53,10 @@ public class ServiceRegistrationManager {
             for (Registration registration : serviceRegistration.getRegistrations()) {
                 switch (registration.getRegistrar()) {
                     case CONSUL:
-                        try {
-                            HttpEntityEnclosingRequestBase request = ConsulRequestFactory.createRegisterRequest(registration, configurations.getConfigurations());
-                            HttpResponse httpResponse = this.httpClient.execute(request);
-                            LOGGER.info("... with success to {} -> {}", request.getURI().toString(), httpResponse.getStatusLine().getStatusCode());
-                        } catch (Exception e) {
-                            LOGGER.error("Failed to register for Registration", e);
-                        }
+                        this.registerForConsul(registration, configurations);
                         break;
                     case EUREKA:
-                        try {
-                            HttpEntityEnclosingRequestBase request = EurekaRequestFactory.createRegisterRequest(registration, configurations.getConfigurations());
-                            LOGGER.info("Request path: {}", request.getURI().toString());
-                            LOGGER.info("Request body: {}", EntityUtils.toString(request.getEntity()));
-                            HttpResponse httpResponse = this.httpClient.execute(request);
-                            LOGGER.info("... with success to {} -> {}", request.getURI().toString(), httpResponse.getStatusLine().getStatusCode());
-                        } catch (IOException e) {
-                            LOGGER.error("Failed to register for Registration", e);
-                        }
+                        this.registerForEureka(registration, configurations);
                         break;
                     default:
                         LOGGER.info("Unsupported registrar: {} -> ignored...", registration.getRegistrar().toString());
@@ -78,6 +64,48 @@ public class ServiceRegistrationManager {
             }
         } else {
             LOGGER.info("... No, not needed...");
+        }
+    }
+
+    protected void registerForConsul(Registration registration, Configurations configurations) {
+        try {
+            HttpEntityEnclosingRequestBase request = ConsulRequestFactory.createRegisterRequest(registration, configurations.getConfigurations());
+            LOGGER.debug("Request path: {}", request.getURI().toString());
+            LOGGER.debug("Request body: {}", EntityUtils.toString(request.getEntity()));
+            HttpResponse httpResponse = this.httpClient.execute(request);
+            LOGGER.info("... with success to {} -> {}", request.getURI().toString(), httpResponse.getStatusLine().getStatusCode());
+        } catch (Exception e) {
+            LOGGER.error("Failed to register for Registration", e);
+        }
+    }
+
+    /**
+     * This is called from the renewal processor.
+     */
+    public void registerForAllEureka() {
+        ConfigurationManager configurationManager = MockRegistry.findConfigurationManager();
+        Configurations configurations = configurationManager.getConfigurations();
+        ServiceRegistration serviceRegistration = configurations.getServiceRegistration();
+        if (serviceRegistration != null) {
+            for (Registration registration : serviceRegistration.getRegistrations()) {
+                switch (registration.getRegistrar()) {
+                    case EUREKA:
+                        this.registerForEureka(registration, configurations);
+                    default:
+                }
+            }
+        }
+    }
+
+    protected void registerForEureka(Registration registration, Configurations configurations) {
+        try {
+            HttpEntityEnclosingRequestBase request = EurekaRequestFactory.createRegisterRequest(registration, configurations.getConfigurations());
+            LOGGER.debug("Request path: {}", request.getURI().toString());
+            LOGGER.debug("Request body: {}", EntityUtils.toString(request.getEntity()));
+            HttpResponse httpResponse = this.httpClient.execute(request);
+            LOGGER.info("... with success to {} -> {}", request.getURI().toString(), httpResponse.getStatusLine().getStatusCode());
+        } catch (IOException e) {
+            LOGGER.error("Failed to register for Registration", e);
         }
     }
 
@@ -96,22 +124,10 @@ public class ServiceRegistrationManager {
             for (Registration registration : serviceRegistration.getRegistrations()) {
                 switch (registration.getRegistrar()) {
                     case CONSUL:
-                        try {
-                            HttpEntityEnclosingRequestBase request = ConsulRequestFactory.createDeregisterRequest(registration);
-                            HttpResponse httpResponse = this.httpClient.execute(request);
-                            LOGGER.info("... with success to {} -> {}", request.getURI().toString(), httpResponse.getStatusLine().getStatusCode());
-                        } catch (Exception e) {
-                            LOGGER.error("Failed to deregister for Registration", e);
-                        }
+                        this.deRegisterForConsul(registration);
                         break;
                     case EUREKA:
-                        try {
-                            HttpRequestBase request = EurekaRequestFactory.createDeRegisterRequest(registration, configurations.getConfigurations());
-                            HttpResponse httpResponse = this.httpClient.execute(request);
-                            LOGGER.info("... with success to {} -> {}", request.getURI().toString(), httpResponse.getStatusLine().getStatusCode());
-                        } catch (Exception e) {
-                            LOGGER.error("Failed to deregister for Registration", e);
-                        }
+                        this.deRegisterForEureka(registration, configurations);
                         break;
                     default:
                         LOGGER.info("Unsupported registrar: {} -> ignored...", registration.getRegistrar().toString());
@@ -119,6 +135,26 @@ public class ServiceRegistrationManager {
             }
         } else {
             LOGGER.info("... No, not needed...");
+        }
+    }
+
+    protected void deRegisterForConsul(Registration registration) {
+        try {
+            HttpEntityEnclosingRequestBase request = ConsulRequestFactory.createDeregisterRequest(registration);
+            HttpResponse httpResponse = this.httpClient.execute(request);
+            LOGGER.info("... with success to {} -> {}", request.getURI().toString(), httpResponse.getStatusLine().getStatusCode());
+        } catch (Exception e) {
+            LOGGER.error("Failed to deregister for Registration", e);
+        }
+    }
+
+    protected void deRegisterForEureka(Registration registration, Configurations configurations) {
+        try {
+            HttpRequestBase request = EurekaRequestFactory.createDeRegisterRequest(registration, configurations.getConfigurations());
+            HttpResponse httpResponse = this.httpClient.execute(request);
+            LOGGER.info("... with success to {} -> {}", request.getURI().toString(), httpResponse.getStatusLine().getStatusCode());
+        } catch (Exception e) {
+            LOGGER.error("Failed to deregister for Registration", e);
         }
     }
 
