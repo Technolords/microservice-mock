@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
  * src/test/resources
  * src/test/resources/config/log
  * src/test/resources/config/mock
+ * src/test/resources/config/registration
  * src/test/resources/data/request
  * src/test/resources/data/response
  *
@@ -33,6 +34,7 @@ public class PathSupport {
     private static final String CONFIG = "config";
     private static final String LOG = "log";
     private static final String MOCK = "mock";
+    private static final String REGISTRATION = "registration";
     private static final String DATA = "data";
     private static final String REQUEST = "request";
     private static final String RESPONSE = "response";
@@ -62,6 +64,13 @@ public class PathSupport {
     public static Path getPathToTestConfigForMockResources() {
         Path pathToData = FileSystems.getDefault().getPath(getTestConfigResourcesForMockAsString());
         LOGGER.debug("Path to test configuration for mock resources: {}", pathToData.toAbsolutePath().toString());
+        return pathToData;
+    }
+
+    // src/test/resources/config/registration
+    public static Path getTestConfigResourcesForRegistration() {
+        Path pathToData = FileSystems.getDefault().getPath(getTestConfigResourcesForRegistrationAsString());
+        LOGGER.debug("Path to test configuration for registration resources: {}", pathToData.toAbsolutePath().toString());
         return pathToData;
     }
 
@@ -118,6 +127,14 @@ public class PathSupport {
         StringBuilder buffer = new StringBuilder();
         buffer.append(getTestConfigResourcesAsString()).append(File.separator);
         buffer.append(MOCK);
+        return buffer.toString();
+    }
+
+    // src/test/resources/config/registration
+    public static String getTestConfigResourcesForRegistrationAsString() {
+        StringBuilder buffer = new StringBuilder();
+        buffer.append(getTestConfigResourcesAsString()).append(File.separator);
+        buffer.append(REGISTRATION);
         return buffer.toString();
     }
 

@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
+import net.technolords.micro.camel.processor.EurekaRenewalProcessor;
 import net.technolords.micro.camel.processor.ResponseProcessor;
 import net.technolords.micro.config.ConfigurationManager;
 import net.technolords.micro.config.PropertiesManager;
@@ -34,6 +35,8 @@ public class MockRegistry {
     private static final String BEAN_CONFIG = "config";
     private static final String BEAN_FILTER_INFO = "infoFilter";
     private static final String BEAN_RESPONSE_PROCESSOR = "responseProcessor";
+    private static final String BEAN_RENEWAL_PROCESSOR = "renewalProcessor";
+    private static final String BEAN_SERVICE_REGISTRATION = "serviceRegistration";
     private static Main main;
 
     /**
@@ -65,6 +68,8 @@ public class MockRegistry {
         main.bind(BEAN_CONFIG, new ConfigurationManager(findConfiguredConfig(), findConfiguredData()));
         main.bind(BEAN_FILTER_INFO, new InfoFilter());
         main.bind(BEAN_RESPONSE_PROCESSOR, new ResponseProcessor());
+        main.bind(BEAN_RENEWAL_PROCESSOR, new EurekaRenewalProcessor());
+        main.bind(BEAN_SERVICE_REGISTRATION, new ServiceRegistrationManager());
         LOGGER.info("Beans added to the registry...");
     }
 
@@ -87,6 +92,10 @@ public class MockRegistry {
         return main.lookup(BEAN_CONFIG, ConfigurationManager.class);
     }
 
+    public static EurekaRenewalProcessor findEurekaRenewalProcessor() {
+        return main.lookup(BEAN_RENEWAL_PROCESSOR, EurekaRenewalProcessor.class);
+    }
+
     public static InfoFilter findInfoFilter() {
         return main.lookup(BEAN_FILTER_INFO, InfoFilter.class);
     }
@@ -101,6 +110,10 @@ public class MockRegistry {
 
     public static Server findJettyServer() {
         return main.lookup(BEAN_JETTY_SERVER, Server.class);
+    }
+
+    public static ServiceRegistrationManager findRegistrationManager() {
+        return main.lookup(BEAN_SERVICE_REGISTRATION, ServiceRegistrationManager.class);
     }
 
     public static StatisticsHandler findStatisticsHandler() {
