@@ -4,7 +4,7 @@
 
     <groupId>net.technolords.micro.service</groupId>
     <artifactId>microservice-mock</artifactId>
-    <version>1.5.0</version>
+    <version>1.5.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Technolords :: Microservices :: Mock</name>
@@ -55,7 +55,7 @@
     <scm>
         <connection>scm:git:https://github.com/Technolords/microservice-mock</connection>
         <url>https://github.com/Technolords/microservice-mock/</url>
-        <tag>1.5.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <!--+
