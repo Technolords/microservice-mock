@@ -36,7 +36,7 @@
         <version.log4j2>2.7</version.log4j2>
         <version.maven.plugin.build.helper>1.12</version.maven.plugin.build.helper>
         <version.maven.plugin.compiler>3.3</version.maven.plugin.compiler>
-        <version.maven.plugin.docker>1.4.0</version.maven.plugin.docker>
+        <version.maven.plugin.docker>1.4.7</version.maven.plugin.docker>
         <version.maven.plugin.gpg>1.5</version.maven.plugin.gpg>
         <version.maven.plugin.javadoc>2.10.4</version.maven.plugin.javadoc>
         <version.maven.plugin.jetty>9.4.0.M0</version.maven.plugin.jetty>
