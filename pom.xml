@@ -239,17 +239,32 @@
                 <version>${version.maven.plugin.docker}</version>
                 <executions>
                     <execution>
-                        <id>build-image</id>
+                        <id>build-image-build</id>
                         <phase>package</phase>
                         <goals>
                             <goal>build</goal>
                         </goals>
+                        <configuration>
+                            <classifier>docker-info-version-build</classifier>
+                            <tag>${project.version}-build</tag>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>build-image-tag</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>tag</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>docker-info-version</classifier>
+                            <tag>${project.version}</tag>
+                        </configuration>
                     </execution>
                 </executions>
                 <configuration>
                     <skipPush>true</skipPush>
                     <repository>docker.io/technolords/mock</repository>
-                    <tag>${project.version}</tag>
+                    <!--<tag>${project.version}</tag>-->
                     <buildArgs>
                         <MOCK_VERSION>${project.version}</MOCK_VERSION>
                         <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
@@ -407,18 +422,30 @@
                         <version>${version.maven.plugin.docker}</version>
                         <executions>
                             <execution>
-                                <id>push-image</id>
+                                <id>push-image-version</id>
                                 <phase>deploy</phase>
                                 <goals>
-                                    <goal>tag</goal>
                                     <goal>push</goal>
                                 </goals>
+                                <configuration>
+                                    <tag>${project.version}</tag>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>push-image-latest</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>push</goal>
+                                </goals>
+                                <configuration>
+                                    <tag>latest</tag>
+                                </configuration>
                             </execution>
                         </executions>
                         <configuration>
                             <skipPush>false</skipPush>
                             <repository>docker.io/technolords/mock</repository>
-                            <tag>latest</tag>
+                            <!--<tag>latest</tag>-->
                             <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
                             <buildArgs>
                                 <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
