@@ -4,7 +4,7 @@
 
     <groupId>net.technolords.micro.service</groupId>
     <artifactId>microservice-mock</artifactId>
-    <version>1.5.1-SNAPSHOT</version>
+    <version>1.5.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Technolords :: Microservices :: Mock</name>
