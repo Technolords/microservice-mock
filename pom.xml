@@ -239,14 +239,14 @@
                 <version>${version.maven.plugin.docker}</version>
                 <executions>
                     <execution>
-                        <id>build-image-build</id>
+                        <id>build-image-latest</id>
                         <phase>package</phase>
                         <goals>
                             <goal>build</goal>
                         </goals>
                         <configuration>
-                            <classifier>docker-info-version-build</classifier>
-                            <tag>${project.version}-build</tag>
+                            <classifier>docker-info-version-latest</classifier>
+                            <tag>latest</tag>
                         </configuration>
                     </execution>
                     <execution>
