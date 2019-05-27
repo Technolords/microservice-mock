@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 public class ResourceGroup {
     private XpathConfig xpathConfig;
+    private JsonpathConfig jsonpathConfig;
     private SimpleResource simpleResource;
 
     @XmlElement(name = "xpath")
@@ -13,6 +14,15 @@ public class ResourceGroup {
 
     public void setXpathConfig(XpathConfig xpathConfig) {
         this.xpathConfig = xpathConfig;
+    }
+
+    @XmlElement(name = "jsonpath")
+    public JsonpathConfig getJsonpathConfig() {
+        return jsonpathConfig;
+    }
+
+    public void setJsonpathConfig(JsonpathConfig jsonpathConfig) {
+        this.jsonpathConfig = jsonpathConfig;
     }
 
     @XmlElement(name = "resource")

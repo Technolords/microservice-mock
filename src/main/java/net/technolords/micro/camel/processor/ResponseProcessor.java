@@ -19,7 +19,7 @@ import net.technolords.micro.registry.MockRegistry;
 public class ResponseProcessor implements Processor {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private static final String CONTENT_TYPE = "Content-Type";
-    private ConfigurationManager configurationManager = null;
+    private ConfigurationManager configurationManager;
 
     public ResponseProcessor() {
         this.configurationManager = MockRegistry.findConfigurationManager();
@@ -102,7 +102,8 @@ public class ResponseProcessor implements Processor {
     private ResponseContext handlePostRequest(Exchange exchange) throws InterruptedException, XPathExpressionException, IOException {
         String requestURI = exchange.getIn().getHeader(Exchange.HTTP_URI, String.class);
         String message = exchange.getIn().getBody(String.class);
-        return this.configurationManager.findResponseForPostOperationWithPathAndMessage(requestURI, message);
+        String discriminator = exchange.getIn().getHeader(Exchange.CONTENT_TYPE, String.class);
+        return this.configurationManager.findResponseForPostOperationWithPathAndMessage(requestURI, message, discriminator);
     }
 
     /**

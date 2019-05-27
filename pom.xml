@@ -4,7 +4,7 @@
 
     <groupId>net.technolords.micro.service</groupId>
     <artifactId>microservice-mock</artifactId>
-    <version>1.5.1-SNAPSHOT</version>
+    <version>1.6.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Technolords :: Microservices :: Mock</name>
@@ -32,6 +32,7 @@
             +-->
         <version.camel>2.18.2</version.camel>
         <version.http.client>4.5.2</version.http.client>
+        <version.jayway>2.4.0</version.jayway>
         <version.jetty.util>9.2.19.v20160908</version.jetty.util>
         <version.log4j2>2.7</version.log4j2>
         <version.maven.plugin.build.helper>1.12</version.maven.plugin.build.helper>
@@ -88,6 +89,13 @@
         <!--+
             | Default scope
             +-->
+        <dependency>
+            <!-- Required to use json path -->
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>${version.jayway}</version>
+        </dependency>
+
         <dependency>
             <!-- Required to use jetty:http endpoints -->
             <groupId>org.apache.camel</groupId>

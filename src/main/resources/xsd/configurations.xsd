@@ -107,7 +107,10 @@
 
     <xs:complexType name="resourceGroupType">
         <xs:sequence>
-            <xs:element name="xpath" type="xpathType" />
+            <xs:choice>
+                <xs:element name="xpath" type="xpathType" minOccurs="0" />
+                <xs:element name="jsonpath" type="jsonPathType" minOccurs="0" />
+            </xs:choice>
             <xs:element name="resource" type="resourceType" />
         </xs:sequence>
     </xs:complexType>
@@ -140,6 +143,12 @@
     </xs:complexType>
     
     <xs:complexType name="xpathType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string" />
+        </xs:simpleContent>
+    </xs:complexType>
+    
+    <xs:complexType name="jsonPathType">
         <xs:simpleContent>
             <xs:extension base="xs:string" />
         </xs:simpleContent>
