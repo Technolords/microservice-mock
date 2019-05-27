@@ -41,7 +41,7 @@
     <xs:complexType name="configurationType">
         <xs:sequence>
             <xs:element name="query-groups" type="queryGroupsType" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="resource" type="resourceType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="resource" type="resourceType" minOccurs="0" maxOccurs="1" />
             <xs:element name="namespaces" type="namespacesType" minOccurs="0" maxOccurs="unbounded" />
             <xs:element name="resource-groups" type="resourceGroupsType" minOccurs="0" maxOccurs="1" />
         </xs:sequence>
