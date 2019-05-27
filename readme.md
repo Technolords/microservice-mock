@@ -1,7 +1,7 @@
 # Microservice mock
 
-[![maven-central](https://img.shields.io/badge/Maven%20Central-v1.5.0-green.svg)](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22net.technolords.micro.service%22%20mock)
-[![docker-hub](https://img.shields.io/badge/Docker%20Hub-v1.5.0-green.svg)](https://hub.docker.com/r/technolords/mock/)
+[![maven-central](https://img.shields.io/badge/Maven%20Central-v1.6.0-green.svg)](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22net.technolords.micro.service%22%20mock)
+[![docker-hub](https://img.shields.io/badge/Docker%20Hub-v1.6.0-green.svg)](https://hub.docker.com/r/technolords/mock/)
 [![slack](https://img.shields.io/badge/Slack-channel-green.svg)](https://technolords.slack.com/messages/CA2A4FSEN/)
 
 ## Introduction
