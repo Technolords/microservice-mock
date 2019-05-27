@@ -16,7 +16,7 @@ import net.technolords.micro.model.jaxb.resource.SimpleResource;
 
 public class ResponseContextGenerator {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
-    private Path pathToDataFolder = null;
+    private Path pathToDataFolder;
 
     /**
      * Custom constructor, which caches the path to the data folder. Note that this can be null.
@@ -43,6 +43,10 @@ public class ResponseContextGenerator {
      *  When reading the resource fails.
      */
     public ResponseContext readResourceCacheOrFile(SimpleResource resource) throws IOException, InterruptedException {
+        LOGGER.debug("Resource defined: {}", resource);
+        if (resource != null) {
+            LOGGER.debug("Resource defined, will read from: {}", resource.getResource());
+        }
         // Add delay (only when applicable)
         if (resource.getDelay() > 0) {
             LOGGER.debug("About to delay {} ms", resource.getDelay());
@@ -103,8 +107,9 @@ public class ResponseContextGenerator {
      *  When reading the resource fails.
      */
     private String readFromPackagedFile(String resourceReference) throws IOException {
+        LOGGER.trace("About to read from internal source...");
         InputStream fileStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceReference);
-        LOGGER.debug("Path to file exists: {}", fileStream.available());
+        LOGGER.debug("Path to (internal) file exists: {}", fileStream.available());
         return new BufferedReader(new InputStreamReader(fileStream)).lines().collect(Collectors.joining("\n"));
     }
 
@@ -120,8 +125,9 @@ public class ResponseContextGenerator {
      *  When reading the resource fails.
      */
     private String readFromReferencedPath(String resourceReference) throws IOException {
+        LOGGER.trace("About to read from external source...");
         Path pathToResource = this.pathToDataFolder.resolve(resourceReference);
-        LOGGER.debug("Path to file exists: {}", Files.exists(pathToResource));
+        LOGGER.debug("Path to (external) file exists: {}", Files.exists(pathToResource));
         return Files.lines(pathToResource).collect(Collectors.joining("\n"));
     }
 
