@@ -34,7 +34,7 @@
         <version.http.client>4.5.2</version.http.client>
         <version.jayway>2.4.0</version.jayway>
         <version.jetty.util>9.2.19.v20160908</version.jetty.util>
-        <version.log4j2>2.7</version.log4j2>
+        <version.log4j2>2.13.3</version.log4j2>
         <version.maven.plugin.build.helper>1.12</version.maven.plugin.build.helper>
         <version.maven.plugin.compiler>3.3</version.maven.plugin.compiler>
         <version.maven.plugin.docker>1.4.7</version.maven.plugin.docker>
