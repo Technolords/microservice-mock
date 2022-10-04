@@ -9,17 +9,13 @@ RUN mkdir -p /etc/mock
 
 ADD target/${JAR_FILE} /etc/mock/mock.jar
 
-ADD docker/run-mock.sh /etc/mock
-
-RUN chmod +x /etc/mock/run-mock.sh
-
 EXPOSE 9090
 
 HEALTHCHECK --interval=1m --timeout=10s \
     CMD curl --fail http://localhost:9090/mock/cmd?config=current || exit 1
 
-VOLUME ["/etc/mock/config", "/var/mock/data"]
+VOLUME ["/var/mock"]
 
 WORKDIR "/etc/mock/"
 
-ENTRYPOINT ["./run-mock.sh"]
+ENTRYPOINT ["sh","-c", "java ${JAVA_OPTS} -jar /etc/mock/mock.jar"]

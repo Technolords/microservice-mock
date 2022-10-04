@@ -46,15 +46,17 @@ public class ConfigurationManager {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     public static final String HTTP_POST = "POST";
     public static final String HTTP_GET = "GET";
+    public static final String HTTP_PUT = "PUT";
+    public static final String HTTP_PATCH = "PATCH";
+    public static final String HTTP_DELETE = "DELETE";
     private static final String PATH_TO_CONFIG_FILE = "xml/default-configuration.xml";
     private static final String PATH_TO_SCHEMA_FILE = "xsd/configurations.xsd";
-    private ResponseContextGenerator responseContextGenerator;
-    private ConfigurationSelector configurationSelector = new ConfigurationSelector();
+    private final ResponseContextGenerator responseContextGenerator;
+    private final ConfigurationSelector configurationSelector = new ConfigurationSelector();
     private Configurations configurations;
     private XpathEvaluator xpathEvaluator;
     private JsonPathEvaluator jsonPathEvaluator;
-    private Map<String, Configuration> getConfigurations = new HashMap<>();
-    private Map<String, Configuration> postConfigurations = new HashMap<>();
+    private final Map<String, Map<String, Configuration>> allConfigurations = new HashMap<>();
 
     /**
      * Custom constructor that initializes the Configuration class, but only when it is compliant with the XSD.
@@ -115,7 +117,7 @@ public class ConfigurationManager {
      */
     public ResponseContext findResponseForGetOperationWithPath(String path, String parameters) throws IOException, InterruptedException {
         LOGGER.debug("About to find response for get operation with path: {}", path);
-        Configuration configuration = this.configurationSelector.findMatchingConfiguration(path, this.getConfigurations);
+        Configuration configuration = this.configurationSelector.findMatchingConfiguration(path, this.allConfigurations.get(HTTP_GET));
         if (configuration != null) {
             LOGGER.debug("... found, proceeding to the data part...");
             SimpleResource resource = null;
@@ -212,10 +214,11 @@ public class ConfigurationManager {
         } else {
             discriminator = discriminator.toLowerCase();
         }
+        Map<String, Configuration> postConfigurations = this.allConfigurations.get(HTTP_POST);
         LOGGER.info("Discriminator (content-type): {}", discriminator);
-        if (this.postConfigurations.containsKey(path)) {
+        if (postConfigurations.containsKey(path)) {
             LOGGER.debug("... found, proceeding to the data part...");
-            Configuration configuration = this.configurationSelector.findMatchingConfiguration(path, this.postConfigurations);
+            Configuration configuration = this.configurationSelector.findMatchingConfiguration(path, postConfigurations);
             // Iterate the resources, and verify whether the xpath matches with the data
             ResourceGroups resourceGroups = configuration.getResourceGroups();
             LOGGER.trace("Total resource groups configured: {}", resourceGroups.getResourceGroup().size());
@@ -305,15 +308,18 @@ public class ConfigurationManager {
         this.configurations = (Configurations) unmarshaller.unmarshal(inputStream);
         LOGGER.debug("Total loaded resources: {}", this.configurations.getConfigurations().size());
         for (Configuration configuration : this.configurations.getConfigurations()) {
-            if (HTTP_POST.equals(configuration.getType().toUpperCase())) {
-                // Add resource to post configuration group
-                this.postConfigurations.put(configuration.getUrl(), configuration);
-            } else {
-                // Add resource to get configuration group
-                this.getConfigurations.put(configuration.getUrl(), configuration);
+            String type = configuration.getType();
+            Map<String, Configuration> foundConfigurationMap = this.allConfigurations.get(type);
+            if (foundConfigurationMap == null) {
+                foundConfigurationMap = new HashMap<>();
             }
+            foundConfigurationMap.put(configuration.getUrl(), configuration);
+            this.allConfigurations.put(type, foundConfigurationMap);
         }
-        LOGGER.info("... done, URL mappings parsed [{} for POST, {} for GET]", this.postConfigurations.size(), this.getConfigurations.size());
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("... done, found URL mappings:\n");
+        this.allConfigurations.forEach((type, typeConfigurationMap) -> buffer.append("\ttype: ").append(type).append("\t\ttotal: ").append(typeConfigurationMap.size()).append("\n"));
+        LOGGER.info(buffer.toString());
         this.xpathEvaluator = new XpathEvaluator();
         this.jsonPathEvaluator = new JsonPathEvaluator();
     }

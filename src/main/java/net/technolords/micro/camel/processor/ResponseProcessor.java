@@ -52,6 +52,18 @@ public class ResponseProcessor implements Processor {
             case ConfigurationManager.HTTP_POST:
                 responseContext = this.handlePostRequest(exchange);
                 break;
+            case ConfigurationManager.HTTP_PUT:
+                LOGGER.warn("Put not supported yet");
+                responseContext = null;
+                break;
+            case ConfigurationManager.HTTP_PATCH:
+                LOGGER.warn("Patch not supported yet");
+                responseContext = null;
+                break;
+            case ConfigurationManager.HTTP_DELETE:
+                LOGGER.warn("Delete not supported yet");
+                responseContext = null;
+                break;
             default:
                 responseContext = this.handleUnsupportedRequest(exchange);
         }
