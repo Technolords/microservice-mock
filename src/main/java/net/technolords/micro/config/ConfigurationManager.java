@@ -104,13 +104,13 @@ public class ConfigurationManager {
 
     public ResponseContext findResponseForGetOperation(String path, String parameters) throws IOException, InterruptedException {
         Map<String, Configuration> getConfigurations = this.allConfigurations.get(HTTP_GET);
-        LOGGER.info("Total configurations for GET: {}", getConfigurations.size());
+        LOGGER.debug("Total configurations for GET: {}", getConfigurations.size());
         return this.findResponseForParameterBasedOperation(path, parameters, getConfigurations);
     }
 
     public ResponseContext findResponseForDeleteOperation(String path, String parameters) throws IOException, InterruptedException {
         Map<String, Configuration> deleteConfigurations = this.allConfigurations.get(HTTP_DELETE);
-        LOGGER.info("Total configurations for DELETE: {}", deleteConfigurations.size());
+        LOGGER.debug("Total configurations for DELETE: {}", deleteConfigurations.size());
         return this.findResponseForParameterBasedOperation(path, parameters, deleteConfigurations);
     }
 
@@ -128,10 +128,10 @@ public class ConfigurationManager {
      *  When delaying the response fails.
      */
     public ResponseContext findResponseForParameterBasedOperation(String path, String parameters, Map<String, Configuration> configurations) throws IOException, InterruptedException {
-        LOGGER.info("About to find response for parameter based operation with path: {}", path);
+        LOGGER.debug("About to find response for parameter based operation with path: {}", path);
         Configuration configuration = this.configurationSelector.findMatchingConfiguration(path, configurations);
         if (configuration != null) {
-            LOGGER.info("... found, proceeding to the data part...");
+            LOGGER.debug("... found, proceeding to the data part...");
             SimpleResource resource = null;
             // Check for query groups
             if (configuration.getQueryGroups() != null && (parameters != null && !parameters.isEmpty())) {
@@ -142,10 +142,10 @@ public class ConfigurationManager {
                 resource = configuration.getSimpleResource();
             }
             // Load and update cache
-            LOGGER.info("About to load data from: {}", resource.getResource());
+            LOGGER.debug("About to load data from: {}", resource.getResource());
             return this.responseContextGenerator.readResourceCacheOrFile(resource);
         }
-        LOGGER.info("... not found!");
+        LOGGER.debug("... not found!");
         return null;
     }
 
@@ -199,23 +199,23 @@ public class ConfigurationManager {
     }
 
     public ResponseContext findResponseForPostOperation(String path, String body, String discriminator) throws XPathExpressionException, IOException, InterruptedException {
-        LOGGER.info("About to find response for post operation with path: {} and discriminator: {}", path, discriminator);
+        LOGGER.debug("About to find response for post operation with path: {} and discriminator: {}", path, discriminator);
         Map<String, Configuration> postConfigurations = this.allConfigurations.get(HTTP_POST);
-        LOGGER.info("Total configurations for POST: {}", postConfigurations.size());
+        LOGGER.debug("Total configurations for POST: {}", postConfigurations.size());
         return this.findResponseForBodyBasedOperation(path, body, discriminator, postConfigurations);
     }
 
     public ResponseContext findResponseForPutOperation(String path, String body, String discriminator) throws XPathExpressionException, IOException, InterruptedException {
-        LOGGER.info("About to find response for put operation with path: {} and discriminator: {}", path, discriminator);
+        LOGGER.debug("About to find response for put operation with path: {} and discriminator: {}", path, discriminator);
         Map<String, Configuration> putConfigurations = this.allConfigurations.get(HTTP_PUT);
-        LOGGER.info("Total configurations for PUT: {}", putConfigurations.size());
+        LOGGER.debug("Total configurations for PUT: {}", putConfigurations.size());
         return this.findResponseForBodyBasedOperation(path, body, discriminator, putConfigurations);
     }
 
     public ResponseContext findResponseForPatchOperation(String path, String body, String discriminator) throws XPathExpressionException, IOException, InterruptedException {
-        LOGGER.info("About to find response for patch operation with path: {} and discriminator: {}", path, discriminator);
+        LOGGER.debug("About to find response for patch operation with path: {} and discriminator: {}", path, discriminator);
         Map<String, Configuration> putConfigurations = this.allConfigurations.get(HTTP_PATCH);
-        LOGGER.info("Total configurations for PATCH: {}", putConfigurations.size());
+        LOGGER.debug("Total configurations for PATCH: {}", putConfigurations.size());
         return this.findResponseForBodyBasedOperation(path, body, discriminator, putConfigurations);
     }
 
@@ -241,70 +241,70 @@ public class ConfigurationManager {
      *  When delaying the response fails.
      */
     protected ResponseContext findResponseForBodyBasedOperation(String path, String body, String discriminator, Map<String, Configuration> configurations) throws IOException, XPathExpressionException, InterruptedException {
-        LOGGER.info("About to find response for body based operation with path: {}", path);
+        LOGGER.debug("About to find response for body based operation with path: {}", path);
         if (Strings.isBlank(discriminator)) {
             discriminator = "default";
         } else {
             discriminator = discriminator.toLowerCase();
         }
-        LOGGER.info("Discriminator (content-type): {}", discriminator);
-        if (LOGGER.isInfoEnabled()) {
+        LOGGER.trace("Discriminator (content-type): {}", discriminator);
+        if (LOGGER.isDebugEnabled()) {
             StringBuffer buffer = new StringBuffer();
             buffer.append("... found path mappings:\n");
             configurations.forEach((s, configuration) -> {
                 buffer.append("\t").append(s).append("\n");
             });
-            LOGGER.info(buffer.toString());
+            LOGGER.debug(buffer.toString());
         }
         Configuration configuration = this.configurationSelector.findMatchingConfiguration(path, configurations);
         if (configuration != null) {
-            LOGGER.info("... found, proceeding to the data part...");
+            LOGGER.debug("... found, proceeding to the data part...");
             // Iterate the resources, and verify whether the xpath matches with the data
             ResourceGroups resourceGroups = configuration.getResourceGroups();
             if (resourceGroups != null) {
-                LOGGER.info("Total resource groups configured: {}", resourceGroups.getResourceGroup().size());
+                LOGGER.debug("Total resource groups configured: {}", resourceGroups.getResourceGroup().size());
                 for (ResourceGroup resourceGroup : resourceGroups.getResourceGroup()) {
                     switch (discriminator) {
                         case "json":
                         case "application/json":
-                            LOGGER.info("Checking for jsonpath...");
+                            LOGGER.trace("Checking for jsonpath...");
                             if (resourceGroup.getJsonpathConfig() != null) {
-                                LOGGER.info("... found jsonpath: {}", resourceGroup.getJsonpathConfig().getJsonpath().trim());
+                                LOGGER.debug("... found jsonpath: {}", resourceGroup.getJsonpathConfig().getJsonpath().trim());
                                 if (this.jsonPathEvaluator.evaluateXpathExpression(resourceGroup.getJsonpathConfig().getJsonpath().trim(), body, configuration)) {
-                                    LOGGER.info("... jsonpath matched, about to find associated resource");
+                                    LOGGER.debug("... jsonpath matched, about to find associated resource");
                                     return this.responseContextGenerator.readResourceCacheOrFile(resourceGroup.getSimpleResource());
                                 }
                                 // Note: if there is no match, continue with the resource group loop
                                 break;
                             } else {
-                                LOGGER.info("No jsonpath configured, about to load the data from: {}", resourceGroup.getSimpleResource().getResource());
+                                LOGGER.debug("No jsonpath configured, about to load the data from: {}", resourceGroup.getSimpleResource().getResource());
                                 return this.responseContextGenerator.readResourceCacheOrFile(resourceGroup.getSimpleResource());
                             }
                         case "xml":
                         case "application/xml":
                         default:
-                            LOGGER.info("Checking for xpath...");
+                            LOGGER.trace("Checking for xpath...");
                             // No type detected, falling back to default (which is xml)
                             if (resourceGroup.getXpathConfig() != null) {
-                                LOGGER.info("... found xpath: {}", resourceGroup.getXpathConfig().getXpath());
+                                LOGGER.debug("... found xpath: {}", resourceGroup.getXpathConfig().getXpath());
                                 if (this.xpathEvaluator.evaluateXpathExpression(resourceGroup.getXpathConfig().getXpath(), body, configuration)) {
-                                    LOGGER.info("... xpath matched, about to find associated resource");
+                                    LOGGER.debug("... xpath matched, about to find associated resource");
                                     return this.responseContextGenerator.readResourceCacheOrFile(resourceGroup.getSimpleResource());
                                 }
                                 // Note: if there is no match, continue with the resource group loop
                                 break;
                             } else {
-                                LOGGER.info("No xpath configured, about to load the data from: {}", resourceGroup.getSimpleResource().getResource());
+                                LOGGER.debug("No xpath configured, about to load the data from: {}", resourceGroup.getSimpleResource().getResource());
                                 return this.responseContextGenerator.readResourceCacheOrFile(resourceGroup.getSimpleResource());
                             }
                     }
                 }
             } else {
-                LOGGER.info("No resource groups, defaulting to simple resource...");
+                LOGGER.debug("No resource groups, defaulting to simple resource...");
                 return this.responseContextGenerator.readResourceCacheOrFile(configuration.getSimpleResource());
             }
         }
-        LOGGER.info("... not found!");
+        LOGGER.debug("... not found!");
         return null;
     }
 
