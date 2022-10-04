@@ -54,7 +54,7 @@
         | Source control management
         +-->
     <scm>
-        <connection>scm:git:ssh://git@github.com/Technolords/microservice-mock</connection>
+        <connection>scm:git:ssh://git@github.com/Technolords/microservice-mock.git</connection>
         <url>https://github.com/Technolords/microservice-mock/</url>
         <tag>HEAD</tag>
     </scm>
