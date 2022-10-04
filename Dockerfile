@@ -11,9 +11,6 @@ ADD target/${JAR_FILE} /etc/mock/mock.jar
 
 EXPOSE 9090
 
-HEALTHCHECK --interval=1m --timeout=10s \
-    CMD curl --fail http://localhost:9090/mock/cmd?config=current || exit 1
-
 VOLUME ["/var/mock"]
 
 WORKDIR "/etc/mock/"
