@@ -1,6 +1,7 @@
 package net.technolords.micro.config;
 
 import net.technolords.micro.model.ResponseContext;
+import net.technolords.micro.model.jaxb.Configurations;
 import net.technolords.micro.test.PathSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,7 @@ import java.util.Map;
  *
  * - default-configuration
  * - test-configuration
+ * - operations-configuration
  */
 public class ConfigurationManagerTest {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
@@ -35,6 +37,7 @@ public class ConfigurationManagerTest {
     private static final String DATA_SET_FOR_TEST_QUERY_PARAMS = "dataSetForExtractParams";
     private static final String DATA_SET_FOR_TEST_QUERY_GROUPS = "dataSetForQueryGroups";
     private static final String TEST_QUERY_GROUP_CONFIG_MANAGER_REQUIRED = "test-queryGroup-configuration";
+    private static final String TEST_ALL_OPERATIONS_GROUP = "test-all-operations-configuration";
     private ConfigurationManager configurationManager;
 
     @BeforeGroups (groups = DEFAULT_CONFIG_MANAGER_REQUIRED)
@@ -61,6 +64,20 @@ public class ConfigurationManagerTest {
     @AfterGroups (groups = TEST_CONFIG_MANAGER_REQUIRED)
     public void afterTestGroup() {
         LOGGER.info("Testing done with test config manager....");
+    }
+
+    @BeforeGroups (groups = TEST_ALL_OPERATIONS_GROUP, inheritGroups = true)
+    public void initConfigForAllOperations() throws JAXBException, IOException, SAXException {
+        LOGGER.info("About to initialize configuration for all operations");
+        final String CONFIG_LOCATION = "src/test/resources/config/mock/config-for-AllOperationsTest.xml";
+        final String DATA_LOCATION = "src/test/resources/data/response";
+        this.configurationManager = new ConfigurationManager(CONFIG_LOCATION, DATA_LOCATION);
+        Assert.assertNotNull(this.configurationManager);
+    }
+
+    @AfterGroups (groups = TEST_ALL_OPERATIONS_GROUP)
+    public void afterConfigForAllOperations() {
+        LOGGER.info("Testing done with configuration for all operations....");
     }
 
     @BeforeGroups (groups = TEST_QUERY_GROUP_CONFIG_MANAGER_REQUIRED, inheritGroups = true)
@@ -141,7 +158,7 @@ public class ConfigurationManagerTest {
     }
 
     private void assertOnResponseContext(final String path, final String expectedResponse) throws IOException, InterruptedException {
-        ResponseContext responseContext = this.configurationManager.findResponseForGetOperationWithPath(path, "");
+        ResponseContext responseContext = this.configurationManager.findResponseForGetOperation(path, "");
         Assert.assertNotNull(responseContext);
         Assert.assertNull(responseContext.getErrorCode());
         Assert.assertTrue(filterWhiteSpace(responseContext.getResponse()).equals(filterWhiteSpace(expectedResponse)));
@@ -163,7 +180,7 @@ public class ConfigurationManagerTest {
     @Test (groups = TEST_QUERY_GROUP_CONFIG_MANAGER_REQUIRED, dataProvider = DATA_SET_FOR_TEST_QUERY_GROUPS)
     public void testResponseWithTestQueryGroupConfiguration(final String path, final String params, final String expectedResponse) throws IOException, InterruptedException {
         LOGGER.debug("About to test with path: {}", path);
-        ResponseContext responseContext = this.configurationManager.findResponseForGetOperationWithPath(path, params);
+        ResponseContext responseContext = this.configurationManager.findResponseForGetOperation(path, params);
         Assert.assertNotNull(responseContext);
         Assert.assertNull(responseContext.getErrorCode());
         Assert.assertTrue(filterWhiteSpace(responseContext.getResponse()).equals(filterWhiteSpace(expectedResponse)));
@@ -186,6 +203,18 @@ public class ConfigurationManagerTest {
         for (String key : expected.keySet()) {
             Assert.assertTrue(expected.get(key).equals(result.get(key)));
         }
+    }
+
+    @Test(groups = TEST_ALL_OPERATIONS_GROUP)
+    public void testAllOperations() {
+        LOGGER.info("About to test...");
+        Configurations configurations = this.configurationManager.getConfigurations();
+        Assert.assertNotNull(configurations);
+        Assert.assertTrue(configurations.getConfigurations().stream().filter(configuration -> configuration.getType().equals("GET")).findAny().orElse(null) != null);
+        Assert.assertTrue(configurations.getConfigurations().stream().filter(configuration -> configuration.getType().equals("POST")).findAny().orElse(null) != null);
+        Assert.assertTrue(configurations.getConfigurations().stream().filter(configuration -> configuration.getType().equals("PUT")).findAny().orElse(null) != null);
+        Assert.assertTrue(configurations.getConfigurations().stream().filter(configuration -> configuration.getType().equals("PATCH")).findAny().orElse(null) != null);
+        Assert.assertTrue(configurations.getConfigurations().stream().filter(configuration -> configuration.getType().equals("DELETE")).findAny().orElse(null) != null);
     }
 
     private Map<String, String> expectedQueryParams(final String queryParams) {

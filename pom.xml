@@ -4,7 +4,7 @@
 
     <groupId>net.technolords.micro.service</groupId>
     <artifactId>microservice-mock</artifactId>
-    <version>1.6.1-SNAPSHOT</version>
+    <version>1.7.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Technolords :: Microservices :: Mock</name>
@@ -31,10 +31,10 @@
             | Version properties
             +-->
         <version.camel>2.18.2</version.camel>
-        <version.http.client>4.5.2</version.http.client>
+        <version.http.client>4.5.13</version.http.client>
         <version.jayway>2.4.0</version.jayway>
         <version.jetty.util>9.2.19.v20160908</version.jetty.util>
-        <version.log4j2>2.7</version.log4j2>
+        <version.log4j2>2.16.0</version.log4j2>
         <version.maven.plugin.build.helper>1.12</version.maven.plugin.build.helper>
         <version.maven.plugin.compiler>3.3</version.maven.plugin.compiler>
         <version.maven.plugin.docker>1.4.7</version.maven.plugin.docker>

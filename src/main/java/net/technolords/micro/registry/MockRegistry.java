@@ -129,7 +129,9 @@ public class MockRegistry {
     }
 
     public static String findConfiguredConfig() {
-        return (String) findProperties().get(PropertiesManager.PROP_CONFIG);
+        String s = (String) findProperties().get(PropertiesManager.PROP_CONFIG);
+        LOGGER.debug("Property value for {}: {}", PropertiesManager.PROP_CONFIG, s);
+        return s;
     }
 
     public static String findConfiguredData() {

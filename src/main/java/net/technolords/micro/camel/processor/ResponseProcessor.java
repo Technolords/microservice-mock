@@ -52,6 +52,15 @@ public class ResponseProcessor implements Processor {
             case ConfigurationManager.HTTP_POST:
                 responseContext = this.handlePostRequest(exchange);
                 break;
+            case ConfigurationManager.HTTP_PUT:
+                responseContext = this.handlePutRequest(exchange);
+                break;
+            case ConfigurationManager.HTTP_PATCH:
+                responseContext = this.handlePatchRequest(exchange);
+                break;
+            case ConfigurationManager.HTTP_DELETE:
+                responseContext = this.handleDeleteRequest(exchange);
+                break;
             default:
                 responseContext = this.handleUnsupportedRequest(exchange);
         }
@@ -79,8 +88,27 @@ public class ResponseProcessor implements Processor {
         } else {
             // Example: "CamelHttpQuery" -> "key1=11&key2=12"
             String requestParameters = exchange.getIn().getHeader(Exchange.HTTP_QUERY, String.class);
-            return this.configurationManager.findResponseForGetOperationWithPath(requestURI, requestParameters);
+            return this.configurationManager.findResponseForGetOperation(requestURI, requestParameters);
         }
+    }
+
+    /**
+     * Auxiliary method that delegates the request towards the configuration manager, based on the request URI.
+     *
+     * @param exchange
+     *  The Camel exchange associated with the DELETE request.
+     * @return
+     *  A ResponseContext (or null when there was no match (this will trigger a 404)).
+     *
+     * @throws InterruptedException
+     *  When the response with delay got interrupted.
+     * @throws IOException
+     *  When reading the response data failed.
+     */
+    private ResponseContext handleDeleteRequest(Exchange exchange) throws IOException, InterruptedException {
+        String requestURI = exchange.getIn().getHeader(Exchange.HTTP_URI, String.class);
+        String requestParameters = exchange.getIn().getHeader(Exchange.HTTP_QUERY, String.class);
+        return this.configurationManager.findResponseForDeleteOperation(requestURI, requestParameters);
     }
 
     /**
@@ -95,15 +123,61 @@ public class ResponseProcessor implements Processor {
      * @throws InterruptedException
      *  When the response with delay got interrupted.
      * @throws XPathExpressionException
-     *  When the Xpath failed, based on a XML body.
+     *  When the Xpath failed, based on an XML body.
      * @throws IOException
      *  When reading the response data failed.
      */
     private ResponseContext handlePostRequest(Exchange exchange) throws InterruptedException, XPathExpressionException, IOException {
         String requestURI = exchange.getIn().getHeader(Exchange.HTTP_URI, String.class);
-        String message = exchange.getIn().getBody(String.class);
+        String body = exchange.getIn().getBody(String.class);
         String discriminator = exchange.getIn().getHeader(Exchange.CONTENT_TYPE, String.class);
-        return this.configurationManager.findResponseForPostOperationWithPathAndMessage(requestURI, message, discriminator);
+        return this.configurationManager.findResponseForPostOperation(requestURI, body, discriminator);
+    }
+
+    /**
+     * Auxiliary method that delegates the request towards the configuration manager, based on the request URI as
+     * well as the body associated with the PUT request.
+     *
+     * @param exchange
+     *  The Camel exchange associated with the PUT request.
+     * @return
+     *  A RespinseContext (or null when there was no match (this will trigger a 404))
+     *
+     * @throws XPathExpressionException
+     *  When the Xpath failed, based on an XML body.
+     * @throws IOException
+     *  When reading the response data failed.
+     * @throws InterruptedException
+     *  When the response with delay got interrupted.
+     */
+    private ResponseContext handlePutRequest(Exchange exchange) throws XPathExpressionException, IOException, InterruptedException {
+        String requestURI = exchange.getIn().getHeader(Exchange.HTTP_URI, String.class);
+        String body = exchange.getIn().getBody(String.class);
+        String discriminator = exchange.getIn().getHeader(Exchange.CONTENT_TYPE, String.class);
+        return this.configurationManager.findResponseForPutOperation(requestURI, body, discriminator);
+    }
+
+    /**
+     * Auxiliary method that delegates the request towards the configuration manager, based on the request URI as
+     * well as the body associated with the PATCH request.
+     *
+     * @param exchange
+     *  The Camel exchange associated with the PATCH request.
+     * @return
+     *  A RespinseContext (or null when there was no match (this will trigger a 404))
+     *
+     * @throws XPathExpressionException
+     *  When the Xpath failed, based on an XML body.
+     * @throws IOException
+     *  When reading the response data failed.
+     * @throws InterruptedException
+     *  When the response with delay got interrupted.
+     */
+    private ResponseContext handlePatchRequest(Exchange exchange) throws XPathExpressionException, IOException, InterruptedException {
+        String requestURI = exchange.getIn().getHeader(Exchange.HTTP_URI, String.class);
+        String body = exchange.getIn().getBody(String.class);
+        String discriminator = exchange.getIn().getHeader(Exchange.CONTENT_TYPE, String.class);
+        return this.configurationManager.findResponseForPatchOperation(requestURI, body, discriminator);
     }
 
     /**
