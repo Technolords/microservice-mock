@@ -26,7 +26,7 @@ import java.util.Map;
  *
  * - default-configuration
  * - test-configuration
- * - operations-confoguration
+ * - operations-configuration
  */
 public class ConfigurationManagerTest {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
@@ -158,7 +158,7 @@ public class ConfigurationManagerTest {
     }
 
     private void assertOnResponseContext(final String path, final String expectedResponse) throws IOException, InterruptedException {
-        ResponseContext responseContext = this.configurationManager.findResponseForGetOperationWithPath(path, "");
+        ResponseContext responseContext = this.configurationManager.findResponseForGetOperation(path, "");
         Assert.assertNotNull(responseContext);
         Assert.assertNull(responseContext.getErrorCode());
         Assert.assertTrue(filterWhiteSpace(responseContext.getResponse()).equals(filterWhiteSpace(expectedResponse)));
@@ -180,7 +180,7 @@ public class ConfigurationManagerTest {
     @Test (groups = TEST_QUERY_GROUP_CONFIG_MANAGER_REQUIRED, dataProvider = DATA_SET_FOR_TEST_QUERY_GROUPS)
     public void testResponseWithTestQueryGroupConfiguration(final String path, final String params, final String expectedResponse) throws IOException, InterruptedException {
         LOGGER.debug("About to test with path: {}", path);
-        ResponseContext responseContext = this.configurationManager.findResponseForGetOperationWithPath(path, params);
+        ResponseContext responseContext = this.configurationManager.findResponseForGetOperation(path, params);
         Assert.assertNotNull(responseContext);
         Assert.assertNull(responseContext.getErrorCode());
         Assert.assertTrue(filterWhiteSpace(responseContext.getResponse()).equals(filterWhiteSpace(expectedResponse)));
