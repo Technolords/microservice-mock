@@ -1,482 +1,372 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0"?>
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>net.technolords.micro.service</groupId>
+    <groupId>net.technolords.service</groupId>
     <artifactId>microservice-mock</artifactId>
-    <version>1.7.1-SNAPSHOT</version>
+    <version>2.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Technolords :: Microservices :: Mock</name>
-    <description>
-        A mock server, able to simulate any web service
-    </description>
-    <url>https://github.com/Technolords/microservice-mock</url>
-
-    <!--+
-        | Properties
-        +-->
     <properties>
         <!--+
-            | Project properties
+            | Generic Maven properties
             +-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!--+
-            | Microservice properties
+            | Custom properties
             +-->
-        <jetty.port>9090</jetty.port>
-
-        <!--+
-            | Version properties
-            +-->
-        <version.camel>2.18.2</version.camel>
-        <version.http.client>4.5.13</version.http.client>
-        <version.jayway>2.4.0</version.jayway>
-        <version.jetty.util>9.2.19.v20160908</version.jetty.util>
-        <version.log4j2>2.17.1</version.log4j2>
-        <version.maven.plugin.build.helper>1.12</version.maven.plugin.build.helper>
-        <version.maven.plugin.compiler>3.3</version.maven.plugin.compiler>
-        <version.maven.plugin.docker>1.4.7</version.maven.plugin.docker>
-        <version.maven.plugin.gpg>1.5</version.maven.plugin.gpg>
-        <version.maven.plugin.javadoc>2.10.4</version.maven.plugin.javadoc>
-        <version.maven.plugin.jetty>9.4.0.M0</version.maven.plugin.jetty>
-        <version.maven.plugin.release>2.5.3</version.maven.plugin.release>
-        <version.maven.plugin.shade>2.4.3</version.maven.plugin.shade>
-        <version.maven.plugin.source>2.4</version.maven.plugin.source>
-        <version.maven.plugin.surefire>2.18.1</version.maven.plugin.surefire>
-        <version.maven.plugin.sonatype.nexus.staging>1.6.7</version.maven.plugin.sonatype.nexus.staging>
-        <version.testng>6.9.4</version.testng>
-        <version.xmlunit>1.6</version.xmlunit>
+        <version.camel>3.16.0</version.camel>
+        <version.fasterxml.jackson>2.13.2</version.fasterxml.jackson>
+        <version.git.commit>4.0.0</version.git.commit>
+        <version.io.micrometer>1.8.1</version.io.micrometer>
+        <version.junit.jupiter>5.6.2</version.junit.jupiter>
+        <version.log4j2>2.17.2</version.log4j2>
+        <version.maven.plugin.compiler>3.8.1</version.maven.plugin.compiler>
+        <version.maven.plugin.compiler.java>11</version.maven.plugin.compiler.java>
+        <version.maven.plugin.failsafe>2.22.2</version.maven.plugin.failsafe>
+        <version.maven.plugin.surefire>2.22.2</version.maven.plugin.surefire>
+        <version.maven.plugin.jacoco>0.8.4</version.maven.plugin.jacoco>
+        <version.mockito>4.0.0</version.mockito>
+        <version.slf4j>1.7.36</version.slf4j>
+        <version.spring.boot>2.6.6</version.spring.boot>
+        <version.spring.core>5.3.16.RELEASE</version.spring.core>
+        <version.testng>7.1.0</version.testng>
     </properties>
 
-    <!--+
-        | Source control management
-        +-->
     <scm>
-        <connection>scm:git:ssh://git@github.com/Technolords/microservice-mock.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/Technolords/microservice-mock.git</developerConnection>
-        <url>https://github.com/Technolords/microservice-mock/</url>
-        <tag>HEAD</tag>
+	    <connection>scm:git:https://github.com/Technolords/microservice-todo.git</connection>
     </scm>
 
-    <!--+
-        | License information
-        +-->
-    <licenses>
-        <license>
-            <name>MIT License</name>
-            <url>http://www.opensource.org/licenses/mit-license.php</url>
-        </license>
-    </licenses>
-
-    <!--+
-        | Developers information
-        +-->
-    <developers>
-        <developer>
-            <name>Mike Ahlers</name>
-            <email>mike@technolords.net</email>
-            <organization>Technolords</organization>
-            <organizationUrl>https://www.technolords.net</organizationUrl>
-        </developer>
-    </developers>
-
-    <!--+
-        | Dependencies
-        +-->
     <dependencies>
 
         <!--+
-            | Default scope
+            | Default scope dependencies (sorted by groupId and artifactId to enhance readability)
             +-->
         <dependency>
-            <!-- Required to use json path -->
-            <groupId>com.jayway.jsonpath</groupId>
-            <artifactId>json-path</artifactId>
-            <version>${version.jayway}</version>
+            <!-- Required to use Json format -->
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${version.fasterxml.jackson}</version>
         </dependency>
 
         <dependency>
-            <!-- Required to use jetty:http endpoints -->
-            <groupId>org.apache.camel</groupId>
-            <artifactId>camel-jetty9</artifactId>
+            <!-- Required to use Json format -->
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-yaml</artifactId>
+            <version>${version.fasterxml.jackson}</version>
+        </dependency>
+
+        <dependency>
+            <!-- Required to produce metrics for Prometheus -->
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-core</artifactId>
+            <version>${version.io.micrometer}</version>
+        </dependency>
+
+        <dependency>
+            <!-- Required to produce metrics for Prometheus -->
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+            <version>${version.io.micrometer}</version>
+        </dependency>
+
+        <dependency>
+            <!-- Required for Camel context -->
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-spring-boot</artifactId>
             <version>${version.camel}</version>
         </dependency>
 
         <dependency>
-            <!-- Used for rest calls -->
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>${version.http.client}</version>
+            <!-- Required for Camel direct routes -->
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-direct-starter</artifactId>
+            <version>${version.camel}</version>
         </dependency>
 
         <dependency>
-            <!-- Required to use logging -->
+            <!-- Required for Camel mock routes -->
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-mock-starter</artifactId>
+            <version>${version.camel}</version>
+        </dependency>
+
+        <dependency>
+            <!-- Required for Logger, Level and more -->
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
             <version>${version.log4j2}</version>
         </dependency>
 
         <dependency>
-            <!-- Required to use logging -->
+            <!-- Required for Appenders, Layout, Filters and more -->
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
             <version>${version.log4j2}</version>
         </dependency>
 
         <dependency>
-            <!-- Required to bridge slf4j over log4j -->
+            <!-- Required for actual Slf4j implementation -->
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j-impl</artifactId>
             <version>${version.log4j2}</version>
         </dependency>
 
         <dependency>
-            <!-- Required to use log4j correctly from jetty -->
+            <!-- Required for logging in a web container -->
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-web</artifactId>
             <version>${version.log4j2}</version>
         </dependency>
 
         <dependency>
-            <!-- Required to use the queued thread pool -->
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-util</artifactId>
-            <version>${version.jetty.util}</version>
+            <!-- Required for Slfj classes -->
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${version.slf4j}</version>
         </dependency>
 
         <dependency>
-            <!-- Required to support: mvn run:jetty -->
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-maven-plugin</artifactId>
-            <version>${version.maven.plugin.jetty}</version>
+            <!-- Required for exclusions -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <version>${version.spring.boot}</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <!-- No Logback please (as it is the default) -->
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <!-- Required for out-of-the-box /info, /health /actuator/* rest endpoints -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+            <version>${version.spring.boot}</version>
+        </dependency>
+
+        <dependency>
+            <!-- Required for web container, alternative to Tomcat -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jetty</artifactId>
+            <version>${version.spring.boot}</version>
+        </dependency>
+
+        <dependency>
+            <!-- Required as alternative to spring-boot-starter-logging which uses logback -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
+            <version>${version.spring.boot}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <!-- Required for Http endpoints, such as Rest API -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${version.spring.boot}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!--+
             | Test scope
             +-->
+
+        <dependency>
+            <!-- Required for Java unit testing -->
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${version.junit.jupiter}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <!-- Required to stub classes -->
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${version.mockito}</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.apache.camel</groupId>
-            <artifactId>camel-testng</artifactId>
+            <artifactId>camel-test-spring-junit5</artifactId>
             <version>${version.camel}</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>${version.testng}</version>
+            <!-- Required for Spring support -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>${version.spring.boot}</version>
             <scope>test</scope>
+            <exclusions>
+                <!-- This is Junit 4, we want Junit 5 -->
+                <!--+
+                    | Excluding causes the following problem:
+                    | WARNING: TestEngine with ID 'junit-vintage' failed to discover tests
+                    | java.lang.NoClassDefFoundError: junit/runner/Version
+                    +-->
+<!--                <exclusion>-->
+<!--                    <groupId>junit</groupId>-->
+<!--                    <artifactId>junit</artifactId>-->
+<!--                </exclusion>-->
+                <exclusion>
+                    <!-- A newer version is included ourselves (2.23.4 -> 2.28.2) -->
+                    <groupId>org.mockito</groupId>
+                    <artifactId>mockito-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
-            <groupId>xmlunit</groupId>
-            <artifactId>xmlunit</artifactId>
-            <version>${version.xmlunit}</version>
-            <scope>test</scope>
+            <!-- Required for executing testing cases (alternative to Junit)  -->
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${version.testng}</version>
         </dependency>
+
     </dependencies>
 
-    <!--+
-        | Build
-        +-->
     <build>
-        <!-- Allow placeholders in files in resources folder to be translated -->
         <resources>
             <resource>
-                <directory>src/main/resources</directory>
+                <directory>${basedir}/src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
         </resources>
 
-        <defaultGoal>install</defaultGoal>
-
         <plugins>
-
             <plugin>
-                <!-- Required to compile the java sources against a JVM spec -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${version.maven.plugin.compiler}</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <release>${version.maven.plugin.compiler.java}</release>
                 </configuration>
             </plugin>
 
             <plugin>
-                <!-- Required to perform a release (Maven Central) -->
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>${version.maven.plugin.release}</version>
-                <configuration>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <useReleaseProfile>false</useReleaseProfile>
-                    <releaseProfiles>release</releaseProfiles>
-                    <goals>deploy</goals>
-                    <tagNameFormat>@{project.version}</tagNameFormat>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <!-- Required to bundle all dependencies in a single jar (packaging) -->
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>${version.maven.plugin.shade}</version>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${version.maven.plugin.jacoco}</version>
                 <executions>
                     <execution>
-                        <phase>package</phase>
+                        <id>jacoco-init</id>
                         <goals>
-                            <goal>shade</goal>
+                            <goal>prepare-agent</goal>
                         </goals>
-                        <configuration>
-                            <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>net.technolords.micro.camel.MockMain</mainClass>
-                                </transformer>
-                            </transformers>
-                        </configuration>
+                    </execution>
+                    <!-- attached to Maven test phase -->
+                    <execution>
+                        <id>jacoco-report</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
 
             <plugin>
-                <!-- Required to build a Docker image (must be *after* shade plugin) -->
-                <groupId>com.spotify</groupId>
-                <artifactId>dockerfile-maven-plugin</artifactId>
-                <version>${version.maven.plugin.docker}</version>
-                <executions>
-                    <execution>
-                        <id>build-image-latest</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
-                        <configuration>
-                            <classifier>docker-info-version-latest</classifier>
-                            <tag>latest</tag>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>build-image-tag</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>tag</goal>
-                        </goals>
-                        <configuration>
-                            <classifier>docker-info-version</classifier>
-                            <tag>${project.version}</tag>
-                        </configuration>
-                    </execution>
-                </executions>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${version.maven.plugin.failsafe}</version>
                 <configuration>
-                    <skipPush>true</skipPush>
-                    <repository>docker.io/technolords/mock</repository>
-                    <!--<tag>${project.version}</tag>-->
-                    <buildArgs>
-                        <MOCK_VERSION>${project.version}</MOCK_VERSION>
-                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
-                    </buildArgs>
+                    <argLine>@{argLine} --illegal-access=permit</argLine>
                 </configuration>
             </plugin>
 
             <plugin>
-                <!-- Required to execute unit tests, supporting both JUnit and TestNG -->
+                <!-- Required for Junit 5 and TestNG frameworks, icm with Java 11 -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${version.maven.plugin.surefire}</version>
                 <configuration>
-                    <useFile>true</useFile>
                     <failIfNoTests>false</failIfNoTests>
-                    <includes>
-                        <include>**/*Test.java</include>
-                    </includes>
+                    <!-- https://maven.apache.org/surefire/maven-surefire-plugin/examples/fork-options-and-parallel-execution.html -->
+                    <forkCount>1C</forkCount>
+                    <reuseForks>false</reuseForks>
+                    <!-- https://maven.apache.org/surefire/maven-surefire-plugin/examples/shutdown.html -->
+                    <shutdown>kill</shutdown>
+                    <argLine>@{argLine} --illegal-access=permit -Xmx1024m</argLine>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <!-- Adding support for Junit 5 -->
+                        <groupId>org.apache.maven.surefire</groupId>
+                        <artifactId>surefire-junit-platform</artifactId>
+                        <version>${version.maven.plugin.surefire}</version>
+                    </dependency>
+                    <dependency>
+                        <!-- Adding support for TestNG -->
+                        <groupId>org.apache.maven.surefire</groupId>
+                        <artifactId>surefire-testng</artifactId>
+                        <version>${version.maven.plugin.surefire}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            <plugin>
+                <!-- Required to package all dependencies into an executable jar -->
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${version.spring.boot}</version>
+                <configuration>
+                    <mainClass>net.technolords.util.MockMain</mainClass>
+                    <finalName>mock-service</finalName>
+                    <addResources>true</addResources>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>exec-with-testng</id>
-                        <phase>test</phase>
                         <goals>
-                            <goal>test</goal>
+                            <goal>repackage</goal>
                         </goals>
-                        <configuration>
-                            <testNGArtifactName>none:none</testNGArtifactName>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>test-with-junit</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                        <configuration>
-                            <junitArtifactName>none:none</junitArtifactName>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
 
             <plugin>
-                <!-- Required to generate timestamp with correct timezone -->
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>${version.maven.plugin.build.helper}</version>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>${version.git.commit}</version>
                 <executions>
                     <execution>
-                        <id>timestamp-property</id>
-                        <phase>generate-resources</phase>
+                        <id>get-the-git-infos</id>
                         <goals>
-                            <goal>timestamp-property</goal>
+                            <goal>revision</goal>
                         </goals>
-                        <configuration>
-                            <name>build.timestamp</name>
-                            <pattern>yyyy-MM-dd HH:mm:ss</pattern>
-                            <timeZone>Etc/GMT-1</timeZone>
-                        </configuration>
                     </execution>
                 </executions>
-            </plugin>
-
-            <plugin>
-                <!-- Required to run jetty as servlet container -->
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>${version.maven.plugin.jetty}</version>
                 <configuration>
-                    <httpConnector>
-                        <port>${jetty.port}</port>
-                    </httpConnector>
+                    <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+                    <prefix>git</prefix>
+                    <verbose>false</verbose>
+                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                    <generateGitPropertiesFilename>${project.build.outputDirectory}/todo-git.properties</generateGitPropertiesFilename>
+                    <format>json</format>
+                    <gitDescribe>
+                        <skip>false</skip>
+                        <always>false</always>
+                        <dirty>-dirty</dirty>
+                    </gitDescribe>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <!-- Required to interact with OSSRH -->
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>${version.maven.plugin.sonatype.nexus.staging}</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <serverId>ossrh</serverId>
-                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                </configuration>
-            </plugin>
-
         </plugins>
-
     </build>
-
-    <profiles>
-        <profile>
-            <id>release</id>
-            <build>
-                <plugins>
-
-                    <plugin>
-                        <!-- Required to sign the artifacts with a GPG key -->
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>${version.maven.plugin.gpg}</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                    <plugin>
-                        <!-- Generate java doc as additional artifact -->
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>${version.maven.plugin.javadoc}</version>
-                        <configuration>
-                            <additionalparam>-Xdoclint:none</additionalparam>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>attach-javadocs</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                    <plugin>
-                        <!-- Generate sources as additional artifact -->
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <version>${version.maven.plugin.source}</version>
-                        <executions>
-                            <execution>
-                                <id>attach-sources</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>jar-no-fork</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                    <plugin>
-                        <!-- Push image to Docker -->
-                        <groupId>com.spotify</groupId>
-                        <artifactId>dockerfile-maven-plugin</artifactId>
-                        <version>${version.maven.plugin.docker}</version>
-                        <executions>
-                            <execution>
-                                <id>push-image-version</id>
-                                <phase>deploy</phase>
-                                <goals>
-                                    <goal>push</goal>
-                                </goals>
-                                <configuration>
-                                    <tag>${project.version}</tag>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>push-image-latest</id>
-                                <phase>deploy</phase>
-                                <goals>
-                                    <goal>push</goal>
-                                </goals>
-                                <configuration>
-                                    <tag>latest</tag>
-                                </configuration>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <skipPush>false</skipPush>
-                            <repository>docker.io/technolords/mock</repository>
-                            <!--<tag>latest</tag>-->
-                            <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
-                            <buildArgs>
-                                <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
-                            </buildArgs>
-                        </configuration>
-                    </plugin>
-
-                </plugins>
-            </build>
-        </profile>
-
-    </profiles>
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
-
 </project>
