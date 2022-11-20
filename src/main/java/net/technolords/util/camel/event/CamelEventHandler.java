@@ -1,6 +1,5 @@
 package net.technolords.util.camel.event;
 
-import net.technolords.util.service.ConfigurationManager;
 import org.apache.camel.CamelContext;
 import org.apache.camel.spi.CamelEvent;
 import org.apache.camel.support.EventNotifierSupport;
@@ -11,11 +10,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class CamelEventHandler extends EventNotifierSupport {
     private static final Logger LOGGER = LoggerFactory.getLogger(CamelEventHandler.class);
-    private final ConfigurationManager configurationManager;
-
-    public CamelEventHandler(ConfigurationManager configurationManager) {
-        this.configurationManager = configurationManager;
-    }
 
     @Override
     public boolean isEnabled(CamelEvent event) {
@@ -36,7 +30,6 @@ public class CamelEventHandler extends EventNotifierSupport {
             // Prior to Camel 3.16.0 routes could be added in this phase, but it no longer will accept this...
             CamelContext camelContext = (CamelContext) event.getSource();
             camelContext.setMessageHistory(false);
-            this.configurationManager.initializeConfiguration();
             return;
         }
         if (CamelEvent.Type.CamelContextStarted == event.getType()) {
