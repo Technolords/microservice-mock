@@ -7,9 +7,6 @@ camel:
   boot:
     config-file: todo.xml
 
-# Application configuration
-
-
 # Spring configuration
 spring:
   banner:
