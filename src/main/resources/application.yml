@@ -1,0 +1,28 @@
+# Camel configuration
+camel:
+  springboot:
+    main-run-controller: true
+    name: todo
+    shutdown-timeout: 10
+
+# Spring configuration
+spring:
+  banner:
+    location:
+      # Generated with: http://patorjk.com/software/taag/ (using Slant)
+      classpath:/banner.txt
+
+# Management configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    camelroutecontroller:
+      enabled: true
+    camelroutes:
+      enabled: true
+  info:
+    camel:
+      enabled: true
