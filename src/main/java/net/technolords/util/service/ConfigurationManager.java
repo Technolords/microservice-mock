@@ -2,6 +2,7 @@ package net.technolords.util.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -9,6 +10,13 @@ import javax.annotation.PostConstruct;
 @Service
 public class ConfigurationManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationManager.class);
+
+    @Value("${camel.boot.config-file::config.xml}")
+    private String pathToConfigFile;
+
+    public void initializeConfiguration() {
+        LOGGER.info("About to initialize configuration from file: {}", this.pathToConfigFile);
+    }
 
     @PostConstruct
     public void report() {
