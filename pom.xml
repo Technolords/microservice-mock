@@ -328,8 +328,8 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${version.spring.boot}</version>
                 <configuration>
-                    <mainClass>net.technolords.util.TodoMain</mainClass>
-                    <finalName>todo</finalName>
+                    <mainClass>net.technolords.util.MockMain</mainClass>
+                    <finalName>mock-service</finalName>
                     <addResources>true</addResources>
                 </configuration>
                 <executions>
@@ -341,33 +341,32 @@
                 </executions>
             </plugin>
 
-            <!-- TODO: activate when project is in a Git repo -->
-<!--            <plugin>-->
-<!--                <groupId>pl.project13.maven</groupId>-->
-<!--                <artifactId>git-commit-id-plugin</artifactId>-->
-<!--                <version>${version.git.commit}</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>get-the-git-infos</id>-->
-<!--                        <goals>-->
-<!--                            <goal>revision</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--                <configuration>-->
-<!--                    <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>-->
-<!--                    <prefix>git</prefix>-->
-<!--                    <verbose>false</verbose>-->
-<!--                    <generateGitPropertiesFile>true</generateGitPropertiesFile>-->
-<!--                    <generateGitPropertiesFilename>${project.build.outputDirectory}/todo-git.properties</generateGitPropertiesFilename>-->
-<!--                    <format>json</format>-->
-<!--                    <gitDescribe>-->
-<!--                        <skip>false</skip>-->
-<!--                        <always>false</always>-->
-<!--                        <dirty>-dirty</dirty>-->
-<!--                    </gitDescribe>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>${version.git.commit}</version>
+                <executions>
+                    <execution>
+                        <id>get-the-git-infos</id>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+                    <prefix>git</prefix>
+                    <verbose>false</verbose>
+                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                    <generateGitPropertiesFilename>${project.build.outputDirectory}/todo-git.properties</generateGitPropertiesFilename>
+                    <format>json</format>
+                    <gitDescribe>
+                        <skip>false</skip>
+                        <always>false</always>
+                        <dirty>-dirty</dirty>
+                    </gitDescribe>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

@@ -5,7 +5,7 @@ camel:
     name: todo
     shutdown-timeout: 10
   boot:
-    config-file: todo.xml
+    config-file: /var/data/projects/technolords/workspaces/microservices/microservice-mock/src/test/resources/xml/
 
 # Application configuration
 
