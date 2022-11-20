@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +33,11 @@ import java.util.Map;
 public class ConfigurationManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationManager.class);
     private static final String PATH_TO_SCHEMA_FILE = "xsd/configuration.xsd";
+    public static final String HTTP_POST = "POST";
+    public static final String HTTP_GET = "GET";
+    public static final String HTTP_PUT = "PUT";
+    public static final String HTTP_PATCH = "PATCH";
+    public static final String HTTP_DELETE = "DELETE";
     private final Map<String, Map<String, Configuration>> allConfigurations = new HashMap<>();
     private Configurations configurations;
 
