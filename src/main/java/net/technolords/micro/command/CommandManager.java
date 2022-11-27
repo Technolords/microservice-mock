@@ -19,7 +19,8 @@ public class CommandManager {
             new LogCommand(),
             new ResetCommand(),
             new StatsCommand(),
-            new StopCommand()
+            new StopCommand(),
+            new ReloadCommand()
     );
 
     /**
