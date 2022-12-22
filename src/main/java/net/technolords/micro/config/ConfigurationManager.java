@@ -23,6 +23,7 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import javax.xml.xpath.XPathExpressionException;
 
+import net.technolords.micro.registry.MockRegistry;
 import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -99,6 +100,20 @@ public class ConfigurationManager {
         // Validate configuration file
         this.validateConfigurationFile(inputStreamForValidation);
         // Initialize configuration
+        this.initializeConfiguration(inputStreamForConfig);
+    }
+
+    public void reloadConfiguration() throws IOException, SAXException, JAXBException {
+        LOGGER.info("About to reload configuration...");
+        String pathToConfig = MockRegistry.findConfiguredConfig();
+        LOGGER.info("Using configuration file: {}", pathToConfig);
+        Path path = FileSystems.getDefault().getPath(pathToConfig);
+        LOGGER.info("File exist: {}", Files.exists(path));
+        // Validation
+        InputStream inputStreamForValidation = Files.newInputStream(path, StandardOpenOption.READ);
+        this.validateConfigurationFile(inputStreamForValidation);
+        // Initialize configuration
+        InputStream inputStreamForConfig = Files.newInputStream(path, StandardOpenOption.READ);
         this.initializeConfiguration(inputStreamForConfig);
     }
 

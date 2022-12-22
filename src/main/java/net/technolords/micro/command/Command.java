@@ -10,6 +10,7 @@ public interface Command {
     String RESET = "reset";
     String STATS = "stats";
     String STOP = "stop";
+    String RELOAD = "reload";
 
     String getId();
     ResponseContext executeCommand(Exchange exchange);
