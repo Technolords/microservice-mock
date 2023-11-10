@@ -46,7 +46,7 @@
         <version.maven.plugin.source>2.4</version.maven.plugin.source>
         <version.maven.plugin.surefire>2.18.1</version.maven.plugin.surefire>
         <version.maven.plugin.sonatype.nexus.staging>1.6.7</version.maven.plugin.sonatype.nexus.staging>
-        <version.testng>6.9.4</version.testng>
+        <version.testng>7.7.0</version.testng>
         <version.xmlunit>1.6</version.xmlunit>
     </properties>
 
